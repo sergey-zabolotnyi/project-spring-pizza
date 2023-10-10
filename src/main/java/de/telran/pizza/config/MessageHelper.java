@@ -13,7 +13,7 @@ import java.util.Locale;
  * Configuration class for managing message and log resources.
  */
 @Configuration
-public class Language {
+public class MessageHelper {
     @Autowired
     private MessageSource messageSource;
     @Autowired

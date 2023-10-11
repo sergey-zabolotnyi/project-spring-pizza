@@ -39,7 +39,7 @@ public class CartService {
      * @return CartDTO containing the list of dishes and their total price.
      */
     public CartDTO findAllDishes() {
-        List<DishDTO> dish = dishesDTOtoCart(
+        List<DishDTO> dish = listDishesDTOtoCart(
                 cartRepository.findAllByLoginId(Utils.getAuthorizedLogin().getId()));
         return CartDTO.builder()
                 .dishes(dish)
@@ -53,7 +53,7 @@ public class CartService {
      * @param dishDTOList The list of DishDTO objects.
      * @return The total price of all dishes in the list.
      */
-    private BigDecimal getDishTotalPrice(List<DishDTO> dishDTOList) {
+    public static BigDecimal getDishTotalPrice(List<DishDTO> dishDTOList) {
         return dishDTOList.stream()
                 .map(dishDTO -> dishDTO.getPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -65,7 +65,7 @@ public class CartService {
      * @param cartList The list of Cart objects.
      * @return List of DishDTO objects.
      */
-    private List<DishDTO> dishesDTOtoCart(List<Cart> cartList) {
+    public static List<DishDTO> listDishesDTOtoCart(List<Cart> cartList) {
         return cartList.stream()
                 .map(cart -> cart.getDish())
                 .map(dish -> dishToDishDto(dish))
@@ -78,7 +78,7 @@ public class CartService {
      * @param dish The Dish object to be converted.
      * @return The resulting DishDTO object.
      */
-    private DishDTO dishToDishDto(Dish dish) {
+    private static DishDTO dishToDishDto(Dish dish) {
         return DishDTO.builder()
                 .id(dish.getId())
                 .name(Utils.isLocaleEnglish() ? dish.getNameEn() : dish.getNameRu())

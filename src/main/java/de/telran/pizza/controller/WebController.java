@@ -44,7 +44,7 @@ public class WebController {
      *
      * @return The name of the cart page template.
      */
-    @RequestMapping("/basket")
+    @RequestMapping("/cart")
     public String cartPage() {
         return "cart";
     }

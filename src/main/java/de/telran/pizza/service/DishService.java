@@ -116,7 +116,7 @@ public class DishService {
      * @param dish The Dish entity to be converted.
      * @return A DishDTO data transfer object representing the provided Dish entity.
      */
-    private static DishDTO dishToDishDto(Dish dish) {
+    public static DishDTO dishToDishDto(Dish dish) {
         return DishDTO.builder()
                 .id(dish.getId())
                 .name(Utils.isLocaleEnglish() ? dish.getNameEn() : dish.getNameRu())

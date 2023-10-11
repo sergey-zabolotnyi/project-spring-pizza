@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+/**
+ * Data Transfer Object (DTO) representing user login information.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

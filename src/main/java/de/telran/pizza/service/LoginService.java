@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 /**
  * Service class for managing customer logins.
  */
@@ -27,33 +28,34 @@ public class LoginService {
 
     /**
      * Finds a user by their login.
+     *
      * @param login The login of the user to be retrieved.
      * @return An Optional containing the Login entity with the specified login, if found.
      */
     public Optional<Login> findByUserLogin(@NonNull String login) {
         return loginRepository.findByLogin(login);
     }
+
     /**
      * Saves a new user to the database with the specified loginDTO and role.
+     *
      * @param loginDTO The LoginDTO containing user details (login, email, password).
      * @param role     The role of the user.
      * @return The saved Login entity.
      * @throws NoSuchElementException if an error occurs during the save operation.
      */
-    public Login saveUser(@NonNull LoginDTO loginDTO, Role role) throws NoSuchFieldException {
+    public Login saveUser(@NonNull LoginDTO loginDTO, Role role) throws NoSuchElementException {
         try {
             return loginRepository.save(Login.builder()
                     .login(loginDTO.getLogin())
                     .email(loginDTO.getEmail())
-                    .time(LocalDateTime.now())
                     .role(role)
-                    .password(new BCryptPasswordEncoder().encode(loginDTO.getPassword()))
-                    .build());
+                    .time(LocalDateTime.now())
+                    .password(new BCryptPasswordEncoder().encode(loginDTO.getPassword())).build());
         } catch (Exception e) {
             String message = "error.signup.login.exists";
             log.warn(helper.getLogMessage(message) + loginDTO.getLogin());
             throw new IllegalArgumentException(helper.getMessage(message) + loginDTO.getLogin());
         }
-
     }
 }

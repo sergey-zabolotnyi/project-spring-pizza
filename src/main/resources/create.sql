@@ -21,7 +21,7 @@ CREATE TABLE `login` (
                          `id` bigint NOT NULL AUTO_INCREMENT,
                          `email` varchar(255) NOT NULL,
                          `login` varchar(255) NOT NULL,
-                         `password` varchar(45) NOT NULL,
+                         `password` varchar(255) NOT NULL,
                          `role` varchar(45) NOT NULL,
                          `time` timestamp NOT NULL,
                          PRIMARY KEY (`id`),

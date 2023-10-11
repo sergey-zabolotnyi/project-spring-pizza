@@ -17,25 +17,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    // permit list without Manager Role
-    private static final String[] PERMIT_ALL_LIST = {
-            "/",
-            "/signup",
-            "/api/get/**",
-            "/css/*",
-            "/js/*",
-            "/swagger-ui/**",
-    };
+
     /**
      * Provides a BCryptPasswordEncoder for password encoding.
+     *
      * @return Configured BCryptPasswordEncoder.
      */
     @Bean
-    public BCryptPasswordEncoder encoder(){
+    public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+
     /**
      * Configures security filters and rules for the application.
+     *
      * @param http The HttpSecurity object to configure security.
      * @return The configured SecurityFilterChain.
      * @throws Exception If configuration encounters an error.
@@ -56,4 +51,22 @@ public class SecurityConfig {
                 .permitAll();
         return http.build();
     }
+
+    // permit list without Manager Role
+    private static final String[] PERMIT_ALL_LIST = {
+            "/",
+            "/signup",
+            "/api/get/**",
+            "/css/*",
+            "/js/*",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/v3/api-docs/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
 }

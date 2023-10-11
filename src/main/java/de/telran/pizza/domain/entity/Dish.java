@@ -11,6 +11,9 @@ import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Represents a dish entity in the application.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,7 +37,7 @@ public class Dish {
     @Column(name = "name_ru")
     private String nameRu;
 
-    @Min(value = 1/100L, message = "error.dish.price")
+    @Min(value = 1 / 100L, message = "error.dish.price")
     @Column(nullable = false)
     private BigDecimal price;
 

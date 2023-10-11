@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
 /**
  * Controller class for handling user signup requests.
  */
@@ -29,6 +30,7 @@ public class SignupController {
 
     /**
      * Handles a POST request to create a new user.
+     *
      * @param loginDTO The LoginDTO containing user registration information.
      * @param response The HttpServletResponse object for redirecting after successful signup.
      */

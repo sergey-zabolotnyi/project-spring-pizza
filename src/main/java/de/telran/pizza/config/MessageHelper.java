@@ -18,28 +18,34 @@ public class MessageHelper {
     private MessageSource messageSource;
     @Autowired
     private MessageSource logSource;
+
     /**
      * Gets the message corresponding to the provided key based on the current locale.
+     *
      * @param message The message key.
      * @return The corresponding message.
      */
     public String getMessage(String message) {
         return messageSource.getMessage(message, null, LocaleContextHolder.getLocale());
     }
+
     /**
      * Gets the log message corresponding to the provided key in English.
+     *
      * @param message The log message key.
      * @return The corresponding log message.
      */
     public String getLogMessage(String message) {
         return logSource.getMessage(message, null, Locale.ENGLISH);
     }
+
     /**
      * Provides a LocalValidatorFactoryBean for object validation.
+     *
      * @return Configured LocalValidatorFactoryBean.
      */
     @Bean
-    public LocalValidatorFactoryBean getValidator () {
+    public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource);
         return bean;

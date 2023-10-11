@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Represents an order entity in the application.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +35,6 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
 }

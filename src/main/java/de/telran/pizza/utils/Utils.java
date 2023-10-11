@@ -11,18 +11,20 @@ import java.util.Locale;
 /**
  * Helper class for accessing information related to the application context.
  */
-public class ContextHelper {
+public class Utils {
 
     /**
      * Checks if the current locale is set to English.
+     *
      * @return True if the current locale is English, otherwise false.
      */
-    public static boolean isLocaleEnglish(){
+    public static boolean isLocaleEnglish() {
         return LocaleContextHolder.getLocale().equals(Locale.ENGLISH);
     }
 
     /**
      * Gets the authorized login associated with the current authenticated user.
+     *
      * @return The authorized login.
      */
     public static Login getAuthorizedLogin() {

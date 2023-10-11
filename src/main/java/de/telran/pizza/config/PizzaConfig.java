@@ -11,6 +11,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 public class PizzaConfig {
     /**
      * Creates a ResourceBundleMessageSource for handling messages.
+     *
      * @return Created ResourceBundleMessageSource.
      */
     @Bean
@@ -21,8 +22,10 @@ public class PizzaConfig {
         source.setUseCodeAsDefaultMessage(true);
         return source;
     }
+
     /**
      * Creates a ResourceBundleMessageSource for handling logs.
+     *
      * @return Created ResourceBundleMessageSource.
      */
     @Bean

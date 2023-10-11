@@ -1,4 +1,9 @@
 -- ТЕСТОВЫЕ ДАННЫЕ ДЛЯ ПРОЕКТА ПИЦЦА...
+INSERT INTO login (login, password, email, role, time)
+VALUES
+    ('manager', '123456', 'cvz@ukr.net', 'ROLE_MANAGER', CURRENT_TIMESTAMP),
+    ('user', '123456', 'user@mail.ru', 'ROLE_CUSTOMER', CURRENT_TIMESTAMP);
+
 INSERT INTO category (category_en, category_ru)
 VALUES
     ('Pizzas', 'Пиццы'),

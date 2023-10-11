@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Represents a category entity in the application.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

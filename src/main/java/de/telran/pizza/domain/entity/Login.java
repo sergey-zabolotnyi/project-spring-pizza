@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Represents a user login entity in the application.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,4 +41,5 @@ public class Login {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
+
 }

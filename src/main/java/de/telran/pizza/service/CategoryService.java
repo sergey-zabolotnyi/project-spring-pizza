@@ -34,7 +34,7 @@ public class CategoryService {
      * @param categoryList A list of Category entities.
      * @return A list of CategoryDTO objects.
      */
-    private List<CategoryDTO> categoryListToDtoList(List<Category> categoryList) {
+    public static List<CategoryDTO> categoryListToDtoList(List<Category> categoryList) {
         return categoryList.stream()
                 .map(category -> categoryToDto(category))
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class CategoryService {
      * @param category A Category entity.
      * @return A CategoryDTO object.
      */
-    private CategoryDTO categoryToDto(Category category) {
+    public static CategoryDTO categoryToDto(Category category) {
         return CategoryDTO.builder()
                 .id(category.getId())
                 .category(Utils.isLocaleEnglish() ? category.getCategoryEn() : category.getCategoryRu())

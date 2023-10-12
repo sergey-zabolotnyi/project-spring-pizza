@@ -2,6 +2,7 @@ package de.telran.pizza.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import de.telran.pizza.domain.entity.enums.Status;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,22 +20,28 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
+@Schema(description = "Объект заказов пиццерии")
 public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор заказа", example = "7")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "login_id", referencedColumnName = "id")
+    @Schema(description = "ID пользователя", example = "7")
     private Login login;
 
+    @Schema(description = "Общая стоимость заказа", example = "45.99")
     private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "Статус заказа", example = "NEW, DELIVERED, DONE")
     private Status status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Schema(description = "Время добавления записи", example = "2023-10-05 15:05:34")
     private LocalDateTime time;
 }

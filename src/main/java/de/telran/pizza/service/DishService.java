@@ -56,10 +56,9 @@ public class DishService {
      */
     @Transactional
     public PageDishesDTO findAllDishesPage(Integer pageNum, String sortField,
-                                           String sortDirection, Long categoryId) {
+                                           String sortDirection, Long categoryId){
         categoryId = categoryId == null || categoryId < 0 ? categoryIdDefault : categoryId;
-        Sort sort = sortDefaultAndValidate(sortField, sortDirection);
-
+        Sort sort = validationSetDefault(sortField, sortDirection);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
 
         Page<Dish> page = (categoryId == 0)
@@ -86,9 +85,10 @@ public class DishService {
      * @param sortDirection The direction of sorting (ASC or DESC).
      * @return A Sort object with validated and default values for sorting.
      */
-    private Sort sortDefaultAndValidate(String sortField, String sortDirection) {
+    private Sort validationSetDefault(String sortField, String sortDirection) {
         sortField = sortField == null || sortField.equals("null")
-                ? sortDefault : (sortField.equals("name")) ? helper.getLogMessage("db.name") : sortField;
+                ? sortDefault
+                : (sortField.equals("name")) ? helper.getMessage("db.name") : sortField;
         sortDirection = sortDirection != null &&
                 (sortDirection.equalsIgnoreCase("asc") ||
                         sortDirection.equalsIgnoreCase("desc"))

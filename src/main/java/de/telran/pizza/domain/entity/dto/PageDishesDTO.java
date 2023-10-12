@@ -14,38 +14,25 @@ import java.util.List;
 @Builder
 @Schema(description = "ДТО объект блюд и категорий для главной страницы приложения")
 public class PageDishesDTO {
-    /**
-     * List of DishDTO representing dishes.
-     */
+
+    @Schema(description = "Список блюд в корзине")
     private List<DishDTO> dishes;
 
-    /**
-     * List of CategoryDTO representing categories.
-     */
+    @Schema(description = "Список категорий")
     private List<CategoryDTO> categories;
 
-    /**
-     * The current page number.
-     */
+    @Schema(description = "Текущая страница", example = "3")
     private int currentPage;
 
-    /**
-     * The total number of pages.
-     */
+    @Schema(description = "Всего страниц", example = "10")
     private int totalPages;
 
-    /**
-     * The field used for sorting.
-     */
+    @Schema(description = "Поле для сортировки", example = "Блюдо, Категория")
     private String sortField;
 
-    /**
-     * The direction of sorting (ascending or descending).
-     */
+    @Schema(description = "Направление сортировки", example = "asc, desc")
     private String sortDirection;
 
-    /**
-     * The ID of the selected category for filtering.
-     */
+    @Schema(description = "ID категории", example = "2")
     private Long categoryId;
 }

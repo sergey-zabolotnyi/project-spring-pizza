@@ -36,7 +36,7 @@ public class CookieFilter implements Filter {
             customCookie.setValue("OLD_USER");
         }
 
-        System.out.println("User status = " + customCookie.getValue());
+        //System.out.println("User status = " + customCookie.getValue());
         response.addCookie(customCookie);
 
         filterChain.doFilter(request, response);

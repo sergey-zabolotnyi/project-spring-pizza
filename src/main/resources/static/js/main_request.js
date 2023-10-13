@@ -19,7 +19,11 @@ if (urlParams.has('page')) {
 
 angular.module("get_form", [])
     .controller("GetController", ["$scope", "$http", function ($scope, $http) {
+
+        // Объект pageable для хранения данных страницы
         $scope.pageable = {};
+
+        // Функция для получения данных
         $scope.getItems = function () {
             $http({
                 method: "GET",
@@ -33,6 +37,8 @@ angular.module("get_form", [])
             }).then(
                 function (data) {
                     console.log(data.data);
+
+                    // Присваивание данных к $scope для использования в представлении
                     $scope.dishes = data.data.dishes;
                     $scope.categories = data.data.categories;
                     $scope.pageable.page = data.data.currentPage;
@@ -40,7 +46,6 @@ angular.module("get_form", [])
                     $scope.pageable.sortField = data.data.sortField;
                     $scope.pageable.sortDirection = data.data.sortDirection;
                     $scope.pageable.categoryId = data.data.categoryId;
-
                 },
                 function (error) {
                     console.log(error);
@@ -49,7 +54,11 @@ angular.module("get_form", [])
                 }
             );
         }
+
+        // Идентификатор элемента
         $scope.itemId = null;
+
+        // Функция для отправки данных
         $scope.postdata = function(event) {
             let itemId = event.currentTarget.getAttribute('dishId');
             let object = { "itemId": itemId }
@@ -64,13 +73,12 @@ angular.module("get_form", [])
                 data: JSON.stringify(object)
             }).then(function (response) {
                 if (response.data) {
-                    // alert("Dish " + itemId + " successfully added.")
+                    // alert("Блюдо " + itemId + " успешно добавлено.")
                 }
             }, function (response) {
                 alertErrors(response);
             });
         };
-
     }]);
 
 let sorting = (field) => {

@@ -90,7 +90,6 @@ body * {
 	border: none;
 	outline: none;
 }
-
 .button-3:hover,
 .button-3:active,
 .button-3:focus{
@@ -125,6 +124,18 @@ body * {
 .background {
 	height: 270px;
 	background-color: #FF9000;
+}
+.custom-background {
+	background-image: url('/pics/pizza.jpg'); /* Путь к фоновому рисунку */
+	background-repeat: repeat;
+	background-size: cover;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1; /* Изменено значение z-index */
+	/*background-color: #d9cec1;*/
 }
 .body-block {
 	position: absolute;
@@ -175,7 +186,11 @@ body * {
 #logo {
 	height: 64px;
 }
+
 .block-3 {
+	padding: 30px;
+}
+.block-4 {
 	display: flex;
 	flex-direction: row;
 	height: inherit;
@@ -199,10 +214,6 @@ body * {
 .active {
 	background-color: #f4f4f4 !important;
 	border-radius: 5px 5px 0 0;
-}
-
-.block-4 {
-	padding: 30px;
 }
 .page_head {
 	display: flex;
@@ -334,6 +345,16 @@ select {
 	border: none;
 	border-radius: 5px;
 	background: rgba(208, 195, 157, 0.3);
+}
+.form-styling:hover,
+.form-styling:active,
+.form-styling:focus {
+	cursor: pointer;
+	background: rgba(84, 100, 164, .3);
+	color: red;
+	border-radius: 2px;
+	border: none;
+	outline: none;
 }
 .stat-styling {
 	width: 190px;

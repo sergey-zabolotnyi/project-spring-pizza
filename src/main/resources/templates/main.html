@@ -26,6 +26,7 @@
 
 <body>
 <div class="background"></div>
+<div class="custom-background"></div>
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
@@ -49,7 +50,7 @@
                sec:authorize="isAuthenticated()"></a>
 
             <label for="locales"></label>
-            <select class="button-2" id="locales">
+            <select class="button-1" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
                 <option value="ru" th:text="#{lang.ru}"></option>
@@ -71,7 +72,7 @@
         <a href="/"><h2 th:text="#{main.header}"></h2></a>
     </header>
 
-    <section class="block-4"
+    <section class="block-3"
              ng-app="get_form" ng-controller="GetController" data-ng-init="getItems()">
         <div class="page_head">
             <div>

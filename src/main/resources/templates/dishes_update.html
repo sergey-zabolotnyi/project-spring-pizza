@@ -15,12 +15,13 @@
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/cart_request.js}"></script>
+    <script th:src="@{/js/dishes_request.js}"></script>
 
 </head>
 
@@ -32,16 +33,12 @@
             <a class="button-1" href="/" th:text="#{main.main}"></a>
             <a class="button-1" href="/cart" th:text="#{main.cart}"></a>
             <a class="button-1" href="/orders" th:text="#{main.orders}"></a>
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
+            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a>
+            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
-
-            <label for="locales"></label>
             <select class="button-1" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
@@ -61,56 +58,37 @@
     </section>
 
     <header class="block-2">
-        <a href="/"><h2 th:text="#{main.cart}"></h2></a>
+        <a href="/"><h2 th:text="#{dish.update}"></h2></a>
     </header>
 
-    <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getItems()">
-
-        <div id="errorMsg"></div>
+    <section class="block-3" ng-app="get_form" ng-controller="GetController" data-ng-init="getDish()">
 
         <div id="dishes_block">
             <div>
-                <table id="table" ng-model="dishes">
-                    <tr>
-                        <th columns="0" onclick="tableSort(this, 'table')">№</th>
-                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.dish}"></th>
-                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.price}"></th>
-                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.category}"></th>
-                        <th columns="4" th:text="#{cart.action}"></th>
-                    </tr>
-                    <tbody id="dishes_table">
-                    <tr ng-repeat="i in dishes" class="rows" checked=false>
-                        <td>{{i.id}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.price}}</td>
-                        <td>{{i.category.category}}</td>
-                        <td>
-                            <a id="{{i.id}}" class="button-3" ng-click="delete($event)" th:text="#{button.delete}"></a>
-                        </td>
-                    </tr>
+                <div class="frame">
+                    <form class="form-signin" ng-model="dish">
+                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                        <input id="updateId" class="hidden" value="{{dish.id}}"required/>
+                        <input id="updateCategories" class="hidden" value="{{dish.category}}"required/>
 
-                    </tbody>
-                </table>
-            </div>
+                        <label for="name_en" th:text="#{dish.name_en}"></label>
+                        <input name="name_en" id="name_en" class="form-styling"
+                               value="{{dish.nameEn}}" type="text" required autofocus/>
 
-            <div class="page_head" ng-model="totalPrice">
-                <p style="align-items: end;">
-                    <span th:text="#{orders.totalPrice} + ' = '"></span>
-                    <span style="font-weight: 700">{{totalPrice}}</span>
-                </p>
+                        <label for="name_ru" th:text="#{dish.name_ru}"></label>
+                        <input name="name_ru" id="name_ru" class="form-styling"
+                               value="{{dish.nameRu}}" type="text" required/>
 
-            </div>
+                        <label for="price" th:text="#{menu.price}"></label>
+                        <input name="price" id="price" class="form-styling" type="number" required
+                               value="{{dish.price}}" min="0.01" max="1000.00" step="0.01"/>
 
-            <div class="page_head">
-                <div style="margin: 20px 0;">
-                    <a class="button" ng-click="postdata()" th:text="#{cart.create}"></a>
-                </div>
-                <div>
-                    <a class="button" ng-click="deleteAll()" th:text="#{cart.deleteAll}"></a>
+                        <input class="btn-signup" type="button" ng-click="update()" th:value="#{button.update}"/>
+                    </form>
                 </div>
             </div>
         </div>
+
     </section>
 
 </div>

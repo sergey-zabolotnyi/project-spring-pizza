@@ -28,19 +28,10 @@ body {
 	font-weight: 400;
 	font-size: 16px;
 	color: #494d5f;
+	background-color: #f8f6f2;
 }
 body * {
 	box-sizing: border-box;
-}
-.button-1:hover,
-.button-1:active,
-.button-1:focus{
-	cursor: pointer;
-	background: rgba(84, 100, 164 ,.3);
-	color: red;
-	border-radius: 3px;
-	border: none;
-	outline: none;
 }
 
 .button-1 {
@@ -57,16 +48,17 @@ body * {
 	border: none;
 	outline: none;
 }
-.button-2:hover,
-.button-2:active,
-.button-2:focus {
+.button-1:hover,
+.button-1:active,
+.button-1:focus{
 	cursor: pointer;
-	background: rgba(84, 100, 164, .3);
+	background: rgba(84, 100, 164 ,.3);
 	color: red;
-	border-radius: 2px;
+	border-radius: 3px;
 	border: none;
 	outline: none;
 }
+
 .button-2 {
 	background: none;
 	align-items: center;
@@ -76,6 +68,17 @@ body * {
 	border: none;
 	outline: none;
 }
+.button-2:hover,
+.button-2:active,
+.button-2:focus {
+	cursor: pointer;
+	background: rgba(84, 100, 164, .3);
+	color: #51b614;
+	border-radius: 2px;
+	border: none;
+	outline: none;
+}
+
 .button-3 {
 	box-sizing: border-box;
 	font-weight: 700;
@@ -90,14 +93,15 @@ body * {
 	border: none;
 	outline: none;
 }
-
 .button-3:hover,
 .button-3:active,
 .button-3:focus{
-	background: rgba(84, 100, 164 ,.3);
+	background: rgba(1, 4, 16, 0.3);
 	border-radius: 3px;
 	border: none;
 	outline: none;
+	cursor: pointer;
+	color: #f8f6f2;
 }
 
 .button-empty {
@@ -126,6 +130,7 @@ body * {
 	height: 270px;
 	background-color: #FF9000;
 }
+
 .body-block {
 	position: absolute;
 	margin: 10px;
@@ -175,7 +180,11 @@ body * {
 #logo {
 	height: 64px;
 }
+
 .block-3 {
+	padding: 30px;
+}
+.block-4 {
 	display: flex;
 	flex-direction: row;
 	height: inherit;
@@ -199,10 +208,6 @@ body * {
 .active {
 	background-color: #f4f4f4 !important;
 	border-radius: 5px 5px 0 0;
-}
-
-.block-4 {
-	padding: 30px;
 }
 .page_head {
 	display: flex;
@@ -334,6 +339,16 @@ select {
 	border: none;
 	border-radius: 5px;
 	background: rgba(208, 195, 157, 0.3);
+}
+.form-styling:hover,
+.form-styling:active,
+.form-styling:focus {
+	cursor: pointer;
+	background: rgba(84, 100, 164, .3);
+	color: red;
+	border-radius: 2px;
+	border: none;
+	outline: none;
 }
 .stat-styling {
 	width: 190px;

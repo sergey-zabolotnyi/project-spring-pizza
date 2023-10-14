@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * output error response
+ * Функция для вывода ошибок в алерте.
+ * @param {Object} response - Ответ от сервера.
  */
 let alertErrors = (response) => {
     console.log(response);
@@ -17,7 +18,7 @@ let alertErrors = (response) => {
 }
 
 /**
- * shows 'eye' animation in passwords fields
+ * Функция для переключения видимости пароля.
  */
 $(".toggle-password").click(function() {
     $(this).toggleClass("fa-eye fa-eye-slash");
@@ -30,7 +31,9 @@ $(".toggle-password").click(function() {
 });
 
 /**
- * JS sort table fields
+ * Функция для сортировки таблицы.
+ * @param {Element} item - Элемент, по которому производится сортировка.
+ * @param {string} table - ID таблицы.
  */
 let tableSort = (item, table) => {
     let tbl, rows, switching, shouldSwitch,
@@ -63,6 +66,13 @@ let tableSort = (item, table) => {
         }
     }
 }
+
+/**
+ * Функция для сравнения строк при сортировке таблицы.
+ * @param {string} row1 - Значение первой строки.
+ * @param {string} row2 - Значение второй строки.
+ * @returns {boolean} - Результат сравнения.
+ */
 let tableSortComparator = (row1, row2) => {
     let num1 = Number.parseFloat(row1);
     let num2 = Number.parseFloat(row2);
@@ -72,6 +82,12 @@ let tableSortComparator = (row1, row2) => {
     }
     return row1 > row2;
 }
+
+/**
+ * Функция для проверки, является ли число десятичным или целым.
+ * @param {number} n - Проверяемое число.
+ * @returns {boolean} - Результат проверки.
+ */
 function isFloatOrInteger(n) {
     return n === +n;
 }

@@ -59,6 +59,54 @@ public class WebController {
         return "orders";
     }
 
-    // TODO: Add mappings for other web pages as needed.
+    /**
+     * Handles requests to display the payment page.
+     *
+     * @return The logical view name "payment".
+     */
+    @RequestMapping("/payment")
+    public String paymentPage() {
+        return "payment";
+    }
+
+    /**
+     * Request handler method for displaying the manager's dishes management page.
+     *
+     * @return The view name "dishes_manager".
+     */
+    @RequestMapping("manager/manage_dishes")
+    public String managerDishesPage() {
+        return "dishes_manager";
+    }
+
+    /**
+     * Request handler method for displaying the dishes creation page in the manager's section.
+     *
+     * @return The view name "dishes_create".
+     */
+    @RequestMapping("manager/dishes/create")
+    public String createDishes() {
+        return "dishes_create";
+    }
+
+    /**
+     * Request handler method for displaying the manager's orders management page.
+     *
+     * @return The view name "orders_manager".
+     */
+    @RequestMapping("/manager/manage_orders")
+    public String managerOrdersPage() {
+        return "orders_manager";
+    }
+
+    /**
+     * Request handler method for displaying the dishes update page in the manager's section.
+     *
+     * @return The view name "dishes_update".
+     */
+    @RequestMapping("manager/dishes/update")
+    public String updateDishes() {
+        return "dishes_update";
+    }
 
 }

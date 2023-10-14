@@ -20,7 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/cart_request.js}"></script>
+    <script th:src="@{/js/dishes_request.js}"></script>
 
 </head>
 
@@ -32,10 +32,8 @@
             <a class="button-1" href="/" th:text="#{main.main}"></a>
             <a class="button-1" href="/cart" th:text="#{main.cart}"></a>
             <a class="button-1" href="/orders" th:text="#{main.orders}"></a>
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
+            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a>
+            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
@@ -61,15 +59,24 @@
     </section>
 
     <header class="block-2">
-        <a href="/"><h2 th:text="#{main.cart}"></h2></a>
+        <a href="/"><h2 th:text="#{main.manage.dishes}"></h2></a>
     </header>
 
     <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getItems()">
+             ng-app="get_form" ng-controller="GetController" data-ng-init="getAllItems()">
 
         <div id="errorMsg"></div>
 
-        <div id="dishes_block">
+        <div id="no_error_block">
+            <div class="page_head">
+                <div>
+                    <h2 th:text="#{main.menu}"></h2>
+                </div>
+                <div>
+                    <a class="button" href="/manager/dishes/create" th:text="#{button.create}"></a>
+                </div>
+            </div>
+
             <div>
                 <table id="table" ng-model="dishes">
                     <tr>
@@ -86,31 +93,15 @@
                         <td>{{i.price}}</td>
                         <td>{{i.category.category}}</td>
                         <td>
-                            <a id="{{i.id}}" class="button-3" ng-click="delete($event)" th:text="#{button.delete}"></a>
+                            <a class="button-2" href="/manager/dishes/update?id={{i.id}}" th:text="#{button.update}"></a>
+                            <a dishId="{{i.id}}" class="button-2" ng-click="delete($event)" th:text="#{button.delete}"></a>
                         </td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
-
-            <div class="page_head" ng-model="totalPrice">
-                <p style="align-items: end;">
-                    <span th:text="#{orders.totalPrice} + ' = '"></span>
-                    <span style="font-weight: 700">{{totalPrice}}</span>
-                </p>
-
-            </div>
-
-            <div class="page_head">
-                <div style="margin: 20px 0;">
-                    <a class="button" ng-click="postdata()" th:text="#{cart.create}"></a>
-                </div>
-                <div>
-                    <a class="button" ng-click="deleteAll()" th:text="#{cart.deleteAll}"></a>
-                </div>
-            </div>
         </div>
+
     </section>
 
 </div>

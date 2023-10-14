@@ -65,7 +65,7 @@ angular.module("get_form", [])
                 data: JSON.stringify(object)
             }).then(function (response) {
                 // if (response.data) {
-                    location.reload();
+                location.reload();
                 // }
             }, function (response) {
                 alertErrors(response);

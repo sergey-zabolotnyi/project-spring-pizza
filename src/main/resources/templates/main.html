@@ -26,7 +26,6 @@
 
 <body>
 <div class="background"></div>
-<div class="custom-background"></div>
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
@@ -50,7 +49,7 @@
                sec:authorize="isAuthenticated()"></a>
 
             <label for="locales"></label>
-            <select class="button-1" id="locales">
+            <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
                 <option value="ru" th:text="#{lang.ru}"></option>

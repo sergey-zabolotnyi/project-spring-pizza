@@ -1,4 +1,6 @@
-// Проверка совпадения паролей и предотвращение отправки формы при их несовпадении
+/**
+ * check passwords match and prevents from submit if they are different
+ */
 let match = false;
 function checkPass() {
     let password = $("#password").val();
@@ -20,38 +22,35 @@ function checkPasswordMatch() {
     }
 }
 
-// Получение CSRF токена
 let token = document.querySelector('meta[name="_csrf"]').content;
 
-function signup() {
-    if (!checkPasswordMatch()) {
-        return;
-    }
-    let object = {
-        'login': document.getElementById('login').value,
-        'email': document.getElementById('email').value,
-        'password': document.getElementById('password').value
-    }
-    console.log(object);
-    fetch('/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': token
-        },
-        body: JSON.stringify(object)
-    })
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
+angular.module("get_form", [])
+    .controller("GetController", ["$scope", "$http", function ($scope, $http) {
+
+        $scope.signup = function () {
+            if (!checkPasswordMatch()) {return;}
+            let object = {
+                'login': document.querySelector('#login').value,
+                'email': document.querySelector('#email').value,
+                'password': document.querySelector('#password').value
             }
-            throw new Error('Network response was not ok');
-        })
-        .then(function (data) {
-            alert('Успешно')
-            location.replace('/login');
-        })
-        .catch(function (error) {
-            alertErrors(error);
-        });
-}
+            console.log(object);
+            $http({
+                method: "POST",
+                url: "/signup",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                },
+                data: JSON.stringify(object)
+            }).then(function (response) {
+                if (response.data) {
+                    alert('Success')
+                    location.replace('/login');
+                }
+            }, function (response) {
+                alertErrors(response);
+            });
+        };
+
+    }]);

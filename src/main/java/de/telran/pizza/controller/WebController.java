@@ -60,13 +60,13 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the manager's orders management page.
+     * Handles requests to display the payment page.
      *
-     * @return The view name "orders_manager".
+     * @return The logical view name "payment".
      */
-    @RequestMapping("/manager/manage_orders")
-    public String managerOrdersPage() {
-        return "orders_manager";
+    @RequestMapping("/payment")
+    public String paymentPage() {
+        return "payment";
     }
 
     /**
@@ -87,6 +87,16 @@ public class WebController {
     @RequestMapping("manager/dishes/create")
     public String createDishes() {
         return "dishes_create";
+    }
+
+    /**
+     * Request handler method for displaying the manager's orders management page.
+     *
+     * @return The view name "orders_manager".
+     */
+    @RequestMapping("/manager/manage_orders")
+    public String managerOrdersPage() {
+        return "orders_manager";
     }
 
     /**

@@ -7,7 +7,8 @@ import de.telran.pizza.domain.entity.dto.DishDTO;
 import de.telran.pizza.domain.entity.dto.PageDishesDTO;
 import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
-import de.telran.pizza.utils.Utils;
+import de.telran.pizza.service.mapper.CategoryMapper;
+import de.telran.pizza.service.mapper.DishMapper;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 /**
  * Service class for managing dishes.
@@ -68,8 +68,8 @@ public class DishService {
         List<Category> categories = categoryRepository.findAll();
 
         return PageDishesDTO.builder()
-                .dishes(dishListToDtoList(page.getContent()))
-                .categories(CategoryService.categoryListToDtoList(categories))
+                .dishes(DishMapper.dishListToDtoList(page.getContent()))
+                .categories(CategoryMapper.categoryListToDtoList(categories))
                 .currentPage(pageNum)
                 .totalPages(page.getTotalPages())
                 .sortField(sortField)
@@ -99,40 +99,13 @@ public class DishService {
     }
 
     /**
-     * Converts a list of Dish entities to a list of DishDTO data transfer objects.
-     *
-     * @param dishList The list of Dish entities to be converted.
-     * @return A list of DishDTO data transfer objects.
-     */
-    private static List<DishDTO> dishListToDtoList(List<Dish> dishList) {
-        return dishList.stream()
-                .map(dish -> dishToDishDto(dish))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Converts a Dish entity to a DishDTO data transfer object.
-     *
-     * @param dish The Dish entity to be converted.
-     * @return A DishDTO data transfer object representing the provided Dish entity.
-     */
-    public static DishDTO dishToDishDto(Dish dish) {
-        return DishDTO.builder()
-                .id(dish.getId())
-                .name(Utils.isLocaleEnglish() ? dish.getNameEn() : dish.getNameRu())
-                .price(dish.getPrice())
-                .category(CategoryService.categoryToDto(dish.getCategory()))
-                .build();
-    }
-
-    /**
      * Gets a list of all dishes, sorted by ID in ascending order.
      *
      * @return A list of DishDTOs representing the dishes.
      */
     public List<DishDTO> findAllDishes() {
         Sort sort = Sort.by("id").ascending();
-        return dishListToDtoList(dishRepository.findAll(sort));
+        return DishMapper.dishListToDtoList(dishRepository.findAll(sort));
     }
 
     /**

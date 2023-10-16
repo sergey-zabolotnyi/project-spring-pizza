@@ -24,27 +24,45 @@ input::-webkit-inner-spin-button {
 	margin: 0;
 }
 body {
+	background-image: url('../pics/pizza-background.jpeg');
+	background-repeat: repeat;
 	font-family: "Montserrat", sans-serif;
 	font-weight: 400;
 	font-size: 16px;
 	color: #494d5f;
-	background-color: #f8f6f2;
 }
 body * {
 	box-sizing: border-box;
 }
+.button {
+	background: rgba(84, 100, 164 ,.3);
+	text-align: center;
+	padding: 8px;
+	margin: 10px 5px;
+	border-radius: 4px;
+	border: none;
+	outline: none;
+}
+.button:hover,
+.button:active,
+.button:focus {
+	background: #5464a4;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
 
 .button-1 {
 	box-sizing: border-box;
-	font-size: 1.2em;
-	font-weight: 500;
+	font-size: 1.11em;
+	font-weight: 600;
 	display: inline-block;
 	text-align: center;
 	background: none;
 	align-items: center;
 	color: #494d5f;
-	padding: 4px;
-	margin: 0 5px;
+	padding: 8px;
+	margin: 0 10px;
 	border: none;
 	outline: none;
 }
@@ -82,13 +100,14 @@ body * {
 .button-3 {
 	box-sizing: border-box;
 	font-weight: 700;
+	font-size: 1.1em;
 	color: #5464a4;
 	display: inline-block;
 	text-align: center;
-	width: 100px;
-	background: none;
+	/*width: 100px;*/
+		background: none;
 	align-items: center;
-	padding: 4px;
+	padding: 8px;
 	margin: 0 5px;
 	border: none;
 	outline: none;
@@ -109,25 +128,9 @@ body * {
 	background: transparent;
 	color: transparent;
 }
-.button {
-	background: rgba(84, 100, 164 ,.3);
-	padding: 8px;
-	margin: 10px 5px;
-	border-radius: 4px;
-	border: none;
-	outline: none;
-}
-.button:hover,
-.button:active,
-.button:focus {
-	background: #5464a4;
-	color: white;
-	border: none;
-	cursor: pointer;
-}
 /* ------------------------ MAIN ----------------------- */
 .background {
-	height: 270px;
+	height: 255px;
 	background-color: #FF9000;
 }
 
@@ -182,12 +185,42 @@ body * {
 }
 
 .block-3 {
-	padding: 30px;
+	padding: 10px 30px;
 }
 .block-4 {
 	display: flex;
 	flex-direction: row;
 	height: inherit;
+}
+.block-5 {
+	width: 900px;
+	margin: 0 auto;
+	padding: 30px;
+	text-align: center;
+}
+
+.block-5 table {
+	margin: 0 auto;
+}
+.pics {
+	padding: 5px 0;
+	box-sizing: border-box; /* Учитываем внешние поля в расчетах размеров */
+	text-align: center; /* Центрируем изображение в блоке */
+}
+
+.pics img {
+	width: 100%; /* Растягиваем изображение на всю ширину блока .pics */
+	max-width: 100%; /* Ограничиваем ширину изображения максимально возможным размером */
+}
+.pics1 {
+	padding: 10px 70px;
+	box-sizing: border-box; /* Учитываем внешние поля в расчетах размеров */
+	text-align: center; /* Центрируем изображение в блоке */
+}
+
+.pics1 img {
+	width: 100%; /* Растягиваем изображение на всю ширину блока .pics */
+	max-width: 100%; /* Ограничиваем ширину изображения максимально возможным размером */
 }
 .header-button {
 	display: flex;
@@ -215,7 +248,7 @@ body * {
 	justify-content: space-between;
 	align-items: center;
 
-	margin: 20px auto;
+	margin: 10px auto;
 	border-bottom: 1px solid #5464a4;
 }
 
@@ -246,7 +279,6 @@ table {
 	text-align: center;
 	width: 100%;
 }
-
 thead {
 	border: 1px solid black;
 	background-color: black;
@@ -267,6 +299,10 @@ th:hover{
 }
 td {
 	cursor: default;
+}
+td.green-text {
+	font-weight: 600;
+	color: green;
 }
 .selected_row {
 	background: rgba(84, 100, 164, .3);

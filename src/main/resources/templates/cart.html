@@ -30,19 +30,18 @@
     <section class="block-1">
         <div style="display:flex; align-items: center">
             <a class="button-1" href="/" th:text="#{main.main}"></a>
-            <a class="button-1" href="/cart" th:text="#{main.cart}"></a>
-            <a class="button-1" href="/orders" th:text="#{main.orders}"></a>
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"
-               sec:authorize="hasRole('ROLE_MANAGER')"></a>
+            <span sec:authorize="isAuthenticated()"> | <a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="isAuthenticated()"> |<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
 
             <label for="locales"></label>
-            <select class="button-1" id="locales">
+            <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
                 <option value="ru" th:text="#{lang.ru}"></option>
@@ -60,8 +59,12 @@
         </div>
     </section>
 
+    <section class="pics">
+        <img src="/pics/pizza.png" alt="Pizza Image">
+    </section>
+
     <header class="block-2">
-        <a href="/"><h2 th:text="#{main.cart}"></h2></a>
+        <h2 th:text="#{main.cart}"></h2>
     </header>
 
     <section class="block-3"
@@ -86,7 +89,7 @@
                         <td>{{i.price}}</td>
                         <td>{{i.category.category}}</td>
                         <td>
-                            <a id="{{i.id}}" class="button-3" ng-click="delete($event)" th:text="#{button.delete}"></a>
+                            <a id="{{i.id}}" class="button-2" ng-click="delete($event)" th:text="#{button.delete}"></a>
                         </td>
                     </tr>
 

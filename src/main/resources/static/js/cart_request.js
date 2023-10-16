@@ -1,10 +1,12 @@
 'use strict';
-
+// Получаем токен CSRF из мета-тега
 let token = document.querySelector('meta[name="_csrf"]').content;
 
+// Создаем модуль AngularJS с именем "get_form"
 angular.module("get_form", [])
     .controller("GetController", ["$scope", "$http", function ($scope, $http) {
 
+        // Функция для получения товаров из корзины
         $scope.getItems = function () {
             $http({
                 method: "GET",
@@ -16,10 +18,12 @@ angular.module("get_form", [])
             }).then(
                 function (data) {
                     console.log(data.data);
+                    // Обновляем информацию о блюдах и общей стоимости в $scope
                     $scope.dishes = data.data.dishes;
                     $scope.totalPrice = data.data.totalPrice;
+                    // Если корзина пуста, выводим сообщение и скрываем блок
                     if ($scope.dishes[0] == null) {
-                        document.querySelector("#errorMsg").innerHTML = 'Basket is empty!';
+                        document.querySelector("#errorMsg").innerHTML = 'Cart is empty!';
                         document.querySelector("#dishes_block").className = 'hidden';
                     }
                 },
@@ -30,6 +34,7 @@ angular.module("get_form", [])
             );
         }
 
+        // Функция для создания заказа
         $scope.postdata = function () {
             $http({
                 method: "POST",
@@ -47,6 +52,7 @@ angular.module("get_form", [])
             });
         };
 
+        // Функция для удаления товара из корзины
         $scope.delete = function (event) {
             let id = event.currentTarget.getAttribute('id');
             console.log(id);
@@ -68,6 +74,7 @@ angular.module("get_form", [])
             });
         };
 
+        // Функция для удаления всех товаров из корзины
         $scope.deleteAll = function () {
             $http({
                 method: "DELETE",

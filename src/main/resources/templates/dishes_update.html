@@ -30,16 +30,17 @@
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
-            <a class="button-1" href="/" th:text="#{main.main}"></a>
-            <a class="button-1" href="/cart" th:text="#{main.cart}"></a>
-            <a class="button-1" href="/orders" th:text="#{main.orders}"></a>
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a>
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a>
+            <a class="button-1" href="/" th:text="#{main.main}"></a> |
+            <a class="button-1" href="/cart" th:text="#{main.cart}"></a> |
+            <a class="button-1" href="/orders" th:text="#{main.orders}"></a> |
+            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a> |
+            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a> |
+            <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}"></a>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
-            <select class="button-1" id="locales">
+            <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
                 <option value="ru" th:text="#{lang.ru}"></option>
@@ -57,8 +58,12 @@
         </div>
     </section>
 
+    <section class="pics">
+        <img src="/pics/pizza.png" alt="Pizza Image">
+    </section>
+
     <header class="block-2">
-        <a href="/"><h2 th:text="#{dish.update}"></h2></a>
+        <h2 th:text="#{dish.update}"></h2>
     </header>
 
     <section class="block-3" ng-app="get_form" ng-controller="GetController" data-ng-init="getDish()">

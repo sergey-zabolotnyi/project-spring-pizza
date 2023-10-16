@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
+<html ng-app="get_form" lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -15,13 +15,12 @@
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/dishes_request.js}"></script>
+    <script th:src="@{/js/statistics.js}"></script>
 
 </head>
 
@@ -40,6 +39,8 @@
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
+
+            <label for="locales"></label>
             <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
@@ -63,41 +64,49 @@
     </section>
 
     <header class="block-2">
-        <h2 th:text="#{dish.create}"></h2>
+        <h2 th:text="#{main.statistics}"></h2>
     </header>
 
-    <section class="block-3" ng-app="get_form" ng-controller="GetController" data-ng-init="getCategories()">
-
-        <div id="dishes_block">
-            <div>
-                <div class="frame">
-                    <form class="form-signin" ng-model="categories">
-                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-
-                        <label for="name_en" th:text="#{dish.name_en}"></label>
-                        <input name="name_en" id="name_en" class="form-styling" type="text" required autofocus/>
-
-                        <label for="name_ru" th:text="#{dish.name_ru}"></label>
-                        <input name="name_ru" id="name_ru" class="form-styling" type="text" required/>
-
-                        <label for="price" th:text="#{menu.price}"></label>
-                        <input name="price" id="price" class="form-styling" type="number" required
-                               min="0.01" max="1000.00" step="0.01" value=""/>
-
-                        <label for="category" th:text="#{menu.category}"></label>
-                        <select id="category" name="category" class="form-styling">
-                            <option ng-repeat="c in categories" value="{{c.id}}">{{c.category}}</option>
-                        </select>
-
-                        <input class="btn-signup" type="button" ng-click="create()" th:value="#{button.create}"/>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+    <section class="block-5">
+    <table id="table">
+        <tr>
+            <th th:text="#{menu.description}"></th>
+            <th th:text="#{menu.value}"></th>
+        </tr>
+        <tbody id="dishes_table" ng-controller="GetController">
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.categories.count}"></td>
+            <td class="green-text"><span>{{totalCategoriesCount}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.dishes.count}"></td>
+            <td class="green-text"><span>{{totalDishesCount}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.users.count}"></td>
+            <td class="green-text"><span>{{totalUsersCount}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.orders.count}"></td>
+            <td class="green-text"><span>{{totalOrdersCount}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.orders.average}"></td>
+            <td class="green-text"><span>{{ordersAverageAmount}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="#{menu.orders.total.amount}"></td>
+            <td class="green-text"><span>{{totalOrdersAmount}}</span></td>
+        </tr>
+        </tbody>
+    </table>
+    </section>
+    <section class="pics1">
+        <img src="/pics/pizza1.jpeg" alt="Pizza Image">
     </section>
 
 </div>
+
 </body>
 
 </html>

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -130,5 +131,19 @@ public class DishController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     helper.getLogMessage("delete.dishes.not"));
         }
+    }
+    /**
+     * Gets dishes count for Statistics.
+     *
+     * @return A ResponseEntity containing a dishes count in menu.
+     */
+    @Operation(
+            summary = "Получение количества блюд в меню",
+            description = "Получение количества блюд в меню, хранящихся в БД")
+    @GetMapping("/get_count")
+    @ResponseBody // Добавляем аннотацию, чтобы возвращать тело ответа напрямую
+    public ResponseEntity<Integer> getAllDishesCount() {
+        log.info(helper.getLogMessage("all.dishes.count.log"));
+        return ResponseEntity.ok(dishService.findAllDishes().size());
     }
 }

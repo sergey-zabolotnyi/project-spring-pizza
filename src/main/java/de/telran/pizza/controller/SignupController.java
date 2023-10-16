@@ -4,13 +4,13 @@ import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.dto.LoginDTO;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.service.LoginService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +43,20 @@ public class SignupController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+    /**
+     * Gets users count for Statistics.
+     *
+     * @return A ResponseEntity containing a users count in DB.
+     */
+    @Operation(
+            summary = "Получение количества пользователей",
+            description = "Получение количества пользователей, хранящихся в базе данных")
+    @GetMapping("/count")
+    @ResponseBody // Добавляем аннотацию, чтобы возвращать тело ответа напрямую
+    public ResponseEntity<Integer> getAllDishesCount() {
+        log.info(helper.getLogMessage("users.count.log"));
+        return ResponseEntity.ok(loginService.getAllUsers().size());
     }
 
 }

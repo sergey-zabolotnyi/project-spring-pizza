@@ -19,6 +19,8 @@
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/js/signup_request.js}"></script>
 </head>
 
@@ -32,7 +34,7 @@
         </div>
         <div>
             <a class="button-2" href="/login" th:text="#{sign.in}"></a>
-            <select class="button-1" id="locales">
+            <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
                 <option value="ru" th:text="#{lang.ru}"></option>
@@ -50,8 +52,12 @@
         </div>
     </section>
 
+    <section class="pics">
+        <img src="/pics/pizza.png" alt="Pizza Image">
+    </section>
+
     <header class="block-2">
-        <a href="/"><h2 th:text="#{main.header}"></h2></a>
+        <h2 th:text="#{main.header}"></h2>
     </header>
 
     <section class="block-3" ng-app="get_form" ng-controller="GetController">
@@ -85,8 +91,5 @@
 </div>
 
 </body>
-
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-<script th:src="@{/js/main.js}"></script>
 
 </html>

@@ -20,4 +20,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("UPDATE Orders o SET o.status = :status WHERE o.id = :id")
     void updateStatus(@Param(value = "id") Long id,
                       @Param(value = "status") Status status);
+    @Query(value = "select sum(total_price) from orders", nativeQuery = true)
+    Double findTotalOrdersSum();
+    @Query(value = "select round(avg(total_price), 2) from orders", nativeQuery = true)
+    Double findAverageOrdersSum();
 }

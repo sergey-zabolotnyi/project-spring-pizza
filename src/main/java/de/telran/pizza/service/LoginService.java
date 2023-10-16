@@ -7,11 +7,13 @@ import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.repository.LoginRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -57,5 +59,13 @@ public class LoginService {
             log.warn(helper.getLogMessage(message) + loginDTO.getLogin());
             throw new IllegalArgumentException(helper.getMessage(message) + loginDTO.getLogin());
         }
+    }
+    /**
+     * Retrieves a list of all users in DataBase.
+     *
+     * @return A list of Login(users) objects.
+     */
+    public List<Login> getAllUsers(){
+        return loginRepository.findAll();
     }
 }

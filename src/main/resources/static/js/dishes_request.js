@@ -143,4 +143,22 @@ angular.module("get_form", [])
                 alertErrors(response);
             });
         };
+        $scope.totalDishesCount = 0; // Initialize to 0
+        $scope.getAllDishesCount = function() {
+            $http({
+                method: "GET",
+                url: "api/manager/dishes/get_all/count",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(
+                function (response) {
+                    $scope.totalDishesCount = response.data;
+                },
+                function (error) {
+                    console.log(error);
+                }
+            );
+        };
     }]);

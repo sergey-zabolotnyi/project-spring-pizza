@@ -109,4 +109,14 @@ public class WebController {
         return "dishes_update";
     }
 
+    /**
+     * Request handler method for displaying the statistics in the manager's section.
+     *
+     * @return The view name "statistics".
+     */
+    @RequestMapping("manager/statistics")
+    public String statistics() {
+        return "statistics";
+    }
+
 }

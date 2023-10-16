@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,10 +36,22 @@ public class CategoryController {
      */
     @Operation(summary = "Получение всех категорий пиццерии",
             description = "Получение всех категорий Пиццерии, хранящихся в БД")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved categories.")
+    @ApiResponse(responseCode = "200", description = "Successfully gets categories.")
     @GetMapping("/get")
     public ResponseEntity<List<CategoryDTO>> getAllCategories(){
         log.info(helper.getLogMessage("all.categories.log"));
         return ResponseEntity.ok(categoryService.findAllCategory());
+    }
+    /**
+     * Gets categories count.
+     * @return A ResponseEntity containing a categories count.
+     */
+    @Operation(summary = "Получение количества всех категорий пиццерии",
+            description = "Получение количества всех категорий Пиццерии, хранящихся в БД")
+    @ApiResponse(responseCode = "200", description = "Successfully gets count categories.")
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCategoriesCount() {
+        log.info(helper.getLogMessage("all.categories.count.log"));
+        return ResponseEntity.ok(categoryService.findAllCategory().size());
     }
 }

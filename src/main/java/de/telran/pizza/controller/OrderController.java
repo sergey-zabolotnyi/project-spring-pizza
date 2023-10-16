@@ -110,5 +110,39 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+    /**
+     * Gets the total number of orders.
+     *
+     * This endpoint allows the pizzeria to retrieve the total count of all orders.
+     * @return A {@code ResponseEntity} containing the total count of orders.
+     */
+    @GetMapping("/count")
+    @Operation(summary = "Получаем количество всех заказов",
+            description = "Получаем количество всех заказов, пиццерии.")
+    public ResponseEntity<Integer> getOrdersCount(){
+        log.info(helper.getLogMessage("get.orders.count"));
+        return ResponseEntity.ok(orderService.findAllOrders().size());
+    }
+    @GetMapping("/average")
+    @Operation(summary = "Получаем среднюю сумму всех заказов",
+            description = "Получаем среднюю сумму всех заказов, пиццерии.")
+    public ResponseEntity<Double> getAverageSum(){
+        log.info(helper.getLogMessage("get.average.order.sum"));
+        return ResponseEntity.ok(orderService.getAverageOrdersSum());
+    }
+
+    /**
+     * Gets the total sum of orders.
+     *
+     * This endpoint allows users of the pizzeria to retrieve the total sum of all orders made.
+     * @return A {@code ResponseEntity} containing the total sum of all orders.
+     */
+    @GetMapping("/get_total_sum")
+    @Operation(summary = "Получаем сумму всех заказов",
+            description = "Получаем сумму всех заказов, пользователями пиццерии.")
+    public ResponseEntity<Double> getAllOrdersAmount() {
+        log.info(helper.getLogMessage("get.all.orders.sum"));
+        return ResponseEntity.ok(orderService.getTotalOrdersSum());
+    }
 }
 

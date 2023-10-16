@@ -4,11 +4,14 @@ import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.entity.Orders;
+import de.telran.pizza.domain.entity.dto.CategoryDTO;
 import de.telran.pizza.domain.entity.dto.DishDTO;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
+import de.telran.pizza.service.mapper.CategoryMapper;
+import de.telran.pizza.service.mapper.DishMapper;
 import de.telran.pizza.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +68,8 @@ public class OrderService {
         if (newCart.isEmpty()) {
             throw new NoSuchElementException(helper.getLogMessage("select.all.carts.empty"));
         }
-        List<DishDTO> dishes = CartService.listDishesDTOtoCart(newCart);
-        BigDecimal dishTotalPrice = CartService.getDishTotalPrice(dishes);
+        List<DishDTO> dishes = DishMapper.listDishesDTOtoCart(newCart);
+        BigDecimal dishTotalPrice = DishMapper.getDishTotalPrice(dishes);
 
         cartRepository.deleteByLoginId(user.getId());
         log.info(helper.getLogMessage("delete.all.cart.log"));
@@ -116,5 +119,26 @@ public class OrderService {
         ordersRepository.updateStatus(id, Status.PAYED);
         return true;
     }
-}
 
+    /**
+     * Gets the average sum of orders.
+     * <p>
+     * This method calculates and returns the average sum of all orders in the repository.
+     *
+     * @return A {@code Double} representing the average sum of orders.
+     */
+    public Double getAverageOrdersSum() {
+        return ordersRepository.findAverageOrdersSum();
+    }
+
+    /**
+     * Gets the total sum of orders.
+     * <p>
+     * This method calculates and returns the total sum of all orders in the repository.
+     *
+     * @return A {@code Double} representing the total sum of orders.
+     */
+    public Double getTotalOrdersSum() {
+        return ordersRepository.findTotalOrdersSum();
+    }
+}

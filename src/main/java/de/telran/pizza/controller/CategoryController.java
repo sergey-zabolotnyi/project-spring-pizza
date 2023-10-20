@@ -1,7 +1,7 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.dto.CategoryDTO;
+import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +24,13 @@ import java.util.List;
 @Tag(name = "Контроллер категорий", description = "Контроллер для различных категорий пиццерии")
 public class CategoryController {
 
-    @Autowired
     private CategoryService categoryService;
-    @Autowired
     private MessageHelper helper;
+
+    public CategoryController(CategoryService categoryService, MessageHelper helper) {
+        this.categoryService = categoryService;
+        this.helper = helper;
+    }
 
     /**
      * Gets all categories.

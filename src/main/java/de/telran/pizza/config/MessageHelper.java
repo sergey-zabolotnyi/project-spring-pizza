@@ -14,10 +14,13 @@ import java.util.Locale;
  */
 @Configuration
 public class MessageHelper {
-    @Autowired
     private MessageSource messageSource;
-    @Autowired
     private MessageSource logSource;
+
+    public MessageHelper(MessageSource messageSource, MessageSource logSource) {
+        this.messageSource = messageSource;
+        this.logSource = logSource;
+    }
 
     /**
      * Gets the message corresponding to the provided key based on the current locale.

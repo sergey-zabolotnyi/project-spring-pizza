@@ -10,7 +10,7 @@
     <meta name="keywords" content="Pizza, final project, 2023">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizzeria</title>
-    <link rel="shortcut icon" th:href="@{/resources/favicon.ico}" type="image/x-icon" />
+    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
@@ -114,10 +114,10 @@
                     <tr ng-repeat="i in dishes" class="rows" checked=false>
                         <td>{{i.id}}</td>
                         <td>{{i.name}}</td>
-                        <td>{{i.price}}</td>
+                        <td>{{i.price | number:2}}</td>
                         <td>{{i.category.category}}</td>
                         <td sec:authorize="isAuthenticated()">
-                            <a class="button-2" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
+                            <a class="button" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
                         </td>
                     </tr>
                     </tbody>

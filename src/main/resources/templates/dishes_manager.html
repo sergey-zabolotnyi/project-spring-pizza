@@ -10,7 +10,7 @@
     <meta name="keywords" content="Pizza, final project, 2023">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizzeria</title>
-    <link rel="shortcut icon" th:href="@{/resources/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
@@ -95,16 +95,27 @@
                     <tr ng-repeat="i in dishes" class="rows" checked=false>
                         <td>{{i.id}}</td>
                         <td>{{i.name}}</td>
-                        <td>{{i.price}}</td>
+                        <td>{{i.price | number:2}}</td>
                         <td>{{i.category.category}}</td>
                         <td>
-                            <a class="button-2" href="/manager/dishes/update?id={{i.id}}" th:text="#{button.update}"></a>
-                            <a dishId="{{i.id}}" class="button-2" ng-click="delete($event)" th:text="#{button.delete}"></a>
+                            <a class="button" href="/manager/dishes/update?id={{i.id}}" th:text="#{button.update}"></a> |
+                            <a dishId="{{i.id}}" class="button" ng-click="delete($event)" th:text="#{button.delete}"></a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="pages" ng-model="pageable">
+            <div th:text="#{page.current} + ' {{pageable.page}}'"></div>
+
+            <div class="pagination">
+                <a ng-repeat="x in [].constructor(pageable.totalPages) track by $index"
+                   class="button-2"
+                   href="/manager/manage_dishes?page={{$index+1}}&sort={{pageable.sortField}}&direct={{pageable.sortDirection}}&category={{pageable.categoryId}}">{{ $index+1 }}</a>
+            </div>
+
+            <div th:text="#{page.total} + ' {{pageable.totalPages}}'"></div>
         </div>
 
     </section>

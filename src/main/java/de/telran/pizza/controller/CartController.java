@@ -2,8 +2,8 @@ package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
-import de.telran.pizza.domain.entity.dto.CartDTO;
-import de.telran.pizza.domain.entity.dto.ItemDTO;
+import de.telran.pizza.domain.dto.CartDTO;
+import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.service.CartService;
 import de.telran.pizza.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,11 +26,13 @@ import javax.validation.Valid;
 @Tag(name = "Контроллер корзины пользователей",
         description = "Контроллер для различных операций над корзиной пользователей")
 public class CartController {
-
-    @Autowired
     private CartService cartService;
-    @Autowired
     private MessageHelper helper;
+
+    public CartController(CartService cartService, MessageHelper helper) {
+        this.cartService = cartService;
+        this.helper = helper;
+    }
 
     /**
      * Gets all dishes in the cart associated with the logged-in customer.

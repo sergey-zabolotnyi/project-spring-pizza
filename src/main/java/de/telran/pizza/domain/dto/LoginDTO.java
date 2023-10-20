@@ -1,4 +1,4 @@
-package de.telran.pizza.domain.entity.dto;
+package de.telran.pizza.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

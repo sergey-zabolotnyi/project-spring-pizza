@@ -1,7 +1,7 @@
 package de.telran.pizza.service.mapper;
 
 import de.telran.pizza.domain.entity.Category;
-import de.telran.pizza.domain.entity.dto.CategoryDTO;
+import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.utils.Utils;
 
 import java.util.List;

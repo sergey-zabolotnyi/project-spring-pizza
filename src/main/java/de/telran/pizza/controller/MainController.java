@@ -1,7 +1,7 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.dto.PageDishesDTO;
+import de.telran.pizza.domain.dto.PageDishesDTO;
 import de.telran.pizza.service.DishService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,12 +23,12 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 @Tag(name = "Контроллер главной страницы", description = "Контроллер для главной страницы пиццерии")
 public class MainController {
-
-    @Autowired
     private DishService dishService;
-    @Autowired
     private MessageHelper helper;
-
+    public MainController(DishService dishService, MessageHelper helper) {
+        this.dishService = dishService;
+        this.helper = helper;
+    }
     /**
      * Gets a paginated list of dishes based on the provided page number, sorting field, sorting direction, and category ID.
      *

@@ -2,12 +2,11 @@ package de.telran.pizza.service;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Login;
-import de.telran.pizza.domain.entity.dto.LoginDTO;
+import de.telran.pizza.domain.dto.LoginDTO;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.repository.LoginRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,10 +22,13 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class LoginService {
-    @Autowired
     private LoginRepository loginRepository;
-    @Autowired
     private MessageHelper helper;
+
+    public LoginService(LoginRepository loginRepository, MessageHelper helper) {
+        this.loginRepository = loginRepository;
+        this.helper = helper;
+    }
 
     /**
      * Finds a user by their login.

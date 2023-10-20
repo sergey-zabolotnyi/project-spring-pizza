@@ -10,7 +10,7 @@
     <meta name="keywords" content="Pizza, final project, 2023">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizzeria</title>
-    <link rel="shortcut icon" th:href="@{/resources/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
@@ -92,11 +92,11 @@
         </tr>
         <tr class="rows" checked=false>
             <td th:text="#{menu.orders.average}"></td>
-            <td class="green-text"><span>{{ordersAverageAmount}}</span></td>
+            <td class="green-text"><span>{{ordersAverageAmount | number:2}}</span></td>
         </tr>
         <tr class="rows" checked=false>
             <td th:text="#{menu.orders.total.amount}"></td>
-            <td class="green-text"><span>{{totalOrdersAmount}}</span></td>
+            <td class="green-text"><span>{{totalOrdersAmount | number:2}}</span></td>
         </tr>
         </tbody>
     </table>

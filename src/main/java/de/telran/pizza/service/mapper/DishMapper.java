@@ -2,7 +2,7 @@ package de.telran.pizza.service.mapper;
 
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.dto.DishDTO;
+import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.utils.Utils;
 
 import java.math.BigDecimal;

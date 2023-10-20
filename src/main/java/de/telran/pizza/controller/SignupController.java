@@ -1,7 +1,7 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.dto.LoginDTO;
+import de.telran.pizza.domain.dto.LoginDTO;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,11 +23,13 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
-    @Autowired
     private LoginService loginService;
-    @Autowired
     private MessageHelper helper;
 
+    public SignupController(LoginService loginService, MessageHelper helper) {
+        this.loginService = loginService;
+        this.helper = helper;
+    }
     /**
      * Handles a POST request to create a new user.
      *
@@ -54,7 +56,7 @@ public class SignupController {
             description = "Получение количества пользователей, хранящихся в базе данных")
     @GetMapping("/count")
     @ResponseBody // Добавляем аннотацию, чтобы возвращать тело ответа напрямую
-    public ResponseEntity<Integer> getAllDishesCount() {
+    public ResponseEntity<Integer> getAllUsersCount() {
         log.info(helper.getLogMessage("users.count.log"));
         return ResponseEntity.ok(loginService.getAllUsers().size());
     }

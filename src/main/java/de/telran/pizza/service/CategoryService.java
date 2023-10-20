@@ -1,6 +1,6 @@
 package de.telran.pizza.service;
 
-import de.telran.pizza.domain.entity.dto.CategoryDTO;
+import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.service.mapper.CategoryMapper;
 import de.telran.pizza.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,10 @@ import java.util.List;
  */
 @Service
 public class CategoryService {
-
-    @Autowired
     private CategoryRepository categoryRepository;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     /**
      * Gets a list of all categories in DTO format.

@@ -4,9 +4,9 @@ import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Login;
-import de.telran.pizza.domain.entity.dto.CartDTO;
-import de.telran.pizza.domain.entity.dto.DishDTO;
-import de.telran.pizza.domain.entity.dto.ItemDTO;
+import de.telran.pizza.domain.dto.CartDTO;
+import de.telran.pizza.domain.dto.DishDTO;
+import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.service.mapper.DishMapper;
@@ -24,13 +24,15 @@ import java.util.NoSuchElementException;
  */
 @Service
 public class CartService {
-
-    @Autowired
     private CartRepository cartRepository;
-    @Autowired
     private DishRepository dishRepository;
-    @Autowired
     private MessageHelper helper;
+
+    public CartService(CartRepository cartRepository, DishRepository dishRepository, MessageHelper helper) {
+        this.cartRepository = cartRepository;
+        this.dishRepository = dishRepository;
+        this.helper = helper;
+    }
 
     /**
      * Retrieves all dishes in the cart associated with the logged-in user.

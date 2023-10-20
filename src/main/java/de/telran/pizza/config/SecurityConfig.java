@@ -4,8 +4,10 @@ import de.telran.pizza.domain.entity.enums.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement() // Добавляем настройки управления сессиями
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Указываем, что сессия создается при необходимости
                 .maximumSessions(1) // Максимальное количество активных сессий для одного пользователя
-                .expiredUrl("/login?expired") // Перенаправление при истечении срока действия сессии
+                .expiredUrl("/login") // Перенаправление при истечении срока действия сессии
                 .maxSessionsPreventsLogin(false); // Разрешить вход новой сессии, отключив старую;
         return http.build();
     }

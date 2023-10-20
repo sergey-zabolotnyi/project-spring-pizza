@@ -4,13 +4,11 @@ import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.entity.Orders;
-import de.telran.pizza.domain.entity.dto.CategoryDTO;
-import de.telran.pizza.domain.entity.dto.DishDTO;
+import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
-import de.telran.pizza.service.mapper.CategoryMapper;
 import de.telran.pizza.service.mapper.DishMapper;
 import de.telran.pizza.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +27,15 @@ import java.util.NoSuchElementException;
 @Service
 @Slf4j
 public class OrderService {
-    @Autowired
     private OrdersRepository ordersRepository;
-    @Autowired
     private CartRepository cartRepository;
-    @Autowired
     private MessageHelper helper;
+
+    public OrderService(OrdersRepository ordersRepository, CartRepository cartRepository, MessageHelper helper) {
+        this.ordersRepository = ordersRepository;
+        this.cartRepository = cartRepository;
+        this.helper = helper;
+    }
 
     /**
      * Gets a list of orders belonging to the currently authorized user.

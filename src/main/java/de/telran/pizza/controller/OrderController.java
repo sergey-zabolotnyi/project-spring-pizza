@@ -2,7 +2,7 @@ package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Orders;
-import de.telran.pizza.domain.entity.dto.ItemDTO;
+import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.service.OrderService;
 import de.telran.pizza.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,11 +25,12 @@ import java.util.List;
 @RequestMapping("/api/orders")
 @Tag(name = "Контроллер заказов клиентов", description = "Контроллер заказов клиентов пиццерии")
 public class OrderController {
-
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private MessageHelper helper;
+    public OrderController(OrderService orderService, MessageHelper helper) {
+        this.orderService = orderService;
+        this.helper = helper;
+    }
 
     /**
      * Gets a list of orders belonging to the currently authorized user.

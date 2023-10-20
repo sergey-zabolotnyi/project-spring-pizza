@@ -3,8 +3,8 @@ package de.telran.pizza.service;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.dto.DishDTO;
-import de.telran.pizza.domain.entity.dto.PageDishesDTO;
+import de.telran.pizza.domain.dto.DishDTO;
+import de.telran.pizza.domain.dto.PageDishesDTO;
 import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.service.mapper.CategoryMapper;
@@ -37,12 +37,15 @@ public class DishService {
     @Value("${page.category}")
     private int categoryIdDefault;
 
-    @Autowired
     private DishRepository dishRepository;
-    @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
     private MessageHelper helper;
+
+    public DishService(DishRepository dishRepository, CategoryRepository categoryRepository, MessageHelper helper) {
+        this.dishRepository = dishRepository;
+        this.categoryRepository = categoryRepository;
+        this.helper = helper;
+    }
 
     /**
      * Gets a paginated list of dishes along with category information.

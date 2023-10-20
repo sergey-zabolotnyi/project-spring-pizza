@@ -10,7 +10,7 @@
     <meta name="keywords" content="Pizza, final project, 2023">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizzeria</title>
-    <link rel="shortcut icon" th:href="@{/resources/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
@@ -86,7 +86,7 @@
                         <td>{{i.id}}</td>
                         <td>{{i.time}}</td>
                         <td>{{i.login.login}}</td>
-                        <td>{{i.totalPrice}}</td>
+                        <td>{{i.totalPrice | number:2}}</td>
                         <td>{{i.status}}</td>
                         <td>
                             <a id="{{i.id}}" class="hidden" ng-click="confirmAction($event)" th:text="#{orders.confirm}"></a>

@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailServiceSecurity implements UserDetailsService {
 
-    @Autowired
     private LoginService loginService;
+    public UserDetailServiceSecurity(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     /**
      * Loads a user based on the provided username.

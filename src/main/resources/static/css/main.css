@@ -70,8 +70,8 @@ body * {
 .button-1:active,
 .button-1:focus{
 	cursor: pointer;
-	background: rgba(84, 100, 164 ,.3);
-	color: red;
+	background: rgb(224, 217, 213);
+	color: #ce7c0f;
 	border-radius: 3px;
 	border: none;
 	outline: none;
@@ -101,11 +101,10 @@ body * {
 	box-sizing: border-box;
 	font-weight: 700;
 	font-size: 1.1em;
-	color: #5464a4;
+	color: green;
 	display: inline-block;
 	text-align: center;
-	/*width: 100px;*/
-		background: none;
+	background: none;
 	align-items: center;
 	padding: 8px;
 	margin: 0 5px;
@@ -323,7 +322,7 @@ select {
 }
 #authorizedLogin {
 	margin-right: 15px;
-	color: #5464a4;
+	color: #ce7c0f;
 	font-weight: 700;
 	font-size: 1.2em;
 }

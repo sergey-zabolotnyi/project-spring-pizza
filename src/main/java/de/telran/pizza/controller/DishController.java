@@ -2,8 +2,8 @@ package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.dto.DishDTO;
-import de.telran.pizza.domain.entity.dto.ItemDTO;
+import de.telran.pizza.domain.dto.DishDTO;
+import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.service.DishService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,10 +26,13 @@ import java.util.List;
 @Tag(name = "Контроллер для блюд", description = "Контроллер для различных блюд пиццерии")
 public class DishController {
 
-    @Autowired
     private DishService dishService;
-    @Autowired
     private MessageHelper helper;
+
+    public DishController(DishService dishService, MessageHelper helper) {
+        this.dishService = dishService;
+        this.helper = helper;
+    }
 
     /**
      * Gets a list of all dishes.

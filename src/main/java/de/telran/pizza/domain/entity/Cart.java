@@ -12,8 +12,6 @@ import javax.persistence.*;
  * Represents a cart entity in the application.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "cart")
@@ -35,4 +33,13 @@ public class Cart {
     @JoinColumn(name = "dish_id", referencedColumnName = "id")
     @Schema(description = "ID блюда", example = "3")
     private Dish dish;
+
+    public Cart() {
+    }
+
+    public Cart(Long id, Login login, Dish dish) {
+        this.id = id;
+        this.login = login;
+        this.dish = dish;
+    }
 }

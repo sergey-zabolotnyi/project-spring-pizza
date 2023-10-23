@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 
 /**
@@ -39,6 +40,7 @@ public class Login {
 
     @Column(name = "email")
     @Schema(description = "Электронная почта пользователя", example = "user@gmail.com")
+    @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,6}$", message = "Invalid email address")
     private String email;
 
     @Column(name = "role")
@@ -50,4 +52,8 @@ public class Login {
     @Schema(description = "Время добавления записи", example = "2023-10-05 15:05:34")
     private LocalDateTime time;
 
+    public Login(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
 }

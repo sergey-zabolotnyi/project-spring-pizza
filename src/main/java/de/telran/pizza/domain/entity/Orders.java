@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -34,6 +35,8 @@ public class Orders {
     @Schema(description = "ID пользователя", example = "7")
     private Login login;
 
+    @Min(value = 0, message = "error.orders.totalPrice")
+    @Column(nullable = false)
     @Schema(description = "Общая стоимость заказа", example = "45.99")
     private BigDecimal totalPrice;
 

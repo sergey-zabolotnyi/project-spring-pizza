@@ -5,12 +5,14 @@ import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.domain.entity.enums.Role;
+import de.telran.pizza.security.UserDetailSecurity;
 import de.telran.pizza.service.OrderService;
 import de.telran.pizza.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,42 +45,94 @@ class OrderControllerTest {
 
     @Test
     void testGetOrders() {
-        // todo
+        // Мокирование SecurityContext
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        // Мокирование объекта Authentication
+        Authentication authentication = mock(Authentication.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        // Мокирование объекта UserDetailSecurity
+        UserDetailSecurity userDetails = mock(UserDetailSecurity.class);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        // Мокирование объекта Login
+        Login login = new Login("sidor", "123456");
+        when(userDetails.getLogin()).thenReturn(login);
+
+        // Мокирование orderService.findAllUserOrders()
+        List<Orders> ordersList = List.of(new Orders(), new Orders());
+        when(orderService.findAllUserOrders()).thenReturn(ordersList);
+
+        // Вызов метода
+        ResponseEntity<List<Orders>> responseEntity = orderController.getOrders();
+
+        // Проверка результата
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(2, responseEntity.getBody().size());
     }
 
     @Test
-    void testCreate() {
-        // todo
+    void testGetAllOrders() {
+        // Мокирование SecurityContext
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        // Мокирование объекта Authentication
+        Authentication authentication = mock(Authentication.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        // Мокирование объекта UserDetailSecurity
+        UserDetailSecurity userDetails = mock(UserDetailSecurity.class);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        // Мокирование объекта Login
+        Login login = new Login("sidor", "123456");
+        when(userDetails.getLogin()).thenReturn(login);
+
+        // Мокирование orderService.findAllOrders()
+        List<Orders> ordersList = List.of(new Orders(), new Orders());
+        when(orderService.findAllOrders()).thenReturn(ordersList);
+
+        // Вызов метода
+        ResponseEntity<List<Orders>> responseEntity = orderController.getAllOrders();
+
+        // Проверка результата
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(2, responseEntity.getBody().size());
     }
     @Test
     void testConfirm() {
-        // Arrange
+        // Подготовка
         ItemDTO itemDTO = new ItemDTO(1L);
 
-        // Act
+        // Действие и проверка
         assertDoesNotThrow(() -> orderController.confirm(itemDTO));
     }
 
     @Test
     void testPayment() {
-        // Arrange
+        // Подготовка
         ItemDTO itemDTO = new ItemDTO(1L);
 
-        // Act
+        // Действие и проверка
         assertDoesNotThrow(() -> orderController.payment(itemDTO));
     }
 
     @Test
     void testGetOrdersCount() {
-        // Arrange
+        // Подготовка
         when(orderService.findAllOrders()).thenReturn(List.of(
                 new Orders(), new Orders()
         ));
 
-        // Act
+        // Действие
         ResponseEntity<Integer> responseEntity = orderController.getOrdersCount();
 
-        // Assert
+        // Проверка
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(2, responseEntity.getBody());
@@ -86,13 +140,13 @@ class OrderControllerTest {
 
     @Test
     void testGetAverageSum() {
-        // Arrange
+        // Подготовка
         when(orderService.getAverageOrdersSum()).thenReturn(50.0);
 
-        // Act
+        // Действие
         ResponseEntity<Double> responseEntity = orderController.getAverageSum();
 
-        // Assert
+        // Проверка
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(50.0, responseEntity.getBody());
@@ -100,13 +154,13 @@ class OrderControllerTest {
 
     @Test
     void testGetAllOrdersAmount() {
-        // Arrange
+        // Подготовка
         when(orderService.getTotalOrdersSum()).thenReturn(500.0);
 
-        // Act
+        // Действие
         ResponseEntity<Double> responseEntity = orderController.getAllOrdersAmount();
 
-        // Assert
+        // Проверка
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(500.0, responseEntity.getBody());

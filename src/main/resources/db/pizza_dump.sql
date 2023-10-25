@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `cart`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cart` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `dish_id` bigint NOT NULL,
-  `login_id` bigint NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `dish_id` int NOT NULL,
+  `login_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_cart_to_dish_idx` (`dish_id`),
   KEY `fk_cart_to_login_idx` (`login_id`),
@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `category_en` varchar(255) NOT NULL,
   `category_ru` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -77,16 +77,16 @@ DROP TABLE IF EXISTS `dish`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dish` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name_en` varchar(45) NOT NULL,
   `name_ru` varchar(45) NOT NULL,
   `price` decimal(9,2) NOT NULL,
-  `category_id` bigint NOT NULL,
+  `category_id` int NOT NULL,
   `time` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_dish_category_idx` (`category_id`),
   CONSTRAINT `fk_dish_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `dish` (
 
 LOCK TABLES `dish` WRITE;
 /*!40000 ALTER TABLE `dish` DISABLE KEYS */;
-INSERT INTO `dish` VALUES (1,'Margherita','Маргарита',10.50,1,'2023-10-10 12:16:16'),(2,'Pepperoni','Пепперони',11.00,1,'2023-10-10 12:16:16'),(3,'Quattro Formaggi','Четыре сыра',12.50,1,'2023-10-10 12:16:16'),(4,'Hawaiian','Гавайская',11.50,1,'2023-10-10 12:16:16'),(5,'Vegetarian','Вегетарианская',10.00,1,'2023-10-10 12:16:16'),(6,'Margarita with vegetables','Маргарита с овощами',11.20,1,'2023-10-13 20:42:49'),(7,'Fried mozzarella sticks','Жареные палочки из моцареллы',6.50,2,'2023-10-10 12:16:16'),(8,'Garlic bread','Чесночный хлеб',5.00,2,'2023-10-10 12:16:16'),(9,'Bruschetta','Брускетта',7.25,2,'2023-10-14 14:24:02'),(10,'Stuffed mushrooms','Фаршированные грибы',8.00,2,'2023-10-10 12:16:16'),(11,'Caprese salad','Салат Капрезе',9.50,3,'2023-10-10 12:16:16'),(12,'Greek salad','Греческий салат',9.00,3,'2023-10-10 12:16:16'),(13,'Caesar salad','Салат Цезарь',8.50,3,'2023-10-10 12:16:16'),(14,'Tiramisu','Тирамису',7.50,4,'2023-10-10 12:16:16'),(15,'Cheesecake','Чизкейк',8.00,4,'2023-10-10 12:16:16'),(16,'Chocolate fondant','Шоколадный фондан',9.00,4,'2023-10-10 12:16:16'),(17,'Coca-Cola','Кока-Кола',2.00,5,'2023-10-10 12:16:16'),(18,'Pepsi','Пепси',2.20,5,'2023-10-15 13:27:04'),(19,'Sprite','Спрайт',2.00,5,'2023-10-10 12:16:16'),(20,'Red Wine','Красное вино',12.50,6,'2023-10-13 22:44:01'),(21,'White wine','Белое вино',11.50,6,'2023-10-10 12:16:16'),(22,'Beer','Пиво',3.50,6,'2023-10-10 12:16:16'),(24,'Ice Creame','Мороженное',5.89,4,'2023-10-13 22:45:51'),(25,'Crabs Salad','Крабовый салат',8.99,3,'2023-10-14 14:25:46');
+INSERT INTO `dish` VALUES (1,'Margherita','Маргарита',10.50,1,'2023-10-10 12:16:16'),(2,'Pepperoni','Пепперони',11.00,1,'2023-10-10 12:16:16'),(3,'Quattro Formaggi','Четыре сыра',12.50,1,'2023-10-10 12:16:16'),(4,'Hawaiian','Гавайская',11.50,1,'2023-10-10 12:16:16'),(5,'Vegetarian','Вегетарианская',10.00,1,'2023-10-10 12:16:16'),(6,'Margarita with vegetables','Маргарита с овощами',11.20,1,'2023-10-13 20:42:49'),(7,'Fried mozzarella sticks','Жареные палочки из моцареллы',6.50,2,'2023-10-10 12:16:16'),(8,'Garlic bread','Чесночный хлеб',5.00,2,'2023-10-10 12:16:16'),(9,'Bruschetta','Брускетта',7.25,2,'2023-10-14 14:24:02'),(10,'Stuffed mushrooms','Фаршированные грибы',8.00,2,'2023-10-10 12:16:16'),(11,'Caprese salad','Салат Капрезе',9.50,3,'2023-10-10 12:16:16'),(12,'Greek salad','Греческий салат',9.00,3,'2023-10-10 12:16:16'),(13,'Caesar salad','Салат Цезарь',8.50,3,'2023-10-10 12:16:16'),(14,'Tiramisu','Тирамису',7.50,4,'2023-10-10 12:16:16'),(15,'Cheesecake','Чизкейк',8.00,4,'2023-10-10 12:16:16'),(16,'Chocolate fondant','Шоколадный фондан',9.00,4,'2023-10-10 12:16:16'),(17,'Coca-Cola','Кока-Кола',2.00,5,'2023-10-10 12:16:16'),(18,'Pepsi','Пепси',2.20,5,'2023-10-15 13:27:04'),(19,'Sprite','Спрайт',2.00,5,'2023-10-10 12:16:16'),(20,'Red Wine','Красное вино',12.50,6,'2023-10-13 22:44:01'),(21,'White wine','Белое вино',11.50,6,'2023-10-10 12:16:16'),(22,'Beer','Пиво',3.50,6,'2023-10-10 12:16:16'),(23,'Ice Creame','Мороженное',5.89,4,'2023-10-13 22:45:51'),(24,'Crabs Salad','Крабовый салат',8.99,3,'2023-10-14 14:25:46');
 /*!40000 ALTER TABLE `dish` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -136,7 +136,7 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `login_id` bigint NOT NULL,
   `total_price` decimal(9,2) NOT NULL,
   `status` varchar(45) NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `fk_order_login_idx` (`login_id`),
   CONSTRAINT `fk_order_login` FOREIGN KEY (`login_id`) REFERENCES `login` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,35.00,'DONE','2023-10-13 11:08:55'),(2,4,34.50,'DONE','2023-10-13 11:31:26'),(3,3,45.50,'DONE','2023-10-13 12:37:57'),(4,3,33.00,'DONE','2023-10-13 17:40:53'),(5,3,26.50,'DONE','2023-10-13 18:12:49'),(6,5,64.00,'DONE','2023-10-13 19:19:40'),(7,3,43.20,'DELIVERY','2023-10-13 20:46:23'),(8,3,38.50,'DELIVERY','2023-10-13 22:47:29'),(9,3,53.20,'PAYMENT_CONFIRM','2023-10-14 09:06:12'),(10,4,59.89,'COOKING','2023-10-14 14:08:32'),(11,4,66.99,'COOKING','2023-10-14 15:01:17'),(12,6,48.99,'DELIVERY','2023-10-15 08:47:56'),(13,3,36.49,'DONE','2023-10-15 12:55:15'),(14,7,67.70,'PAYMENT_CONFIRM','2023-10-16 11:34:16'),(15,3,12.00,'PAYMENT_CONFIRM','2023-10-16 12:05:14'),(16,3,46.50,'PAYED','2023-10-16 13:20:24');
+INSERT INTO `orders` VALUES (1,1,35.00,'DONE','2023-10-13 11:08:55'),(2,4,34.50,'DONE','2023-10-13 11:31:26'),(3,3,45.50,'DONE','2023-10-13 12:37:57'),(4,3,33.00,'DONE','2023-10-13 17:40:53'),(5,3,26.50,'DONE','2023-10-13 18:12:49'),(6,5,64.00,'DONE','2023-10-13 19:19:40'),(7,3,43.20,'DELIVERY','2023-10-13 20:46:23'),(8,3,38.50,'DELIVERY','2023-10-13 22:47:29'),(9,3,53.20,'PAYMENT_CONFIRM','2023-10-14 09:06:12'),(10,4,59.89,'COOKING','2023-10-14 14:08:32'),(11,4,66.99,'COOKING','2023-10-14 15:01:17'),(12,6,48.99,'DELIVERY','2023-10-15 08:47:56'),(13,3,36.49,'DONE','2023-10-15 12:55:15'),(14,7,67.70,'PAYMENT_CONFIRM','2023-10-16 11:34:16');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -5,12 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CartRepository extends JpaRepository<Cart, Long> {
+public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    List<Cart> findAllByLoginId(Long id);
+    List<Cart> findAllByLoginId(int id);
 
-    List<Cart> findCartByDish_Id(Long id);
+    List<Cart> findCartByDish_Id(int id);
 
-    void deleteByLoginId(Long id);
+    void deleteByLoginId(int id);
 
 }

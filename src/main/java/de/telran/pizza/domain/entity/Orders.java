@@ -28,7 +28,7 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор заказа", example = "7")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "login_id", referencedColumnName = "id")

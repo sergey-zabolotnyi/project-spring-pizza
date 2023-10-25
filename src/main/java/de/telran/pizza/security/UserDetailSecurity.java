@@ -12,11 +12,9 @@ import java.util.Collections;
 /**
  * Custom UserDetails implementation for security purposes.
  */
-@Data
+
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
 public class UserDetailSecurity implements UserDetails {
 
     private Login login;

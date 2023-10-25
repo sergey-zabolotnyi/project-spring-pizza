@@ -34,7 +34,7 @@ class LoginServiceTest {
     void testFindByUserLogin() {
         // Arrange
         String login = "testuser";
-        Login expectedLogin = new Login(1L, login, "123456", "test@test.com",
+        Login expectedLogin = new Login(1, login, "123456", "test@test.com",
                 Role.ROLE_CUSTOMER, LocalDateTime.now());
         when(loginRepository.findByLogin(login)).thenReturn(Optional.of(expectedLogin));
 
@@ -64,7 +64,7 @@ class LoginServiceTest {
         // Arrange
         LoginDTO loginDTO = new LoginDTO("newuser", "newuser@test.com", "123456");
         Role role = Role.ROLE_CUSTOMER;
-        when(loginRepository.save(any(Login.class))).thenReturn(new Login(1L, "newuser", "123456",
+        when(loginRepository.save(any(Login.class))).thenReturn(new Login(1, "newuser", "123456",
                 "newuser@test.com", role, LocalDateTime.now()));
 
         // Act
@@ -90,8 +90,8 @@ class LoginServiceTest {
     void testGetAllUsers() {
         // Arrange
         List<Login> expectedUsers = List.of(
-                new Login(1L, "user1", "123456", "user1@test.com", Role.ROLE_CUSTOMER, LocalDateTime.now()),
-                new Login(2L, "user2", "123456", "user2@test.com", Role.ROLE_MANAGER, LocalDateTime.now())
+                new Login(1, "user1", "123456", "user1@test.com", Role.ROLE_CUSTOMER, LocalDateTime.now()),
+                new Login(2, "user2", "123456", "user2@test.com", Role.ROLE_MANAGER, LocalDateTime.now())
         );
         when(loginRepository.findAll()).thenReturn(expectedUsers);
 

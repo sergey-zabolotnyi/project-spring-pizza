@@ -68,7 +68,7 @@ class CartControllerTest {
     void testCreate() {
         // Мокирование ItemDTO
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setItemId(1L);
+        itemDTO.setItemId(1);
 
         // Мокирование cartService.saveNewItem()
         Cart cart = new Cart();
@@ -87,7 +87,7 @@ class CartControllerTest {
     void testDelete() {
         // Мокирование ItemDTO
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setItemId(1L);
+        itemDTO.setItemId(1);
 
         // Вызов метода
         assertDoesNotThrow(() -> cartController.delete(itemDTO));

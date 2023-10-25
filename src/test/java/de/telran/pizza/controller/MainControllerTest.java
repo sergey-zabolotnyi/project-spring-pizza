@@ -33,10 +33,10 @@ class MainControllerTest {
         PageDishesDTO dummyPageDishesDTO = new PageDishesDTO(/* параметры DTO */);
 
         // Устанавливаем поведение сервиса при вызове метода
-        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyLong())).thenReturn(dummyPageDishesDTO);
+        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyInt())).thenReturn(dummyPageDishesDTO);
 
         // Вызываем метод контроллера
-        ResponseEntity<PageDishesDTO> response = mainController.findPaginated(1, "name", "asc", 1L);
+        ResponseEntity<PageDishesDTO> response = mainController.findPaginated(1, "name", "asc", 1);
 
         // Проверяем, что ответ не равен null
         assertNotNull(response);
@@ -53,11 +53,11 @@ class MainControllerTest {
     @Test
     void testFindPaginatedException() {
         // Устанавливаем поведение сервиса при возникновении исключения
-        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyLong())).thenThrow(new RuntimeException("Error"));
+        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyInt())).thenThrow(new RuntimeException("Error"));
 
         // Вызываем метод контроллера и ожидаем исключение
         assertThrows(ResponseStatusException.class, () -> {
-            mainController.findPaginated(1, "name", "asc", 1L);
+            mainController.findPaginated(1, "name", "asc", 1);
         });
     }
 }

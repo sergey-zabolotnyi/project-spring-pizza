@@ -63,7 +63,7 @@ public class DishControllerTest {
                 .nameEn("test")
                 .nameRu("тест")
                 .price(new BigDecimal(10))
-                .category(Category.builder().id(1L).build())
+                .category(Category.builder().id(1).build())
                 .build();
         String requestJson = jsonMapper(dish);
 
@@ -80,7 +80,7 @@ public class DishControllerTest {
                 .nameEn("тест")
                 .nameRu("тест")
                 .price(new BigDecimal(10))
-                .category(Category.builder().id(1L).build())
+                .category(Category.builder().id(1).build())
                 .build();
         String requestJson = jsonMapper(dish);
 
@@ -96,7 +96,7 @@ public class DishControllerTest {
                 .nameEn("test")
                 .nameRu("тест")
                 .price(new BigDecimal(-10))
-                .category(Category.builder().id(1L).build())
+                .category(Category.builder().id(1).build())
                 .build();
         String requestJson = jsonMapper(dish);
 
@@ -171,7 +171,7 @@ public class DishControllerTest {
                 .nameEn("testNew")
                 .nameRu("тест123")
                 .price(new BigDecimal(20))
-                .category(Category.builder().id(1L).build())
+                .category(Category.builder().id(1).build())
                 .build();
         String requestJson = jsonMapper(dish);
 

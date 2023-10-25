@@ -9,13 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public interface DishRepository extends JpaRepository<Dish, Long> {
-    Page<Dish> findByCategoryId(Long categoryId, Pageable pageable);
+public interface DishRepository extends JpaRepository<Dish, Integer> {
+    Page<Dish> findByCategoryId(int categoryId, Pageable pageable);
 
     @Nonnull
-    Optional<Dish> findById(@Nonnull Long id);
+    Optional<Dish> findById(@Nonnull int id);
 
-    void deleteById(@Nonnull Long id);
+    void deleteById(@Nonnull int id);
 
     Optional<Dish> findByNameEn(@NonNull String name);
 }

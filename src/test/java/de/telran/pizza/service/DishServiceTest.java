@@ -42,7 +42,7 @@ class DishServiceTest {
                 .nameEn("testNew")
                 .nameRu("тест123")
                 .price(new BigDecimal(15))
-                .category(Category.builder().id(1L).build())
+                .category(Category.builder().id(1).build())
                 .build());
     }
 
@@ -60,8 +60,10 @@ class DishServiceTest {
     void testFindAllDishes() {
         // Создаем тестовые данные
         List<Dish> dishes = Arrays.asList(
-                new Dish(1L,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(), LocalDateTime.now()),
-                new Dish(2L,"Margarita", "Маргарита", new BigDecimal("10.50"), new Category(), LocalDateTime.now())
+                new Dish(1,"Pepperoni", "Пепперони", new BigDecimal("11.30"), new Category(),
+                        LocalDateTime.now()),
+                new Dish(2,"Margarita", "Маргарита", new BigDecimal("10.50"), new Category(),
+                        LocalDateTime.now())
         );
 
         // Настроим mock-репозиторий, чтобы возвращать тестовые данные при вызове findAll
@@ -78,8 +80,9 @@ class DishServiceTest {
     @Test
     void testFindById() {
         // Создаем тестовые данные
-        Long dishId = 1L;
-        Dish dish = new Dish(1L,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(), LocalDateTime.now());
+        int dishId = 1;
+        Dish dish = new Dish(1,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(),
+                LocalDateTime.now());
 
         // Настроим mock-репозиторий, чтобы возвращать тестовый dish при вызове findById
         when(dishRepository.findById(dishId)).thenReturn(Optional.of(dish));

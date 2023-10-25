@@ -22,7 +22,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор корзины", example = "1")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "login_id", referencedColumnName = "id")
@@ -37,7 +37,7 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Long id, Login login, Dish dish) {
+    public Cart(int id, Login login, Dish dish) {
         this.id = id;
         this.login = login;
         this.dish = dish;

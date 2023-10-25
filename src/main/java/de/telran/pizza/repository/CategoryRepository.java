@@ -3,6 +3,6 @@ package de.telran.pizza.repository;
 import de.telran.pizza.domain.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
 }

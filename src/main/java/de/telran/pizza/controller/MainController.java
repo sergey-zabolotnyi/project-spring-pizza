@@ -44,13 +44,13 @@ public class MainController {
             summary = "Получение таблицы блюд пиццерии",
             description = "Получение таблицы блюд пиццерии на главной странице")
     public ResponseEntity<PageDishesDTO> findPaginated
-    (@Valid @PathVariable(value = "page") @Parameter(description = "Номер страницы") Integer pageNum,
+    (@Valid @PathVariable(value = "page") @Parameter(description = "Номер страницы") int pageNum,
      @RequestParam(value = "sort", required = false) @io.swagger.v3.oas.annotations.parameters.RequestBody(
              description = "Сортировка по полю") String sortField,
      @RequestParam(value = "direct", required = false) @io.swagger.v3.oas.annotations.parameters.RequestBody(
              description = "Тип сортировки") String sortDirection,
      @RequestParam(value = "category", required = false) @io.swagger.v3.oas.annotations.parameters.RequestBody(
-             description = "Категория") Long categoryId) {
+             description = "Категория") int categoryId) {
         log.info(helper.getLogMessage("select.all.dishes.page") + pageNum);
 
         try {

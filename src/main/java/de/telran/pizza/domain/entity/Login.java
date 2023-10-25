@@ -28,7 +28,7 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор пользователя", example = "3")
-    private Long id;
+    private int id;
 
     @Column(name = "login")
     @Schema(description = "Логин пользователя", example = "user")

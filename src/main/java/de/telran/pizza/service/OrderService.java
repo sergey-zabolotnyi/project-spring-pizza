@@ -12,7 +12,6 @@ import de.telran.pizza.repository.OrdersRepository;
 import de.telran.pizza.service.mapper.DishMapper;
 import de.telran.pizza.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -91,7 +90,7 @@ public class OrderService {
      * @throws NoSuchElementException if the order is not found or the user lacks authorization.
      */
     @Transactional
-    public boolean confirm(Long id) {
+    public boolean confirm(int id) {
         Orders order = ordersRepository.findById(id).orElseThrow(() ->
                 new NoSuchElementException(helper.getLogMessage("select.orders.not") + id));
         if (!Utils.getAuthorizedLogin().getRole().equals(Role.ROLE_MANAGER) ||
@@ -110,8 +109,8 @@ public class OrderService {
      * @throws NoSuchElementException if the order is not found or the user lacks authorization.
      */
     @Transactional
-    public boolean payment(Long id) {
-        Long loginId = Utils.getAuthorizedLogin().getId();
+    public boolean payment(int id) {
+        int loginId = Utils.getAuthorizedLogin().getId();
 
         ordersRepository.findByIdAndLoginIdAndStatus(id, loginId, Status.NEW)
                 .orElseThrow(() -> new NoSuchElementException(

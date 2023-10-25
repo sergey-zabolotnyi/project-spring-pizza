@@ -23,7 +23,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор категории", example = "4")
-    private Long id;
+    private int id;
 
     @Column(name = "category_en")
     @Schema(description = "Название категории на английском", example = "Pizza")

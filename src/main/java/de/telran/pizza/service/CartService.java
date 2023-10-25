@@ -1,18 +1,17 @@
 package de.telran.pizza.service;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.Cart;
-import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.dto.CartDTO;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.dto.ItemDTO;
+import de.telran.pizza.domain.entity.Cart;
+import de.telran.pizza.domain.entity.Dish;
+import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.service.mapper.DishMapper;
 import de.telran.pizza.utils.Utils;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -74,7 +73,7 @@ public class CartService {
      * @throws NoSuchElementException if the item with the specified ID does not exist.
      */
     @Transactional
-    public void delete(@NonNull Long id) {
+    public void delete(@NonNull int id) {
         List<Cart> list = cartRepository.findCartByDish_Id(id);
         if (list.isEmpty()) {
             throw new NoSuchElementException(helper.getLogMessage("delete.cart.not"));
@@ -88,7 +87,7 @@ public class CartService {
      * @param id The ID of the user whose cart items should be deleted.
      */
     @Transactional
-    public void deleteByLogin(@NonNull Long id) {
+    public void deleteByLogin(@NonNull int id) {
         cartRepository.deleteByLoginId(id);
     }
 }

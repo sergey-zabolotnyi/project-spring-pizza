@@ -77,8 +77,8 @@ class SignupControllerTest {
     void testGetAllUsersCount() {
         // Создаем фиктивные данные для возвращения из сервиса
         List<Login> users = Arrays.asList(
-                new Login(1L,"user","qwerty","user@gmail.com", ROLE_CUSTOMER, LocalDateTime.now()),
-                new Login(2L,"manager","qwerty","manager@gmail.com", ROLE_MANAGER, LocalDateTime.now()));
+                new Login(1,"user","qwerty","user@gmail.com", ROLE_CUSTOMER, LocalDateTime.now()),
+                new Login(2,"manager","qwerty","manager@gmail.com", ROLE_MANAGER, LocalDateTime.now()));
 
         // Устанавливаем поведение сервиса при вызове метода
         when(loginService.getAllUsers()).thenReturn(users);
@@ -96,5 +96,37 @@ class SignupControllerTest {
         Integer usersCount = response.getBody();
         assertNotNull(usersCount);
         assertEquals(users.size(), usersCount);
+    }
+    @Test
+    void signup_ValidLoginDTO_RedirectsToLogin() throws Exception {
+        // Arrange
+        LoginDTO loginDTO = new LoginDTO();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
+        // Mock логирования
+        when(helper.getLogMessage(anyString())).thenReturn("Some log message");
+
+        // Act
+        signupController.signup(loginDTO, response);
+
+        // Assert
+        verify(loginService).saveUser(loginDTO, Role.ROLE_CUSTOMER);
+        verify(response).sendRedirect("login");
+    }
+
+    @Test
+    void signup_InvalidLoginDTO_ThrowsBadRequestException() {
+        // Arrange
+        LoginDTO invalidLoginDTO = new LoginDTO();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+
+        // Mock логирования
+        when(helper.getLogMessage(anyString())).thenReturn("Some log message");
+
+        // Mock LoginService, чтобы выбросить исключение
+        doThrow(new RuntimeException("Some error message")).when(loginService).saveUser(any(), any());
+
+        // Act & Assert
+        assertThrows(ResponseStatusException.class, () -> signupController.signup(invalidLoginDTO, response));
     }
 }

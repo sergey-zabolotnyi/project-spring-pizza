@@ -28,7 +28,7 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор блюда", example = "5")
-    private Long id;
+    private int id;
 
     @Pattern(regexp = "^[a-zA-z0-9 -]+$",
             message = "error.dish.name_en")

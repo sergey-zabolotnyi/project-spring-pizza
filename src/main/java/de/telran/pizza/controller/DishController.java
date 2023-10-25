@@ -82,7 +82,7 @@ public class DishController {
             description = "Получение блюд Пиццерии по ID, хранящихся в БД")
     public ResponseEntity<Dish> getDishById(@Valid @RequestParam(value = "id")
                                             @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                                                    description = "Идентефикатор блюда") Long id) {
+                                                    description = "Идентефикатор блюда") int id) {
         log.info(helper.getLogMessage("select.dishes.log") + id);
         try {
             return ResponseEntity.ok(dishService.findById(id));

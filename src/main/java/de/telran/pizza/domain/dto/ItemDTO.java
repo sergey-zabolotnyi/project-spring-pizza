@@ -16,5 +16,5 @@ public class ItemDTO {
 
     @Min(value = 1, message = "error.itemDTO")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор категории", example = "20")
-    Long itemId;
+    Integer itemId;
 }

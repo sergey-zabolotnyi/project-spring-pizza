@@ -34,5 +34,5 @@ public class PageDishesDTO {
     private String sortDirection;
 
     @Schema(description = "ID категории", example = "2")
-    private Long categoryId;
+    private int categoryId;
 }

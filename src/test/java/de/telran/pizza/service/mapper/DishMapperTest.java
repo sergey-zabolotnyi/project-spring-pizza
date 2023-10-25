@@ -14,15 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DishMapperTest {
     @Test
     public void testDishListToDtoList() {
         // Создаем фиктивные данные для теста
         List<Dish> dishList = Arrays.asList(
-                new Dish(1L, "Dish1", "Блюдо1", new BigDecimal("11.00"), new Category(),
+                new Dish(1, "Dish1", "Блюдо1", new BigDecimal("11.00"), new Category(),
                         LocalDateTime.now()),
-                new Dish(2L, "Dish2", "Блюдо2", new BigDecimal("12.00"), new Category(),
+                new Dish(2, "Dish2", "Блюдо2", new BigDecimal("12.00"), new Category(),
                         LocalDateTime.now())
         );
 
@@ -38,14 +39,15 @@ public class DishMapperTest {
     @Test
     public void testDishToDishDto() {
         // Создаем фиктивные данные для теста
-        Dish dish = new Dish(1L, "Dish1", "Блюдо1", new BigDecimal("11.00"), new Category(),
+        Dish dish = new Dish(1, "Dish1", "Блюдо1", new BigDecimal("11.00"), new Category(),
                 LocalDateTime.now());
 
         // Вызываем метод, который мы хотим протестировать
         DishDTO result = DishMapper.dishToDishDto(dish);
 
         // Проверяем, что результат соответствует ожидаемому
-        assertEquals(1L, result.getId());
+        assertNotNull(result);
+        assertEquals(1, result.getId());
         assertEquals("Блюдо1", result.getName());
         assertEquals(new BigDecimal("11.00"), result.getPrice());
     }
@@ -54,8 +56,8 @@ public class DishMapperTest {
     public void testGetDishTotalPrice() {
         // Создаем фиктивные данные для теста
         List<DishDTO> dishDTOList = Arrays.asList(
-                new DishDTO(1L, "Dish1", new BigDecimal("10.00"), new CategoryDTO()),
-                new DishDTO(2L, "Dish2", new BigDecimal("20.00"), new CategoryDTO())
+                new DishDTO(1, "Dish1", new BigDecimal("10.00"), new CategoryDTO()),
+                new DishDTO(2, "Dish2", new BigDecimal("20.00"), new CategoryDTO())
         );
 
         // Вызываем метод, который мы хотим протестировать
@@ -69,9 +71,9 @@ public class DishMapperTest {
     public void testListDishesDTOtoCart() {
         // Создаем фиктивные данные для теста
         List<Cart> cartList = Arrays.asList(
-                new Cart(1L, new Login(), new Dish(1L, "Dish1", "Блюдо1",
+                new Cart(1, new Login(), new Dish(1, "Dish1", "Блюдо1",
                         new BigDecimal("11.00"), new Category(), LocalDateTime.now())),
-                new Cart(2L, new Login(), new Dish(2L, "Dish2", "Блюдо2",
+                new Cart(2, new Login(), new Dish(2, "Dish2", "Блюдо2",
                         new BigDecimal("12.00"), new Category(), LocalDateTime.now()))
         );
 

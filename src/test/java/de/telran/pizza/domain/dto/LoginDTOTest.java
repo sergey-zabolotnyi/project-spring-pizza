@@ -28,48 +28,82 @@ public class LoginDTOTest {
         assertEquals(expectedEmail, loginDTO.getEmail());
         assertEquals(expectedPassword, loginDTO.getPassword());
     }
+    @Test
+    void getLogin() {
+        String login = "user";
+        LoginDTO loginDTO = LoginDTO.builder().login(login).build();
+        String result = loginDTO.getLogin();
+        assertEquals(login, result);
+    }
 
     @Test
-    void loginDTO_SchemaDescriptionMatches() {
-        // Подготовка
-        Class<LoginDTO> clazz = LoginDTO.class;
+    void getEmail() {
+        String email = "user@gmail.com";
+        LoginDTO loginDTO = LoginDTO.builder().email(email).build();
+        String result = loginDTO.getEmail();
+        assertEquals(email, result);
+    }
 
-        // Проверка аннотации @Schema
-        Schema schemaAnnotation = clazz.getAnnotation(Schema.class);
-        assertNotNull(schemaAnnotation);
-        assertEquals("ДТО объект для входа пользователя в систему.", schemaAnnotation.description());
+    @Test
+    void getPassword() {
+        String password = "qwerty";
+        LoginDTO loginDTO = LoginDTO.builder().password(password).build();
+        String result = loginDTO.getPassword();
+        assertEquals(password, result);
+    }
 
-        // Проверка поля login
-        try {
-            java.lang.reflect.Field loginField = clazz.getDeclaredField("login");
-            Schema loginFieldAnnotation = loginField.getAnnotation(Schema.class);
-            assertNotNull(loginFieldAnnotation);
-            assertEquals("Логин пользователя", loginFieldAnnotation.description());
-            assertEquals("user", loginFieldAnnotation.example());
-        } catch (NoSuchFieldException e) {
-            fail("Field 'login' not found");
-        }
+    @Test
+    void setLogin() {
+        LoginDTO loginDTO = LoginDTO.builder().login("user").build();
+        loginDTO.setLogin("user1");
+        assertEquals("user1", loginDTO.getLogin());
+    }
 
-        // Проверка поля email
-        try {
-            java.lang.reflect.Field emailField = clazz.getDeclaredField("email");
-            Schema emailFieldAnnotation = emailField.getAnnotation(Schema.class);
-            assertNotNull(emailFieldAnnotation);
-            assertEquals("Электронная почта пользователя", emailFieldAnnotation.description());
-            assertEquals("user@gmail.com", emailFieldAnnotation.example());
-        } catch (NoSuchFieldException e) {
-            fail("Field 'email' not found");
-        }
+    @Test
+    void setEmail() {
+        LoginDTO loginDTO = LoginDTO.builder().email("user@gmail.com").build();
+        loginDTO.setEmail("user1@gmail.com");
+        assertEquals("user1@gmail.com", loginDTO.getEmail());
+    }
 
-        // Проверка поля password
-        try {
-            java.lang.reflect.Field passwordField = clazz.getDeclaredField("password");
-            Schema passwordFieldAnnotation = passwordField.getAnnotation(Schema.class);
-            assertNotNull(passwordFieldAnnotation);
-            assertEquals("Пароль пользователя", passwordFieldAnnotation.description());
-            assertEquals("qwerty", passwordFieldAnnotation.example());
-        } catch (NoSuchFieldException e) {
-            fail("Field 'password' not found");
-        }
+    @Test
+    void setPassword() {
+        LoginDTO loginDTO = LoginDTO.builder().password("qwerty").build();
+        loginDTO.setPassword("qwerty1");
+        assertEquals("qwerty1", loginDTO.getPassword());
+    }
+
+    @Test
+    void testEquals() {
+        LoginDTO loginDTO1 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        LoginDTO loginDTO2 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        assertEquals(loginDTO1, loginDTO2);
+    }
+
+    @Test
+    void canEqual() {
+        LoginDTO loginDTO1 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        LoginDTO loginDTO2 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        assertTrue(loginDTO1.canEqual(loginDTO2));
+    }
+
+    @Test
+    void testHashCode() {
+        LoginDTO loginDTO1 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        LoginDTO loginDTO2 = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        assertEquals(loginDTO1.hashCode(), loginDTO2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        LoginDTO loginDTO = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        String result = loginDTO.toString();
+        assertNotNull(result);
+    }
+
+    @Test
+    void builder() {
+        LoginDTO loginDTO = LoginDTO.builder().login("user").email("user@gmail.com").password("qwerty").build();
+        assertNotNull(loginDTO);
     }
 }

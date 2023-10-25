@@ -25,7 +25,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/cart")
 @Tag(name = "Контроллер корзины пользователей",
         description = "Контроллер для различных операций над корзиной пользователей")
-public class CartController {
+public class   CartController {
     private CartService cartService;
     private MessageHelper helper;
 
@@ -102,7 +102,7 @@ public class CartController {
             summary = "Удаляет все блюда из корзины пользователей",
             description = "Удаляет все блюда из корзины для залогиненного пользователя")
     public void deleteAll() {
-        Long userId = Utils.getAuthorizedLogin().getId();
+        int userId = Utils.getAuthorizedLogin().getId();
         log.info(helper.getLogMessage("delete.all.cart.log") + userId);
         try {
             cartService.deleteByLogin(userId);

@@ -8,10 +8,10 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 @Repository
-public interface LoginRepository extends JpaRepository<Login, Long> {
+public interface LoginRepository extends JpaRepository<Login, Integer> {
     Optional<Login> findByLogin(String login);
 
     @Nonnull
-    Optional<Login> findById(@Nonnull Long id);
+    Optional<Login> findById(@Nonnull int id);
 
 }

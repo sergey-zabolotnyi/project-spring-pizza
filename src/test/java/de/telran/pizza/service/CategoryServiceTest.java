@@ -24,8 +24,8 @@ public class CategoryServiceTest {
         // Имитация поведения (Mock)
         // Задаем список категорий для возвращения при вызове categoryRepository.findAll()
         List<Category> categories = List.of(
-                new Category(1L, "Category1", "Категория1"),
-                new Category(2L, "Category2", "Категория2")
+                new Category(1, "Category1", "Категория1"),
+                new Category(2, "Category2", "Категория2")
         );
         Mockito.when(categoryRepository.findAll()).thenReturn(categories);
 
@@ -41,8 +41,7 @@ public class CategoryServiceTest {
     }
     @Test
     public void testFindAllCategoryEmptyList() {
-        // Подготовка (Arrange)
-        // Создаем заглушку для репозитория категорий
+        // Подготовка: Создаем заглушку для репозитория категорий
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
         // Создаем сервис категорий с использованием заглушки
         CategoryService categoryService = new CategoryService(categoryRepository);
@@ -51,12 +50,10 @@ public class CategoryServiceTest {
         // Задаем пустой список для возвращения при вызове categoryRepository.findAll()
         Mockito.when(categoryRepository.findAll()).thenReturn(List.of());
 
-        // Действие (Act)
-        // Вызываем метод, который тестируем
+        // Действие: Вызываем метод, который тестируем
         List<CategoryDTO> result = categoryService.findAllCategory();
 
-        // Проверка (Assert)
-        // Проверяем, что результат является пустым списком
+        // Проверка: Проверяем, что результат является пустым списком
         assertTrue(result.isEmpty());
     }
 }

@@ -35,7 +35,7 @@ class UserDetailServiceSecurityTest {
     @Test
     public void testLoadUserByUsername_UserNotFound() {
         // Подготовка
-        String username = "nonexistent_user";
+        String username = "not_found_user";
         LoginService loginService = Mockito.mock(LoginService.class);
         Mockito.when(loginService.findByUserLogin(anyString())).thenReturn(Optional.empty());
 

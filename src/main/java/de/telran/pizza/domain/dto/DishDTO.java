@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class DishDTO {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор категории", example = "10")
-    private Long id;
+    private int id;
 
     @Schema(description = "Название блюда", example = "Маргарита")
     private String name;

@@ -11,14 +11,20 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Schema(description = "ДТО объект категории Пиццерии")
 public class CategoryDTO {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор категории", example = "2")
-    private Long id;
+    private int id;
 
     @Schema(description = "Название категории", example = "Пиццы")
     private String category;
+
+    public CategoryDTO() {
+    }
+
+    public CategoryDTO(int id, String category) {
+        this.id = id;
+        this.category = category;
+    }
 }

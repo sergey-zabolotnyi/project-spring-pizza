@@ -70,4 +70,22 @@ public class UserDetailSecurityTest {
         UserDetailSecurity userDetailSecurity = new UserDetailSecurity(new Login());
         assertTrue(userDetailSecurity.isEnabled());
     }
+
+    @Test
+    void getLogin() {
+        Login login = Login.builder().login("user1").build();
+        UserDetailSecurity userDetailSecurity = new UserDetailSecurity(login);
+
+        assertEquals(login, userDetailSecurity.getLogin());
+    }
+
+    @Test
+    void setLogin() {
+        Login initialLogin = Login.builder().login("user1").build();
+        Login newLogin = Login.builder().login("user2").build();
+        UserDetailSecurity userDetailSecurity = new UserDetailSecurity(initialLogin);
+        userDetailSecurity.setLogin(newLogin);
+
+        assertEquals(newLogin, userDetailSecurity.getLogin());
+    }
 }

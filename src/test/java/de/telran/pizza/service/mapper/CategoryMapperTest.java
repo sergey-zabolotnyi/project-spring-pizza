@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 class CategoryMapperTest {
@@ -15,8 +16,8 @@ class CategoryMapperTest {
     @Test
     void categoryListToDtoList() {
         // Создаем фиктивные данные для теста
-        Category category1 = new Category(1L, "Category1En", "Категория1Ру");
-        Category category2 = new Category(2L, "Category2En", "Категория2Ру");
+        Category category1 = new Category(1, "Category1En", "Категория1Ру");
+        Category category2 = new Category(2, "Category2En", "Категория2Ру");
         List<Category> categoryList = Arrays.asList(category1, category2);
 
         // Вызываем метод, который мы хотим протестировать
@@ -33,11 +34,26 @@ class CategoryMapperTest {
             assertEquals(category.getCategoryRu(), categoryDTO.getCategory());
         }
     }
+    @Test
+    void categoryListToDtoList_ConvertsList() {
+        // Создаем фиктивные данные для теста
+        Category category1 = new Category(1, "Category1En", "Категория1Ру");
+        Category category2 = new Category(2, "Category2En", "Категория2Ру");
+        List<Category> categoryList = Arrays.asList(category1, category2);
+
+        // Вызываем метод, который мы хотим протестировать
+        List<CategoryDTO> categoryDTOList = CategoryMapper.categoryListToDtoList(categoryList);
+
+        // Assert
+        assertEquals(2, categoryDTOList.size());
+        assertEquals("Категория1Ру", categoryDTOList.get(0).getCategory());
+        assertEquals("Категория2Ру", categoryDTOList.get(1).getCategory());
+    }
 
     @Test
     void categoryToDto() {
         // Создаем фиктивную категорию
-        Category category = new Category(1L, "CategoryEn", "Категория1Ру");
+        Category category = new Category(1, "CategoryEn", "КатегорияРу");
 
         // Вызываем метод, который мы хотим протестировать
         CategoryDTO categoryDTO = CategoryMapper.categoryToDto(category);
@@ -45,5 +61,18 @@ class CategoryMapperTest {
         // Проверяем, что результат соответствует ожидаемому
         assertEquals(category.getId(), categoryDTO.getId());
         assertEquals(category.getCategoryRu(), categoryDTO.getCategory());
+    }
+    @Test
+    void categoryToDto_ConvertsSingleCategory() {
+        // Создаем фиктивную категорию
+        Category category = new Category(1, "Category1", "Категория1");
+
+        // Вызываем метод, который мы хотим протестировать
+        CategoryDTO categoryDTO = CategoryMapper.categoryToDto(category);
+
+        // Assert
+        assertNotNull(categoryDTO);
+        assertEquals(1, categoryDTO.getId());
+        assertEquals("Категория1", categoryDTO.getCategory());
     }
 }

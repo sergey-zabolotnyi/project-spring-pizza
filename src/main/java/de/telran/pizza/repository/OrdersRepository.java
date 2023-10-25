@@ -10,15 +10,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface OrdersRepository extends JpaRepository<Orders, Long> {
-    List<Orders> findOrdersByLoginId(Long id);
+public interface OrdersRepository extends JpaRepository<Orders, Integer> {
+    List<Orders> findOrdersByLoginId(int id);
     List<Orders> findOrdersByOrderByIdAsc();
 
-    Optional<Orders> findByIdAndLoginIdAndStatus(Long id, Long loginId, Status status);
+    Optional<Orders> findByIdAndLoginIdAndStatus(int id, int loginId, Status status);
 
     @Modifying
     @Query("UPDATE Orders o SET o.status = :status WHERE o.id = :id")
-    void updateStatus(@Param(value = "id") Long id,
+    void updateStatus(@Param(value = "id") int id,
                       @Param(value = "status") Status status);
     @Query(value = "select sum(total_price) from orders", nativeQuery = true)
     Double findTotalOrdersSum();

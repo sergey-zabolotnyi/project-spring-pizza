@@ -9,5 +9,9 @@ class PizzaApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	@Test
+	void main() {
+		PizzaApplication.main(new String[] {});
+	}
 
 }

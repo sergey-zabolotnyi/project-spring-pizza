@@ -10,7 +10,7 @@ public class CategoryDTOTest {
     @Test
     void categoryDTO_CreatingCategoryObject_ExpectCorrectData() {
         // Подготовка
-        Long expectedId = 2L;
+        int expectedId = 2;
         String expectedCategory = "Pizzas";
 
         // Выполнение
@@ -57,5 +57,74 @@ public class CategoryDTOTest {
         } catch (NoSuchFieldException e) {
             fail("Field 'category' not found");
         }
+    }
+
+    @Test
+    void getId() {
+        int id = 1;
+        CategoryDTO categoryDTO = CategoryDTO.builder().id(id).build();
+        int result = categoryDTO.getId();
+        assertEquals(id, result);
+    }
+
+    @Test
+    void getCategory() {
+        String category = "Pizza";
+        CategoryDTO categoryDTO = CategoryDTO.builder().category(category).build();
+        String result = categoryDTO.getCategory();
+        assertEquals(category, result);
+    }
+
+    @Test
+    void setId() {
+        int id = 1;
+        CategoryDTO categoryDTO = CategoryDTO.builder().id(id).build();
+        categoryDTO.setId(2);
+        assertEquals(2, categoryDTO.getId());
+    }
+
+    @Test
+    void setCategory() {
+        String category = "Pizza";
+        CategoryDTO categoryDTO = CategoryDTO.builder().category(category).build();
+        categoryDTO.setCategory("Salad");
+        assertEquals("Salad", categoryDTO.getCategory());
+    }
+
+    @Test
+    void testEquals() {
+        CategoryDTO categoryDTO1 = CategoryDTO.builder().id(1).category("Pizza").build();
+        CategoryDTO categoryDTO2 = CategoryDTO.builder().id(1).category("Pizza").build();
+
+        assertEquals(categoryDTO1, categoryDTO2);
+    }
+
+    @Test
+    void canEqual() {
+        CategoryDTO categoryDTO1 = CategoryDTO.builder().id(1).category("Pizza").build();
+        CategoryDTO categoryDTO2 = CategoryDTO.builder().id(1).category("Pizza").build();
+
+        assertTrue(categoryDTO1.canEqual(categoryDTO2));
+    }
+
+    @Test
+    void testHashCode() {
+        CategoryDTO categoryDTO1 = CategoryDTO.builder().id(1).category("Pizza").build();
+        CategoryDTO categoryDTO2 = CategoryDTO.builder().id(1).category("Pizza").build();
+
+        assertEquals(categoryDTO1.hashCode(), categoryDTO2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        CategoryDTO categoryDTO = CategoryDTO.builder().id(1).category("Pizza").build();
+        assertNotNull(categoryDTO.toString());
+    }
+
+    @Test
+    void builder() {
+        CategoryDTO categoryDTO = CategoryDTO.builder().build();
+
+        assertNotNull(categoryDTO);
     }
 }

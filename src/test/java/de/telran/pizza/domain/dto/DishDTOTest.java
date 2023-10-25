@@ -12,11 +12,11 @@ public class DishDTOTest {
     @Test
     void dishDTO_CreatingDishObject_ExpectCorrectData() {
         // Подготовка
-        Long expectedId = 10L;
+        int expectedId = 10;
         String expectedName = "Margherita";
         BigDecimal expectedPrice = new BigDecimal("10.50");
         CategoryDTO expectedCategory = CategoryDTO.builder()
-                .id(2L)
+                .id(2)
                 .category("Pizzas")
                 .build();
 
@@ -90,5 +90,102 @@ public class DishDTOTest {
         } catch (NoSuchFieldException e) {
             fail("Field 'category' not found");
         }
+    }
+    @Test
+    void getId() {
+        int id = 1;
+        DishDTO dishDTO = DishDTO.builder().id(id).build();
+        int result = dishDTO.getId();
+        assertEquals(id, result);
+    }
+
+    @Test
+    void getName() {
+        String name = "Pepperoni";
+        DishDTO dishDTO = DishDTO.builder().name(name).build();
+        String result = dishDTO.getName();
+        assertEquals(name, result);
+    }
+
+    @Test
+    void getPrice() {
+        BigDecimal price = BigDecimal.valueOf(10.50);
+        DishDTO dishDTO = DishDTO.builder().price(price).build();
+        BigDecimal result = dishDTO.getPrice();
+        assertEquals(price, result);
+    }
+
+    @Test
+    void getCategory() {
+        CategoryDTO categoryDTO = CategoryDTO.builder().id(1).category("Pizza").build();
+        DishDTO dishDTO = DishDTO.builder().category(categoryDTO).build();
+        CategoryDTO result = dishDTO.getCategory();
+        assertEquals(categoryDTO, result);
+    }
+
+    @Test
+    void setId() {
+        int id = 1;
+        DishDTO dishDTO = DishDTO.builder().id(id).build();
+        dishDTO.setId(2);
+        assertEquals(2, dishDTO.getId());
+    }
+
+    @Test
+    void setName() {
+        String name = "Pepperoni";
+        DishDTO dishDTO = DishDTO.builder().name(name).build();
+        dishDTO.setName("Margherita");
+        assertEquals("Margherita", dishDTO.getName());
+    }
+
+    @Test
+    void setPrice() {
+        BigDecimal price = BigDecimal.valueOf(10.50);
+        DishDTO dishDTO = DishDTO.builder().price(price).build();
+        dishDTO.setPrice(BigDecimal.valueOf(11.0));
+        assertEquals(BigDecimal.valueOf(11.0), dishDTO.getPrice());
+    }
+
+    @Test
+    void setCategory() {
+        CategoryDTO categoryDTO1 = CategoryDTO.builder().id(1).category("Pizza").build();
+        CategoryDTO categoryDTO2 = CategoryDTO.builder().id(2).category("Salad").build();
+        DishDTO dishDTO = DishDTO.builder().category(categoryDTO1).build();
+        dishDTO.setCategory(categoryDTO2);
+        assertEquals(categoryDTO2, dishDTO.getCategory());
+    }
+
+    @Test
+    void testEquals() {
+        DishDTO dishDTO1 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        DishDTO dishDTO2 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        assertEquals(dishDTO1, dishDTO2);
+    }
+
+    @Test
+    void canEqual() {
+        DishDTO dishDTO1 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        DishDTO dishDTO2 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        assertTrue(dishDTO1.canEqual(dishDTO2));
+    }
+
+    @Test
+    void testHashCode() {
+        DishDTO dishDTO1 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        DishDTO dishDTO2 = DishDTO.builder().id(1).name("Margherita").price(BigDecimal.valueOf(10.50)).build();
+        assertEquals(dishDTO1.hashCode(), dishDTO2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        DishDTO dishDTO = DishDTO.builder().id(1).name("Маргарита").price(BigDecimal.valueOf(10.50)).build();
+        assertNotNull(dishDTO.toString());
+    }
+
+    @Test
+    void builder() {
+        DishDTO dishDTO = DishDTO.builder().build();
+        assertNotNull(dishDTO);
     }
 }

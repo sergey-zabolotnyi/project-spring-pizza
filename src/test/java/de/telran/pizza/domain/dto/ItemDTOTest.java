@@ -24,7 +24,7 @@ public class ItemDTOTest {
     void itemDTO_ValidationSuccess() {
         // Подготовка
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setItemId(20L);
+        itemDTO.setItemId(20);
 
         // Валидация
         var violations = validator.validate(itemDTO);
@@ -37,7 +37,7 @@ public class ItemDTOTest {
     void itemDTO_ValidationFailure_ItemIdLessThanOne() {
         // Подготовка
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setItemId(0L);
+        itemDTO.setItemId(0);
 
         // Валидация
         var violations = validator.validate(itemDTO);
@@ -80,5 +80,33 @@ public class ItemDTOTest {
         } catch (NoSuchFieldException e) {
             fail("Поле 'itemId' не найдено");
         }
+    }
+
+    @Test
+    void getItemId() {
+        int itemId = 20;
+        ItemDTO itemDTO = ItemDTO.builder().itemId(itemId).build();
+        int result = itemDTO.getItemId();
+        assertEquals(itemId, result);
+    }
+
+    @Test
+    void setItemId() {
+        ItemDTO itemDTO = ItemDTO.builder().itemId(20).build();
+        itemDTO.setItemId(30);
+        assertEquals(30, itemDTO.getItemId());
+    }
+
+    @Test
+    void testToString() {
+        ItemDTO itemDTO = ItemDTO.builder().itemId(20).build();
+        String result = itemDTO.toString();
+        assertNotNull(result);
+    }
+
+    @Test
+    void builder() {
+        ItemDTO itemDTO = ItemDTO.builder().build();
+        assertNotNull(itemDTO);
     }
 }

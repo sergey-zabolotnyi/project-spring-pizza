@@ -33,8 +33,8 @@ class CategoryControllerTest {
     void testGetAllCategories() {
         // Создаем фиктивные данные для возвращения из сервиса
         List<CategoryDTO> mockCategories = Arrays.asList(
-                new CategoryDTO(1L, "Pizza"),
-                new CategoryDTO(2L,"Salads")
+                new CategoryDTO(1, "Pizza"),
+                new CategoryDTO(2,"Salads")
         );
 
         // Устанавливаем поведение сервиса при вызове метода
@@ -59,8 +59,8 @@ class CategoryControllerTest {
     void testGetCategoriesCount() {
         // Создаем фиктивные данные для возвращения из сервиса
         List<CategoryDTO> mockCategories = Arrays.asList(
-                new CategoryDTO(1L, "Pizza"),
-                new CategoryDTO(2L,"Salads")
+                new CategoryDTO(1, "Pizza"),
+                new CategoryDTO(2,"Salads")
         );
 
         // Устанавливаем поведение сервиса при вызове метода

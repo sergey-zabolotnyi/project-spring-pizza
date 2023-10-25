@@ -59,8 +59,8 @@ public class DishService {
      */
     @Transactional
     public PageDishesDTO findAllDishesPage(Integer pageNum, String sortField,
-                                           String sortDirection, Long categoryId){
-        categoryId = categoryId == null || categoryId < 0 ? categoryIdDefault : categoryId;
+                                           String sortDirection, int categoryId){
+        categoryId = categoryId == 0 || categoryId < 0 ? categoryIdDefault : categoryId;
         Sort sort = validationSetDefault(sortField, sortDirection);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
 
@@ -118,7 +118,7 @@ public class DishService {
      * @return The Dish entity with the specified ID.
      * @throws NoSuchElementException if a dish with the specified ID does not exist.
      */
-    public Dish findById(Long id) {
+    public Dish findById(int id) {
         return dishRepository.findById(id).orElseThrow(() ->
                 new NoSuchElementException(helper.getLogMessage("select.dish.not")));
     }
@@ -155,7 +155,7 @@ public class DishService {
      *
      * @param id The ID of the dish to be deleted.
      */
-    public void delete(@NonNull Long id) {
+    public void delete(@NonNull int id) {
         dishRepository.deleteById(id);
     }
 }

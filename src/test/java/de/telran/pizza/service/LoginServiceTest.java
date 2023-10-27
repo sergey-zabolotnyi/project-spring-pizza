@@ -32,73 +32,72 @@ class LoginServiceTest {
     }
     @Test
     void testFindByUserLogin() {
-        // Arrange
+        // Подготовка: Устанавливаем входные данные
         String login = "testuser";
-        Login expectedLogin = new Login(1, login, "123456", "test@test.com",
-                Role.ROLE_CUSTOMER, LocalDateTime.now());
+        Login expectedLogin = new Login(login, "123456");
         when(loginRepository.findByLogin(login)).thenReturn(Optional.of(expectedLogin));
 
-        // Act
+        // Действие: Вызываем тестируемый метод
         Optional<Login> result = loginService.findByUserLogin(login);
 
-        // Assert
+        // Проверка: Убеждаемся, что результат присутствует и соответствует ожиданиям
         assertTrue(result.isPresent());
         assertEquals(expectedLogin, result.get());
     }
 
     @Test
     void testFindByUserLoginNotFound() {
-        // Arrange
+        // Подготовка: Устанавливаем входные данные
         String login = "nonexistentuser";
         when(loginRepository.findByLogin(login)).thenReturn(Optional.empty());
 
-        // Act
+        // Действие: Вызываем тестируемый метод
         Optional<Login> result = loginService.findByUserLogin(login);
 
-        // Assert
+        // Проверка: Убеждаемся, что результат отсутствует
         assertFalse(result.isPresent());
     }
 
     @Test
     void testSaveUser() {
-        // Arrange
+        // Подготовка: Создаем объекты и настраиваем моки
         LoginDTO loginDTO = new LoginDTO("newuser", "newuser@test.com", "123456");
         Role role = Role.ROLE_CUSTOMER;
         when(loginRepository.save(any(Login.class))).thenReturn(new Login(1, "newuser", "123456",
                 "newuser@test.com", role, LocalDateTime.now()));
 
-        // Act
+        // Действие: Вызываем тестируемый метод
         Login result = loginService.saveUser(loginDTO, role);
 
-        // Assert
+        // Проверка: Убеждаемся, что результат не является null и соответствует ожиданиям
         assertNotNull(result);
         assertEquals(role, result.getRole());
     }
 
     @Test
     void testSaveUserExistingLogin() {
-        // Arrange
+        // Подготовка: Создаем объекты и настраиваем моки
         LoginDTO loginDTO = new LoginDTO("existinguser", "existinguser@test.com", "123456");
         Role role = Role.ROLE_CUSTOMER;
         when(loginRepository.save(any(Login.class))).thenThrow(new IllegalArgumentException("nullexistinguser"));
 
-        // Act and Assert
+        // Действие и Проверка: Убеждаемся, что исключение выбрасывается при вызове тестируемого метода
         assertThrows(IllegalArgumentException.class, () -> loginService.saveUser(loginDTO, role));
     }
 
     @Test
     void testGetAllUsers() {
-        // Arrange
+        // Подготовка: Устанавливаем ожидаемый результат
         List<Login> expectedUsers = List.of(
-                new Login(1, "user1", "123456", "user1@test.com", Role.ROLE_CUSTOMER, LocalDateTime.now()),
-                new Login(2, "user2", "123456", "user2@test.com", Role.ROLE_MANAGER, LocalDateTime.now())
-        );
+                new Login("user1", "123456"),
+                new Login("user2", "123456"));
+
         when(loginRepository.findAll()).thenReturn(expectedUsers);
 
-        // Act
+        // Действие: Вызываем тестируемый метод
         List<Login> result = loginService.getAllUsers();
 
-        // Assert
+        // Проверка: Убеждаемся, что размеры и содержимое списков совпадают
         assertEquals(expectedUsers.size(), result.size());
         assertEquals(expectedUsers, result);
     }

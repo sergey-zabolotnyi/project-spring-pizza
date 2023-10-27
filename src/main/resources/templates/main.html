@@ -117,7 +117,7 @@
                         <td>{{i.price | number:2}}</td>
                         <td>{{i.category.category}}</td>
                         <td sec:authorize="isAuthenticated()">
-                            <a class="button" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
+                            <a class="button-green" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
                         </td>
                     </tr>
                     </tbody>

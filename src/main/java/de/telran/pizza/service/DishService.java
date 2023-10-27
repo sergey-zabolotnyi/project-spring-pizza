@@ -1,16 +1,15 @@
 package de.telran.pizza.service;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.Category;
-import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.dto.PageDishesDTO;
+import de.telran.pizza.domain.entity.Category;
+import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.service.mapper.CategoryMapper;
 import de.telran.pizza.service.mapper.DishMapper;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -88,15 +87,11 @@ public class DishService {
      * @param sortDirection The direction of sorting (ASC or DESC).
      * @return A Sort object with validated and default values for sorting.
      */
-    private Sort validationSetDefault(String sortField, String sortDirection) {
-        sortField = sortField == null || sortField.equals("null")
-                ? sortDefault
+    public Sort validationSetDefault(String sortField, String sortDirection) {
+        sortField = sortField == null || sortField.isEmpty() || sortField.equals("null") ? sortDefault
                 : (sortField.equals("name")) ? helper.getMessage("db.name") : sortField;
-        sortDirection = sortDirection != null &&
-                (sortDirection.equalsIgnoreCase("asc") ||
-                        sortDirection.equalsIgnoreCase("desc"))
-                ? sortDirection
-                : sortDirectionDefault;
+        sortDirection = (sortDirection != null && !sortDirection.isEmpty() && (sortDirection.equalsIgnoreCase("asc")
+                || sortDirection.equalsIgnoreCase("desc"))) ? sortDirection : sortDirectionDefault;
         return sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending();
     }

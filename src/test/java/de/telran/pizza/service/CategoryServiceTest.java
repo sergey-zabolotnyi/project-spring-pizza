@@ -15,8 +15,7 @@ public class CategoryServiceTest {
 
     @Test
     public void testFindAllCategory() {
-        // Подготовка (Arrange)
-        // Создаем заглушку для репозитория категорий
+        // Подготовка: Создаем заглушку для репозитория категорий
         CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
         // Создаем сервис категорий с использованием заглушки
         CategoryService categoryService = new CategoryService(categoryRepository);
@@ -29,12 +28,10 @@ public class CategoryServiceTest {
         );
         Mockito.when(categoryRepository.findAll()).thenReturn(categories);
 
-        // Действие (Act)
-        // Вызываем метод, который тестируем
+        // Действие: Вызываем метод, который тестируем
         List<CategoryDTO> result = categoryService.findAllCategory();
 
-        // Проверка (Assert)
-        // Проверяем ожидаемый результат
+        // Проверка: Проверяем ожидаемый результат
         assertEquals(2, result.size());
         assertEquals("Категория1", result.get(0).getCategory());
         assertEquals("Категория2", result.get(1).getCategory());

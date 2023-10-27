@@ -78,7 +78,7 @@
                     <h2 th:text="#{main.menu}"></h2>
                 </div>
                 <div>
-                    <a class="button" href="/manager/dishes/create" th:text="#{button.create}"></a>
+                    <a class="button-green" href="/manager/dishes/create" th:text="#{button.create}"></a>
                 </div>
             </div>
 
@@ -98,8 +98,8 @@
                         <td>{{i.price | number:2}}</td>
                         <td>{{i.category.category}}</td>
                         <td>
-                            <a class="button" href="/manager/dishes/update?id={{i.id}}" th:text="#{button.update}"></a> |
-                            <a dishId="{{i.id}}" class="button" ng-click="delete($event)" th:text="#{button.delete}"></a>
+                            <a class="button-orange" href="/manager/dishes/update?id={{i.id}}" th:text="#{button.update}"></a> |
+                            <a dishId="{{i.id}}" class="button-red" ng-click="delete($event)" th:text="#{button.delete}"></a>
                         </td>
                     </tr>
                     </tbody>

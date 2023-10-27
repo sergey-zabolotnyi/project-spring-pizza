@@ -72,13 +72,10 @@ public class OrderServiceTest {
     @Test
     void findAllOrders() {
         // Подготовка: Создаем пользователя
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-
-        // Подготовим аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Создаем список заказов
         List<Orders> orders = Arrays.asList(
@@ -104,13 +101,10 @@ public class OrderServiceTest {
     @Test
     void payment_validOrder() {
         // Подготовка: Создаем пользователя
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-
-        // Подготовим аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Создаем заказ с состоянием "NEW"
         Orders order = new Orders(1, user, new BigDecimal("25.00"), Status.NEW, LocalDateTime.now());
@@ -135,13 +129,10 @@ public class OrderServiceTest {
     @Test
     void payment_invalidOrder() {
         // Подготовка: Создаем пользователя
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-
-        // Подготавливаем аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Устанавливаем mock для helper
         MessageHelper helper = mock(MessageHelper.class);
@@ -237,16 +228,11 @@ public class OrderServiceTest {
 
     @Test
     void saveNewOrder_emptyCart() {
-        // Arrange
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-
-        // Подготавливаем аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-
-        // Устанавливаем аутентификацию в текущий контекст безопасности
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Подготовка: Создаем пользователя
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         List<Cart> cartItems = new ArrayList<>(); // Создаем пустую корзину
 
@@ -261,14 +247,11 @@ public class OrderServiceTest {
 
     @Test
     void saveNewOrder_validCart() {
-        // Arrange
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-
-        // Подготавливаем аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Подготовка: Создаем пользователя
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Подготавливаем данные корзины
         Category category = new Category(1, "Pizza", "Пицца");

@@ -121,6 +121,60 @@ body * {
 	cursor: pointer;
 	color: #f8f6f2;
 }
+.button-green {
+	background: #36a61e;
+	color: white;
+	text-align: center;
+	padding: 8px;
+	margin: 10px 5px;
+	border-radius: 4px;
+	border: none;
+	outline: none;
+}
+.button-green:hover,
+.button-green:active,
+.button-green:focus {
+	background: rgba(62, 71, 117, 0.3);
+	color: black;
+	border: none;
+	cursor: pointer;
+}
+.button-red {
+	background: red;
+	color: white;
+	text-align: center;
+	padding: 8px;
+	margin: 10px 5px;
+	border-radius: 4px;
+	border: none;
+	outline: none;
+}
+.button-red:hover,
+.button-red:active,
+.button-red:focus {
+	background: rgba(62, 71, 117, 0.3);
+	color: black;
+	border: none;
+	cursor: pointer;
+}
+.button-orange {
+	background: orange	;
+	color: white;
+	text-align: center;
+	padding: 8px;
+	margin: 10px 5px;
+	border-radius: 4px;
+	border: none;
+	outline: none;
+}
+.button-orange:hover,
+.button-orange:active,
+.button-orange:focus {
+	background: rgba(62, 71, 117, 0.3);
+	color: black;
+	border: none;
+	cursor: pointer;
+}
 
 .button-empty {
 	cursor: default;

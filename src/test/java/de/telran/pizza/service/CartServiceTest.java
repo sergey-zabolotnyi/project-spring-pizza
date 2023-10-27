@@ -44,18 +44,18 @@ class CartServiceTest {
 
     @BeforeEach
     void setUp() {
+        cartRepository = mock(CartRepository.class);
+        helper = mock(MessageHelper.class);
         cartService = new CartService(cartRepository, dishRepository, helper);
     }
 
     @Test
     void findAllDishes_validCart() {
         // Подготовка: Создаем пользователя
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-        // Подготовим аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Подготовка: Создаем блюдо и элемент корзины с этим блюдом
         Dish dish = new Dish(1, "Pepperoni", "Пепперони", new BigDecimal(10), new Category(),
@@ -80,13 +80,11 @@ class CartServiceTest {
 
 //    @Test
 //    void saveNewItem_validItem() {
-//        // Подготовка: Создаем пользователя
-//        Login user = new Login(1, "user", "123456", "user@user.com",
-//                Role.ROLE_MANAGER, LocalDateTime.now());
-//        // Подготовим аутентификацию пользователя
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(
-//                new UserDetailSecurity(user), null, Collections.emptyList());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        //Подготовка: Создаем пользователя
+//        Login user = new Login("user", "123456");
+//        //Устанавливаем пользователя в контекст безопасности
+//        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+//                new UserDetailSecurity(user), null, Collections.emptyList()));
 //
 //        ItemDTO itemDTO = new ItemDTO(1);
 //        Dish dish = new Dish(1, "Pepperoni", "Пепперони", new BigDecimal(10.50), new Category(), LocalDateTime.now());
@@ -106,12 +104,10 @@ class CartServiceTest {
     @Test
     void saveNewItem_invalidItem() {
         // Подготовка: Создаем пользователя
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
-        // Подготовим аутентификацию пользователя
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                new UserDetailSecurity(user), null, Collections.emptyList());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Login user = new Login("user", "123456");
+        // Устанавливаем пользователя в контекст безопасности
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Подготовка: Создаем объект ItemDTO с указанием несуществующего ID блюда
         ItemDTO itemDTO = new ItemDTO(1);
@@ -127,14 +123,51 @@ class CartServiceTest {
         assertThrows(NoSuchElementException.class, () -> cartService.saveNewItem(itemDTO));
     }
 
-
     @Test
-    void delete() {
-        //todo
+    void delete_validId_cartDeleted() {
+        // Подготовка: Устанавливаем условия для теста
+        int dishId = 1;
+        Cart cart = new Cart();
+        List<Cart> cartList = List.of(cart);
+
+        when(cartRepository.findCartByDish_Id(dishId)).thenReturn(cartList);
+        doNothing().when(cartRepository).delete(cart);
+
+        // Действие: Вызываем метод, который хотим протестировать
+        cartService.delete(dishId);
+
+        // Проверка: Проверяем, что методы репозитория были вызваны правильное количество раз
+        verify(cartRepository, times(1)).findCartByDish_Id(dishId);
+        verify(cartRepository, times(1)).delete(cart);
     }
 
     @Test
-    void deleteByLogin() {
-        //todo
+    void delete_invalidId_exceptionThrown() {
+        // Подготовка: Устанавливаем условия для теста
+        int dishId = 1;
+        List<Cart> cartList = List.of();
+
+        when(cartRepository.findCartByDish_Id(dishId)).thenReturn(cartList);
+        when(helper.getLogMessage(anyString())).thenReturn("Test Log Message");
+
+        // Действие и Проверка: Проверяем, что метод выбрасывает исключение с правильным сообщением
+        NoSuchElementException exception = assertThrows(
+                NoSuchElementException.class,
+                () -> cartService.delete(dishId)
+        );
+
+        assertEquals("Test Log Message", exception.getMessage());
+    }
+
+    @Test
+    void deleteByLogin_validId_cartDeleted() {
+        // Подготовка: Устанавливаем условия для теста
+        int userId = 1;
+
+        // Действие: Вызываем метод, который хотим протестировать
+        cartService.deleteByLogin(userId);
+
+        // Проверка: Проверяем, что метод репозитория был вызван с правильным аргументом
+        verify(cartRepository, times(1)).deleteByLoginId(userId);
     }
 }

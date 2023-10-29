@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: szabolotnyi
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: category
+      changes:
+        - createTable:
+            tableName: category
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: category_en
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_ru
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

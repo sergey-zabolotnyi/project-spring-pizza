@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: szabolotnyi
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: dish
+      changes:
+        - createTable:
+            tableName: dish
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                  autoIncrement: true
+              - column:
+                  name: name_en
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name_ru
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(9,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_dish_category
+                    referencedTableName: category
+                    referencedColumnNames: id
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false

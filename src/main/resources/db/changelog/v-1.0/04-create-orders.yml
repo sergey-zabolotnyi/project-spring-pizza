@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: szabolotnyi
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: orders
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: login_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_order_login
+                    referencedTableName: login
+                    referencedColumnNames: id
+              - column:
+                  name: total_price
+                  type: decimal(9,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false

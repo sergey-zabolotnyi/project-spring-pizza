@@ -1,2 +1,0 @@
-drop table cart
-GO

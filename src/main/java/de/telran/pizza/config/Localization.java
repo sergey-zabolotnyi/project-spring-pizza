@@ -11,15 +11,13 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 /**
- * Class for configuring localization in the application.
- * Implements WebMvcConfigurer interface for configuring Spring MVC parameters.
+ * Конфигурация для локализации приложения.
  */
 @Configuration
 public class Localization implements WebMvcConfigurer {
+
     /**
-     * Adds the locale change interceptor to the interceptor registry.
-     *
-     * @param registry The interceptor registry.
+     * Добавляет перехватчики для изменения локали.
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,9 +25,9 @@ public class Localization implements WebMvcConfigurer {
     }
 
     /**
-     * Creates and returns an object for determining the current locale.
+     * Определяет стратегию разрешения локали.
      *
-     * @return Object for determining the current locale.
+     * @return Стратегия разрешения локали.
      */
     @Bean
     public LocaleResolver localeResolver() {
@@ -39,9 +37,9 @@ public class Localization implements WebMvcConfigurer {
     }
 
     /**
-     * Creates and returns a locale change interceptor object.
+     * Определяет перехватчик для изменения локали.
      *
-     * @return Locale change interceptor object.
+     * @return Перехватчик изменения локали.
      */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {

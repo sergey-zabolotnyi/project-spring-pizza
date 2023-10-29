@@ -9,42 +9,48 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import java.util.Locale;
 
 /**
- * Configuration class for managing message and log resources.
+ * Класс конфигурации для управления ресурсами сообщений и логов.
  */
 @Configuration
 public class MessageHelper {
     private MessageSource messageSource;
     private MessageSource logSource;
 
+    /**
+     * Конструктор с двумя источниками сообщений.
+     *
+     * @param messageSource Источник сообщений.
+     * @param logSource     Источник логов.
+     */
     public MessageHelper(MessageSource messageSource, MessageSource logSource) {
         this.messageSource = messageSource;
         this.logSource = logSource;
     }
 
     /**
-     * Gets the message corresponding to the provided key based on the current locale.
+     * Получает сообщение, соответствующее указанному ключу на текущей локали.
      *
-     * @param message The message key.
-     * @return The corresponding message.
+     * @param message Ключ сообщения.
+     * @return Соответствующее сообщение.
      */
     public String getMessage(String message) {
         return messageSource.getMessage(message, null, LocaleContextHolder.getLocale());
     }
 
     /**
-     * Gets the log message corresponding to the provided key in English.
+     * Получает лог-сообщение, соответствующее указанному ключу на английском.
      *
-     * @param message The log message key.
-     * @return The corresponding log message.
+     * @param message Ключ лог-сообщения.
+     * @return Соответствующее лог-сообщение.
      */
     public String getLogMessage(String message) {
         return logSource.getMessage(message, null, Locale.ENGLISH);
     }
 
     /**
-     * Provides a LocalValidatorFactoryBean for object validation.
+     * Предоставляет LocalValidatorFactoryBean для валидации объектов.
      *
-     * @return Configured LocalValidatorFactoryBean.
+     * @return Настроенный LocalValidatorFactoryBean.
      */
     @Bean
     public LocalValidatorFactoryBean getValidator() {

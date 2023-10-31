@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
- * Controller class for handling user signup requests.
+ * Контроллер для регистрации новых пользователей.
  */
 @Slf4j
 @Controller
@@ -26,16 +26,26 @@ public class SignupController {
     private LoginService loginService;
     private MessageHelper helper;
 
+    /**
+     * Конструктор класса.
+     *
+     * @param loginService Сервис для работы с пользователями.
+     * @param helper Помощник для обработки сообщений.
+     */
     public SignupController(LoginService loginService, MessageHelper helper) {
         this.loginService = loginService;
         this.helper = helper;
     }
+
     /**
-     * Handles a POST request to create a new user.
+     * Метод для регистрации нового пользователя.
      *
-     * @param loginDTO The LoginDTO containing user registration information.
-     * @param response The HttpServletResponse object for redirecting after successful signup.
+     * @param loginDTO ДТО с данными для регистрации.
+     * @param response Ответ сервера.
      */
+    @Operation(
+            summary = "Регистрация нового пользователя",
+            description = "Регистрация нового пользователя, сохранение в базе данных")
     @PostMapping
     public void signup(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         log.info(helper.getLogMessage("create.user.log"));
@@ -46,10 +56,11 @@ public class SignupController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
     /**
-     * Gets users count for Statistics.
+     * Метод для получения количества пользователей.
      *
-     * @return A ResponseEntity containing a users count in DB.
+     * @return ResponseEntity с количеством пользователей.
      */
     @Operation(
             summary = "Получение количества пользователей",
@@ -60,5 +71,4 @@ public class SignupController {
         log.info(helper.getLogMessage("users.count.log"));
         return ResponseEntity.ok(loginService.getAllUsers().size());
     }
-
 }

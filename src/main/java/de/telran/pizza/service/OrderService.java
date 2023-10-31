@@ -9,8 +9,7 @@ import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
-import de.telran.pizza.service.mapper.DishMapper;
-import de.telran.pizza.utils.Utils;
+import de.telran.pizza.service.mapper.Mappers;import de.telran.pizza.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +28,13 @@ public class OrderService {
     private OrdersRepository ordersRepository;
     private CartRepository cartRepository;
     private MessageHelper helper;
+    private final Mappers mappers;
 
-    public OrderService(OrdersRepository ordersRepository, CartRepository cartRepository, MessageHelper helper) {
+    public OrderService(OrdersRepository ordersRepository, CartRepository cartRepository, Mappers mappers, MessageHelper helper) {
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;
         this.helper = helper;
+        this.mappers = mappers;
     }
 
     /**
@@ -68,8 +69,8 @@ public class OrderService {
         if (newCart.isEmpty()) {
             throw new NoSuchElementException(helper.getLogMessage("select.all.carts.empty"));
         }
-        List<DishDTO> dishes = DishMapper.listDishesDTOtoCart(newCart);
-        BigDecimal dishTotalPrice = DishMapper.getDishTotalPrice(dishes);
+        List<DishDTO> dishes = mappers.cartListToDishDTOList(newCart);
+        BigDecimal dishTotalPrice = mappers.calculateTotalPrice(dishes);
 
         cartRepository.deleteByLoginId(user.getId());
         log.info(helper.getLogMessage("delete.all.cart.log"));

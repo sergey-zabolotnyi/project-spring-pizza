@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 
 /**
- * Controller class for managing main operations.
+ * Контроллер для управления основными операциями.
  */
 @Slf4j
 @RestController
@@ -30,14 +30,14 @@ public class MainController {
         this.helper = helper;
     }
     /**
-     * Gets a paginated list of dishes based on the provided page number, sorting field, sorting direction, and category ID.
+     * Получает список блюд с пагинацией на основе предоставленного номера страницы, поля сортировки, направления сортировки и ID категории.
      *
-     * @param pageNum       The page number for pagination.
-     * @param sortField     The field by which to sort the dishes.
-     * @param sortDirection The direction of sorting (asc or desc).
-     * @param categoryId    The ID of the category to filter by.
-     * @return A ResponseEntity containing a PageDishesDTO with the paginated list of dishes.
-     * @throws ResponseStatusException if an error occurs during the retrieval process.
+     * @param pageNum       Номер страницы для пагинации.
+     * @param sortField     Поле, по которому будет производиться сортировка блюд.
+     * @param sortDirection Направление сортировки (asc или desc).
+     * @param categoryId    ID категории для фильтрации.
+     * @return ResponseEntity, содержащий объект PageDishesDTO с пагинированным списком блюд.
+     * @throws ResponseStatusException в случае ошибки во время процесса получения данных.
      */
     @GetMapping("/get/{page}")
     @Operation(

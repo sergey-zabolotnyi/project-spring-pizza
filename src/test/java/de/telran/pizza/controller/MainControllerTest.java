@@ -30,10 +30,10 @@ class MainControllerTest {
     @Test
     void testFindPaginated() {
         // Создаем фиктивные данные для возвращения из сервиса
-        PageDishesDTO dummyPageDishesDTO = new PageDishesDTO(/* параметры DTO */);
+        PageDishesDTO mockPageDishesDTO = new PageDishesDTO();
 
         // Устанавливаем поведение сервиса при вызове метода
-        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyInt())).thenReturn(dummyPageDishesDTO);
+        when(dishService.findAllDishesPage(anyInt(), anyString(), anyString(), anyInt())).thenReturn(mockPageDishesDTO);
 
         // Вызываем метод контроллера
         ResponseEntity<PageDishesDTO> response = mainController.findPaginated(1, "name", "asc", 1);
@@ -47,7 +47,7 @@ class MainControllerTest {
         // Проверяем, что PageDishesDTO в ответе соответствует ожидаемому
         PageDishesDTO pageDishesDTO = response.getBody();
         assertNotNull(pageDishesDTO);
-        assertEquals(dummyPageDishesDTO, pageDishesDTO);
+        assertEquals(mockPageDishesDTO, pageDishesDTO);
     }
 
     @Test

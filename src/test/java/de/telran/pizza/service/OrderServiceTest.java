@@ -1,5 +1,6 @@
 package de.telran.pizza.service;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.*;
 import de.telran.pizza.domain.entity.enums.Role;
@@ -7,6 +8,7 @@ import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
 import de.telran.pizza.security.UserDetailSecurity;
+import de.telran.pizza.service.mapper.Mappers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,7 @@ public class OrderServiceTest {
     private OrdersRepository ordersRepository;
     private OrderService orderService;
     private CartRepository cartRepository;
+    private Mappers mappers;
     private MessageHelper helper;
 
     @BeforeEach
@@ -33,21 +36,21 @@ public class OrderServiceTest {
         // Создаем mock для cartRepository
         cartRepository = mock(CartRepository.class);
         // Создаем mock для helper
+        mappers = mock(Mappers.class);
+        // Создаем mock для helper
         helper = mock(MessageHelper.class);
         // Создаем объект OrderService с передачей всех необходимых зависимостей
-        orderService = new OrderService(ordersRepository, cartRepository, helper);
+        orderService = new OrderService(ordersRepository, cartRepository, mappers, helper);
     }
 
     @Test
     void findAllUserOrders() {
         // Подготовка: Создаем объект пользователя
-        Login user = new Login();
+        Login user = MockData.getMockedUser();
         user.setId(1);
 
         // Создаем список заказов пользователя
-        List<Orders> userOrders = new ArrayList<>();
-        userOrders.add(new Orders());
-        userOrders.add(new Orders());
+        List<Orders> userOrders = MockData.getMockedListOfOrders();
 
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -72,16 +75,13 @@ public class OrderServiceTest {
     @Test
     void findAllOrders() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Создаем список заказов
-        List<Orders> orders = Arrays.asList(
-                new Orders(1, user, new BigDecimal("15.00"), Status.NEW, LocalDateTime.now()),
-                new Orders(2, user, new BigDecimal("25.00"), Status.NEW, LocalDateTime.now()),
-                new Orders(3, user, new BigDecimal("35.00"), Status.NEW, LocalDateTime.now()));
+        List<Orders> orders = MockData.getMockedListOfOrders();
 
         // Настраиваем мок ordersRepository
         when(ordersRepository.findOrdersByOrderByIdAsc()).thenReturn(orders);
@@ -101,13 +101,13 @@ public class OrderServiceTest {
     @Test
     void payment_validOrder() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Создаем заказ с состоянием "NEW"
-        Orders order = new Orders(1, user, new BigDecimal("25.00"), Status.NEW, LocalDateTime.now());
+        Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
         when(ordersRepository.findByIdAndLoginIdAndStatus(order.getId(), user.getId(), order.getStatus()))
@@ -129,7 +129,7 @@ public class OrderServiceTest {
     @Test
     void payment_invalidOrder() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -138,10 +138,10 @@ public class OrderServiceTest {
         MessageHelper helper = mock(MessageHelper.class);
 
         // Создаем ordersService с установленным helper
-        OrderService ordersService = new OrderService(ordersRepository, cartRepository, helper);
+        OrderService ordersService = new OrderService(ordersRepository, cartRepository, mappers, helper);
 
         // Создаем заказ с состоянием "NEW"
-        Orders order = new Orders(1, user, new BigDecimal("25.00"), Status.NEW, LocalDateTime.now());
+        Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
         when(ordersRepository.findByIdAndLoginIdAndStatus(order.getId(), user.getId(), Status.NEW))
@@ -254,13 +254,7 @@ public class OrderServiceTest {
                 new UserDetailSecurity(user), null, Collections.emptyList()));
 
         // Подготавливаем данные корзины
-        Category category = new Category(1, "Pizza", "Пицца");
-        List<Cart> cart = List.of(
-                new Cart(1, user, new Dish(1, "Pepperoni", "Пепперони",
-                        new BigDecimal(10.50), category, LocalDateTime.now())),
-                new Cart(2, user, new Dish(2, "Margherita", "Маргарита",
-                        new BigDecimal(11.50), category, LocalDateTime.now()))
-        );
+        List<Cart> cart = MockData.getMockedListOfCarts();
 
         // Мокирование поведения cartRepository
         when(cartRepository.findAllByLoginId(user.getId())).thenReturn(cart);

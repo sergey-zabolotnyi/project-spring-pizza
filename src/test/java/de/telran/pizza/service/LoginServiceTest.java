@@ -1,5 +1,6 @@
 package de.telran.pizza.service;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.LoginDTO;
 import de.telran.pizza.domain.entity.Login;
@@ -61,9 +62,9 @@ class LoginServiceTest {
     @Test
     void testSaveUser() {
         // Подготовка: Создаем объекты и настраиваем моки
-        LoginDTO loginDTO = new LoginDTO("newuser", "newuser@test.com", "123456");
+        LoginDTO loginDTO = MockData.getMockedLoginDTO();
         Role role = Role.ROLE_CUSTOMER;
-        when(loginRepository.save(any(Login.class))).thenReturn(new Login(1, "newuser", "123456",
+        when(loginRepository.save(any(Login.class))).thenReturn(new Login(1, "newUser", "123456",
                 "newuser@test.com", role, LocalDateTime.now()));
 
         // Действие: Вызываем тестируемый метод
@@ -77,7 +78,7 @@ class LoginServiceTest {
     @Test
     void testSaveUserExistingLogin() {
         // Подготовка: Создаем объекты и настраиваем моки
-        LoginDTO loginDTO = new LoginDTO("existinguser", "existinguser@test.com", "123456");
+        LoginDTO loginDTO = MockData.getMockedLoginDTO();
         Role role = Role.ROLE_CUSTOMER;
         when(loginRepository.save(any(Login.class))).thenThrow(new IllegalArgumentException("nullexistinguser"));
 
@@ -88,9 +89,7 @@ class LoginServiceTest {
     @Test
     void testGetAllUsers() {
         // Подготовка: Устанавливаем ожидаемый результат
-        List<Login> expectedUsers = List.of(
-                new Login("user1", "123456"),
-                new Login("user2", "123456"));
+        List<Login> expectedUsers = MockData.getMockedListOfLogins();
 
         when(loginRepository.findAll()).thenReturn(expectedUsers);
 

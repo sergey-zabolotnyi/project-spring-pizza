@@ -3,13 +3,12 @@ package de.telran.pizza.service;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.CartDTO;
 import de.telran.pizza.domain.dto.DishDTO;
-import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.DishRepository;
-import de.telran.pizza.service.mapper.DishMapper;
+import de.telran.pizza.service.mapper.Mappers;
 import de.telran.pizza.utils.Utils;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -25,11 +24,13 @@ import java.util.NoSuchElementException;
 public class CartService {
     private CartRepository cartRepository;
     private DishRepository dishRepository;
+    private final Mappers mappers;
     private MessageHelper helper;
 
-    public CartService(CartRepository cartRepository, DishRepository dishRepository, MessageHelper helper) {
+    public CartService(CartRepository cartRepository, DishRepository dishRepository, Mappers mappers, MessageHelper helper) {
         this.cartRepository = cartRepository;
         this.dishRepository = dishRepository;
+        this.mappers = mappers;
         this.helper = helper;
     }
 
@@ -39,27 +40,27 @@ public class CartService {
      * @return CartDTO containing the list of dishes and their total price.
      */
     public CartDTO findAllDishes() {
-        List<DishDTO> dish = DishMapper.listDishesDTOtoCart(
+        List<DishDTO> dish = mappers.cartListToDishDTOList(
                 cartRepository.findAllByLoginId(Utils.getAuthorizedLogin().getId()));
         return CartDTO.builder()
                 .dishes(dish)
-                .totalPrice(DishMapper.getDishTotalPrice(dish))
+                .totalPrice(mappers.calculateTotalPrice(dish))
                 .build();
     }
 
     /**
      * Saves a new item to the cart for the logged-in user.
      *
-     * @param itemDTO The ItemDTO containing the details of the item to be added.
+     * @param id The ID of the item to be added.
      * @return The saved Cart entity.
      * @throws NoSuchElementException if the specified dish ID does not exist.
      */
     @Transactional
-    public Cart saveNewItem(@NonNull ItemDTO itemDTO) {
+    public Cart saveNewItem(@NonNull int id) {
         Login user = Utils.getAuthorizedLogin();
-        Dish dish = dishRepository.findById(itemDTO.getItemId())
+        Dish dish = dishRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(
-                        helper.getLogMessage("create.cart.not") + itemDTO.getItemId()));
+                        helper.getLogMessage("create.cart.not") + id));
         return cartRepository.save(Cart.builder()
                 .login(user)
                 .dish(dish)

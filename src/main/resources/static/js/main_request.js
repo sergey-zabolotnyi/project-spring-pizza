@@ -70,7 +70,7 @@ angular.module("get_form", [])
                     "Content-Type": "application/json",
                     'X-CSRF-TOKEN': token
                 },
-                data: JSON.stringify(object)
+                data: itemId
             }).then(function (response) {
                 if (response.data) {
                     // alert("Блюдо " + itemId + " успешно добавлено.")

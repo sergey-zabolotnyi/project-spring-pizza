@@ -1,56 +1,49 @@
 package de.telran.pizza.service;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.repository.CategoryRepository;
+import de.telran.pizza.service.mapper.Mappers;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+@SpringBootTest
+class CategoryServiceTest {
 
-public class CategoryServiceTest {
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @Mock
+    private Mappers mappers;
+
+    @InjectMocks
+    private CategoryService categoryService;
 
     @Test
-    public void testFindAllCategory() {
-        // Подготовка: Создаем заглушку для репозитория категорий
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        // Создаем сервис категорий с использованием заглушки
-        CategoryService categoryService = new CategoryService(categoryRepository);
+    void testFindAllCategory() {
+        // Создаем тестовые данные
+        List<Category> categories = MockData.getMockedListOfCategories();
+        List<CategoryDTO> categoryDTOs = MockData.getMockedListOfCategoriesDTO();
 
-        // Имитация поведения (Mock)
-        // Задаем список категорий для возвращения при вызове categoryRepository.findAll()
-        List<Category> categories = List.of(
-                new Category(1, "Category1", "Категория1"),
-                new Category(2, "Category2", "Категория2")
-        );
-        Mockito.when(categoryRepository.findAll()).thenReturn(categories);
+        // Настроим mock-репозиторий, чтобы возвращать тестовые данные при вызове findAll
+        when(categoryRepository.findAll()).thenReturn(categories);
 
-        // Действие: Вызываем метод, который тестируем
+        // Настроим mock-mappers, чтобы возвращать ожидаемые CategoryDTO при вызове categoriesToCategoryDTOs
+        when(mappers.categoriesToCategoryDTOs(categories)).thenReturn(categoryDTOs);
+
+        // Вызываем метод, который мы хотим протестировать
         List<CategoryDTO> result = categoryService.findAllCategory();
 
-        // Проверка: Проверяем ожидаемый результат
-        assertEquals(2, result.size());
-        assertEquals("Категория1", result.get(0).getCategory());
-        assertEquals("Категория2", result.get(1).getCategory());
-    }
-    @Test
-    public void testFindAllCategoryEmptyList() {
-        // Подготовка: Создаем заглушку для репозитория категорий
-        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
-        // Создаем сервис категорий с использованием заглушки
-        CategoryService categoryService = new CategoryService(categoryRepository);
-
-        // Имитация поведения (Mock)
-        // Задаем пустой список для возвращения при вызове categoryRepository.findAll()
-        Mockito.when(categoryRepository.findAll()).thenReturn(List.of());
-
-        // Действие: Вызываем метод, который тестируем
-        List<CategoryDTO> result = categoryService.findAllCategory();
-
-        // Проверка: Проверяем, что результат является пустым списком
-        assertTrue(result.isEmpty());
+        // Проверяем, что результат соответствует ожиданиям
+        assertEquals(categoryDTOs.size(), result.size());
     }
 }

@@ -1,30 +1,25 @@
 package de.telran.pizza.service;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.CartDTO;
-import de.telran.pizza.domain.dto.ItemDTO;
+import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.Cart;
-import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Login;
-import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.security.UserDetailSecurity;
+import de.telran.pizza.service.mapper.Mappers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -32,13 +27,14 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class CartServiceTest {
-
     @Mock
     private CartRepository cartRepository;
     @Mock
     private DishRepository dishRepository;
     @Mock
     private MessageHelper helper;
+    @Mock
+    private Mappers mappers;
 
     private CartService cartService;
 
@@ -46,71 +42,45 @@ class CartServiceTest {
     void setUp() {
         cartRepository = mock(CartRepository.class);
         helper = mock(MessageHelper.class);
-        cartService = new CartService(cartRepository, dishRepository, helper);
+        cartService = new CartService(cartRepository, dishRepository, mappers, helper);
     }
 
     @Test
-    void findAllDishes_validCart() {
+    void testFindAllDishes() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
+        List<Cart> cartList = MockData.getMockedListOfCarts();
+        List<DishDTO> dishDTOList = MockData.getMockedListOfDishesDTO();
+        BigDecimal totalPrice = new BigDecimal("25.00");
 
-        // Подготовка: Создаем блюдо и элемент корзины с этим блюдом
-        Dish dish = new Dish(1, "Pepperoni", "Пепперони", new BigDecimal(10), new Category(),
-                LocalDateTime.now());
-        List<Cart> cartItems = List.of(new Cart(1, user, dish));
+        // Настроим mock-репозитории, чтобы возвращать тестовые данные при вызове findAllByLoginId
+        when(cartRepository.findAllByLoginId(anyInt())).thenReturn(cartList);
 
-        // Настраиваем мок cartRepository
-        when(cartRepository.findAllByLoginId(anyInt())).thenReturn(cartItems);
+        // Настроим mock-mappers, чтобы возвращать ожидаемый результат при вызове cartListToDishDTOList и calculateTotalPrice
+        when(mappers.cartListToDishDTOList(cartList)).thenReturn(dishDTOList);
+        when(mappers.calculateTotalPrice(dishDTOList)).thenReturn(totalPrice);
 
-        // Действие: Вызываем метод findAllDishes
-        CartDTO cartDTO = cartService.findAllDishes();
+        // Вызываем метод, который мы хотим протестировать
+        CartDTO result = cartService.findAllDishes();
 
-        // Проверка: Убеждаемся, что результат не равен null
-        assertNotNull(cartDTO);
-
-        // Проверка: Убеждаемся, что список блюд не пустой
-        assertFalse(cartDTO.getDishes().isEmpty());
-
-        // Проверка: Убеждаемся, что общая стоимость равна 10 (по предположению, что корзина пуста)
-        assertEquals(BigDecimal.TEN, cartDTO.getTotalPrice());
+        // Проверяем, что результат соответствует ожиданиям
+        assertEquals(dishDTOList, result.getDishes());
+        assertEquals(totalPrice, result.getTotalPrice());
     }
-
-//    @Test
-//    void saveNewItem_validItem() {
-//        //Подготовка: Создаем пользователя
-//        Login user = new Login("user", "123456");
-//        //Устанавливаем пользователя в контекст безопасности
-//        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-//                new UserDetailSecurity(user), null, Collections.emptyList()));
-//
-//        ItemDTO itemDTO = new ItemDTO(1);
-//        Dish dish = new Dish(1, "Pepperoni", "Пепперони", new BigDecimal(10.50), new Category(), LocalDateTime.now());
-//        when(dishRepository.findById(anyInt())).thenReturn(Optional.of(dish));
-//        when(helper.getLogMessage(anyString())).thenReturn("Test Log Message");
-//
-//        // Act
-//        Cart savedCart = cartService.saveNewItem(itemDTO);
-//
-//        // Assert
-//        assertNotNull(savedCart);
-//        assertEquals(user, savedCart.getLogin());
-//        assertEquals(dish, savedCart.getDish());
-//        verify(cartRepository, times(1)).save(any(Cart.class));
-//    }
 
     @Test
     void saveNewItem_invalidItem() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
 
-        // Подготовка: Создаем объект ItemDTO с указанием несуществующего ID блюда
-        ItemDTO itemDTO = new ItemDTO(1);
+        // Подготовка: Создаем идентификатор блюда
+        int id = 1;
 
         // Настраиваем мок dishRepository для возврата Optional.empty() при вызове метода findById
         when(dishRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -120,15 +90,15 @@ class CartServiceTest {
 
         // Действие и проверка
         // Проверяем, что при вызове метода saveNewItem с некорректным ItemDTO выбрасывается исключение NoSuchElementException
-        assertThrows(NoSuchElementException.class, () -> cartService.saveNewItem(itemDTO));
+        assertThrows(NoSuchElementException.class, () -> cartService.saveNewItem(id));
     }
 
     @Test
     void delete_validId_cartDeleted() {
         // Подготовка: Устанавливаем условия для теста
-        int dishId = 1;
-        Cart cart = new Cart();
-        List<Cart> cartList = List.of(cart);
+        int dishId = MockData.getMockedCart().getId();
+        Cart cart = MockData.getMockedCart();
+        List<Cart> cartList = Arrays.asList(cart);
 
         when(cartRepository.findCartByDish_Id(dishId)).thenReturn(cartList);
         doNothing().when(cartRepository).delete(cart);
@@ -144,8 +114,8 @@ class CartServiceTest {
     @Test
     void delete_invalidId_exceptionThrown() {
         // Подготовка: Устанавливаем условия для теста
-        int dishId = 1;
-        List<Cart> cartList = List.of();
+        int dishId = MockData.getMockedCart().getId();
+        List<Cart> cartList = Arrays.asList();
 
         when(cartRepository.findCartByDish_Id(dishId)).thenReturn(cartList);
         when(helper.getLogMessage(anyString())).thenReturn("Test Log Message");
@@ -162,7 +132,7 @@ class CartServiceTest {
     @Test
     void deleteByLogin_validId_cartDeleted() {
         // Подготовка: Устанавливаем условия для теста
-        int userId = 1;
+        int userId = MockData.getMockedCart().getId();
 
         // Действие: Вызываем метод, который хотим протестировать
         cartService.deleteByLogin(userId);

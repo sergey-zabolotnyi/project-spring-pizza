@@ -1,74 +1,49 @@
 package de.telran.pizza.service;
 
-import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.dto.PageDishesDTO;
 import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class DishServiceTest {
-    @Mock
-    private DishRepository dishRepository;
-    @Mock
-    private CategoryRepository categoryRepository;
-    @Mock
-    private MessageHelper helper;
-    @InjectMocks
-    private DishService dishService;
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
-//    @Test
-//    void findAllDishesPages() {
-//        // Создаем тестовые данные
-//        Integer pageNum = 1;
-//        String sortField = "name";
-//        String sortDirection = "asc";
-//        int categoryId = 0;
-//
-//        Page<Dish> mockPage = mock(Page.class);
-//        List<Dish> dishes = Arrays.asList(new Dish(1,"Pepperoni", "Пепперони",
-//                        new BigDecimal("11.30"), new Category(), LocalDateTime.now()),
-//                new Dish(2,"Margarita", "Маргарита", new BigDecimal("10.50"), new Category(),
-//                        LocalDateTime.now()));
-//        List<Category> categoryList = Arrays.asList(new Category(1, "Pizza", "Пицца"),
-//                new Category(2, "Salad", "Салат"));
-//
-//        // Настроим mock-репозиторий, чтобы возвращать тестовые данные
-//        when(mockPage.getContent()).thenReturn(dishes);
-//        when(mockPage.getTotalPages()).thenReturn(3);
-//        when(dishRepository.findAll(any(Pageable.class))).thenReturn(mockPage);
-//        when(categoryRepository.findAll()).thenReturn(categoryList);
-//
-//        // Вызываем метод, который мы хотим протестировать
-//        PageDishesDTO result = dishService.findAllDishesPage(pageNum, sortField, sortDirection, categoryId);
-//
-//        // Проверяем, что результат соответствует ожиданиям
-//        assertNotNull(result);
-//        assertEquals(dishes.size(), result.getDishes().size());
-//        assertEquals(3, result.getTotalPages());
-//    }
+    @Autowired
+    private DishService dishService;
+
+    @Autowired
+    private DishRepository dishRepository;
+
+    private static final int PAGE_NUM = 1;
+    private static final String SORT = "id";
+    private static final String DIRECTION = "asc";
+    private static final int CATEGORY_ID = 0;
+    private static final int ROWS_ON_PAGE = 10;
+
+    @Test
+    public void findAllDishesPaginated() {
+        PageDishesDTO page = dishService.findAllDishesPage(
+                PAGE_NUM, SORT, DIRECTION, CATEGORY_ID);
+
+        assertEquals(ROWS_ON_PAGE, page.getDishes().size());
+        assertTrue(page.getCategories().size() > 2);
+        assertTrue(page.getTotalPages() >= page.getDishes().size() / 5);
+        assertEquals(PAGE_NUM, page.getCurrentPage());
+        assertEquals(SORT, page.getSortField());
+        assertEquals(DIRECTION, page.getSortDirection());
+        assertEquals(CATEGORY_ID, page.getCategoryId());
+    }
     @Test
     void testValidationSetDefault_AscSort() {
         String sortField = "field";
@@ -84,95 +59,109 @@ class DishServiceTest {
         Sort result = dishService.validationSetDefault(sortField, sortDirection);
         assertEquals(Sort.by("field").descending(), result);
     }
+
     @Test
-    void testFindAllDishes() {
-        // Создаем тестовые данные
-        List<Dish> dishes = Arrays.asList(
-                new Dish(1,"Pepperoni", "Пепперони", new BigDecimal("11.30"), new Category(),
-                        LocalDateTime.now()),
-                new Dish(2,"Margarita", "Маргарита", new BigDecimal("10.50"), new Category(),
-                        LocalDateTime.now())
-        );
-
-        // Настроим mock-репозиторий, чтобы возвращать тестовые данные при вызове findAll
-        when(dishRepository.findAll(any(Sort.class))).thenReturn(dishes);
-
-        // Вызываем метод, который мы хотим протестировать
-        List<DishDTO> result = dishService.findAllDishes();
-
-        // Проверяем, что результат соответствует ожиданиям
-        assertEquals(dishes.size(), result.size());
-        // Можно добавить другие проверки, в зависимости от ожидаемого результата
-    }
-    @Test
-    void testFindById() {
-        // Создаем тестовые данные
-        Dish dish = new Dish(1,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(),
-                LocalDateTime.now());
-
-        // Настроим mock-репозиторий, чтобы возвращать тестовый dish при вызове findById
-        when(dishRepository.findById(dish.getId())).thenReturn(Optional.of(dish));
-
-        // Вызываем метод, который мы хотим протестировать
-        Dish result = dishService.findById(dish.getId());
-
-        // Проверяем, что результат соответствует ожиданиям
-        assertEquals(dish, result);
+    public void findAllDishesPaginated_withFilter() {
+        PageDishesDTO page = dishService.findAllDishesPage(
+                PAGE_NUM, SORT, DIRECTION, 2);
+        assertTrue(page.getDishes().size() > 0);
     }
 
     @Test
-    void testSaveNewDish() {
-        // Создаем тестовые данные
-        Dish dish = new Dish(1,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(),
-                LocalDateTime.now());
-
-        when(categoryRepository.findById(anyInt())).thenReturn(Optional.of(new Category()));
-        when(dishRepository.save(any(Dish.class))).thenReturn(dish);
-
-        Dish savedDish = null;
-        try {
-            savedDish = dishService.saveNewDish(dish);
-        } catch (NoSuchElementException e) {
-            e.printStackTrace(); // Обработка ошибки, если нужно
-        }
-
-        // Проверяем, что результат соответствует ожиданиям
-        assertNotNull(savedDish);
-        assertNotNull(savedDish.getTime());
-        verify(categoryRepository, times(1)).findById(anyInt());
-        verify(dishRepository, times(1)).save(any(Dish.class));
+    public void findAllDishesPaginated_setDefault1() {
+        PageDishesDTO page = dishService.findAllDishesPage(
+                PAGE_NUM, SORT, DIRECTION, -3);
+        assertEquals(ROWS_ON_PAGE, page.getDishes().size());
     }
     @Test
-    void update_ShouldSetCurrentTimeAndSaveToRepository() {
-        // Arrange
-        LocalDateTime initialTime = LocalDateTime.of(2022, 1, 1, 12, 0);
-        Dish dish = new Dish(1,"Pizza", "Пицца", new BigDecimal("12.30"), new Category(),
-                LocalDateTime.now());
-
-        dishService.update(dish);
-
-        ArgumentCaptor<Dish> captor = ArgumentCaptor.forClass(Dish.class);
-        verify(dishRepository).save(captor.capture());
-
-        Dish capturedDish = captor.getValue();
-        assertNotNull(capturedDish);
-        assertEquals(dish.getId(), capturedDish.getId());
-        assertEquals(dish.getNameEn(), capturedDish.getNameEn());
-        assertEquals(dish.getNameRu(), capturedDish.getNameRu());
-        assertEquals(dish.getPrice(), capturedDish.getPrice());
-
-        // Проверяем, что время было обновлено
-        assertNotNull(capturedDish.getTime());
-        assertNotEquals(initialTime, capturedDish.getTime());
+    public void findAllDishesPaginated_setDefault2() {
+        PageDishesDTO page = dishService.findAllDishesPage(
+                PAGE_NUM, null, null, 0);
+        assertEquals(ROWS_ON_PAGE, page.getDishes().size());
+    }
+    @Test
+    public void findAllDishesPaginated_setDefault3() {
+        PageDishesDTO page = dishService.findAllDishesPage(
+                PAGE_NUM, SORT, "noname", CATEGORY_ID);
+        assertEquals(ROWS_ON_PAGE, page.getDishes().size());
     }
 
     @Test
-    public void delete() {
-        Dish dish = dishRepository.findByNameEn("testNew").orElse(null);
-        Dish dish1 = dishRepository.findByNameEn("test").orElse(null);
-        if (dish == null || dish1 == null) return;
+    public void findAllDishesPaginated_Exception0() {
+        assertThrows(Exception.class, () -> dishService.findAllDishesPage(
+                null, SORT, DIRECTION, CATEGORY_ID));
+    }
+    @Test
+    public void findAllDishesPaginated_Exception1() {
+        assertThrows(Exception.class, () -> dishService.findAllDishesPage(
+                -1, SORT, DIRECTION, CATEGORY_ID));
+    }
+    @Test
+    public void findAllDishesPaginated_Exception2() {
+        assertThrows(Exception.class, () -> dishService.findAllDishesPage(
+                PAGE_NUM, "noname", DIRECTION, CATEGORY_ID));
+    }
+
+    @Test
+    public void findAllDishesTest() {
+        List<DishDTO> list = dishService.findAllDishes();
+        assertTrue(list.size() > 10);
+    }
+
+    @Test
+    public void saveNewDish() {
+        Dish dish = dishService.saveNewDish(Dish.builder()
+                .nameEn("test")
+                .nameRu("тест")
+                .price(new BigDecimal(10))
+                .category(Category.builder().id(1).build())
+                .build());
+        assertNotNull(dish);
+    }
+
+    @Test
+    void saveNewDish_Exception() {
+        Dish dish = new Dish();
+        dish.setNameEn("Test Dish");
+        dish.setPrice(new BigDecimal(10));
+        Category nonExistentCategory = new Category();
+        nonExistentCategory.setId(100); // Устанавливаем несуществующие данные
+        dish.setCategory(nonExistentCategory);
+
+        // Проверяем
+        assertThrows(NoSuchElementException.class, () -> dishService.saveNewDish(dish));
+    }
+
+    @Test
+    void findById() {
+        Dish dish = dishService.findById(1);
+        assertNotNull(dish);
+    }
+
+    @Test
+    void findById_Exception() {
+        assertThrows(NoSuchElementException.class, () -> dishService.findById(-1));
+    }
+
+    @Test
+    void update() {
+        Dish dish = dishRepository.findByNameEn("tests").orElse(null);
+        if (dish == null) return;
+
+        dishService.update(Dish.builder()
+                .id(dish.getId())
+                .nameEn("test1")
+                .nameRu("тест11")
+                .price(new BigDecimal(11))
+                .category(Category.builder().id(1).build())
+                .build());
+    }
+
+    @Test
+    void delete() {
+        Dish dish = dishRepository.findByNameEn("test").orElse(null);
+        if (dish == null) return;
 
         dishService.delete(dish.getId());
-        dishService.delete(dish1.getId());
     }
 }

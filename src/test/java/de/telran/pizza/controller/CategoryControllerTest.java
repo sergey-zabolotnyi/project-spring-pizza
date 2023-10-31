@@ -1,5 +1,6 @@
 package de.telran.pizza.controller;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.service.CategoryService;
@@ -32,10 +33,7 @@ class CategoryControllerTest {
     @Test
     void testGetAllCategories() {
         // Создаем фиктивные данные для возвращения из сервиса
-        List<CategoryDTO> mockCategories = Arrays.asList(
-                new CategoryDTO(1, "Pizza"),
-                new CategoryDTO(2,"Salads")
-        );
+        List<CategoryDTO> mockCategories = MockData.getMockedListOfCategoriesDTO();
 
         // Устанавливаем поведение сервиса при вызове метода
         when(categoryService.findAllCategory()).thenReturn(mockCategories);
@@ -58,10 +56,7 @@ class CategoryControllerTest {
     @Test
     void testGetCategoriesCount() {
         // Создаем фиктивные данные для возвращения из сервиса
-        List<CategoryDTO> mockCategories = Arrays.asList(
-                new CategoryDTO(1, "Pizza"),
-                new CategoryDTO(2,"Salads")
-        );
+        List<CategoryDTO> mockCategories = MockData.getMockedListOfCategoriesDTO();
 
         // Устанавливаем поведение сервиса при вызове метода
         when(categoryService.findAllCategory()).thenReturn(mockCategories);

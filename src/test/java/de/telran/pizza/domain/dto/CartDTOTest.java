@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CartDTOTest {
@@ -13,7 +14,7 @@ public class CartDTOTest {
     @Test
     void testEmptyCart() {
         CartDTO cart = CartDTO.builder()
-                .dishes(List.of())
+                .dishes(Arrays.asList())
                 .totalPrice(BigDecimal.ZERO)
                 .build();
 
@@ -28,7 +29,7 @@ public class CartDTOTest {
         DishDTO dish2 = DishDTO.builder().name("Pasta Carbonara").price(BigDecimal.valueOf(8)).build();
 
         CartDTO cart = CartDTO.builder()
-                .dishes(List.of(dish1, dish2))
+                .dishes(Arrays.asList(dish1, dish2))
                 .totalPrice(BigDecimal.valueOf(18))
                 .build();
 

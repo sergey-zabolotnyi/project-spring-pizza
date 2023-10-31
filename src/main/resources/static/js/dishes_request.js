@@ -162,7 +162,7 @@ angular.module("get_form", [])
                     "Content-Type": "application/json",
                     'X-CSRF-TOKEN': token
                 },
-                data: JSON.stringify(object)
+                data: id
             }).then(function (response) {
                 window.location.reload();
             }, function (response) {

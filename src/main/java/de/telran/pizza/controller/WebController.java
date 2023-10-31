@@ -4,15 +4,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Controller class responsible for handling web page requests.
+ * Контроллер, отвечающий за обработку запросов веб-страниц.
  */
 @Controller
 public class WebController {
 
     /**
-     * Returns the main page.
+     * Возвращает главную страницу.
      *
-     * @return The name of the main page template.
+     * @return Имя шаблона главной страницы.
      */
     @RequestMapping("/")
     public String mainPage() {
@@ -20,9 +20,9 @@ public class WebController {
     }
 
     /**
-     * Returns the login page.
+     * Возвращает страницу для авторизации пользователей.
      *
-     * @return The name of the login page template.
+     * @return Имя шаблона страницы входа.
      */
     @RequestMapping("/login")
     public String loginPage() {
@@ -30,9 +30,9 @@ public class WebController {
     }
 
     /**
-     * Returns the signup page.
+     * Возвращает страницу регистрации пользователей.
      *
-     * @return The name of the signup page template.
+     * @return Имя шаблона страницы регистрации.
      */
     @RequestMapping("/signup")
     public String signupPage() {
@@ -40,9 +40,9 @@ public class WebController {
     }
 
     /**
-     * Returns the cart page.
+     * Возвращает страницу корзины.
      *
-     * @return The name of the cart page template.
+     * @return Имя шаблона страницы корзины.
      */
     @RequestMapping("/cart")
     public String cartPage() {
@@ -50,9 +50,9 @@ public class WebController {
     }
 
     /**
-     * Returns the orders page.
+     * Возвращает страницу заказов.
      *
-     * @return The name of the orders page template.
+     * @return Имя шаблона страницы заказов.
      */
     @RequestMapping("/orders")
     public String ordersPage() {
@@ -60,9 +60,9 @@ public class WebController {
     }
 
     /**
-     * Handles requests to display the payment page.
+     * Обрабатывает запросы на отображение страницы оплаты.
      *
-     * @return The logical view name "payment".
+     * @return Логическое имя представления "оплата".
      */
     @RequestMapping("/payment")
     public String paymentPage() {
@@ -70,9 +70,9 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the manager's dishes management page.
+     * Метод обработки запросов на отображение страницы управления блюдами менеджера.
      *
-     * @return The view name "dishes_manager".
+     * @return Имя представления "управление_блюдами".
      */
     @RequestMapping("manager/manage_dishes")
     public String managerDishesPage() {
@@ -80,9 +80,9 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the dishes creation page in the manager's section.
+     * Метод обработки запросов на отображение страницы создания блюд в разделе менеджера.
      *
-     * @return The view name "dishes_create".
+     * @return Имя представления "создание_блюд".
      */
     @RequestMapping("manager/dishes/create")
     public String createDishes() {
@@ -90,9 +90,9 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the manager's orders management page.
+     * Метод обработки запросов на отображение страницы управления заказами менеджера.
      *
-     * @return The view name "orders_manager".
+     * @return Имя представления "управление_заказами".
      */
     @RequestMapping("/manager/manage_orders")
     public String managerOrdersPage() {
@@ -100,9 +100,9 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the dishes update page in the manager's section.
+     * Метод обработки запросов на отображение страницы обновления блюд в разделе менеджера.
      *
-     * @return The view name "dishes_update".
+     * @return Имя представления "обновление_блюд".
      */
     @RequestMapping("manager/dishes/update")
     public String updateDishes() {
@@ -110,9 +110,9 @@ public class WebController {
     }
 
     /**
-     * Request handler method for displaying the statistics in the manager's section.
+     * Метод обработки запросов на отображение страницы статистики в разделе менеджера.
      *
-     * @return The view name "statistics".
+     * @return Имя представления "статистика".
      */
     @RequestMapping("manager/statistics")
     public String statistics() {

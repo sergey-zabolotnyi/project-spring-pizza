@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 
 /**
- * Configuration class for Swagger/OpenAPI documentation.
+ * Класс конфигурации для документации Swagger/OpenAPI.
  */
 @OpenAPIDefinition(
         info = @Info(

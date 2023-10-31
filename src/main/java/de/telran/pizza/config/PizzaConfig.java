@@ -5,14 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 /**
- * Configuration class for setting up message and log resources.
+ * Класс конфигурации для настройки ресурсов сообщений и логов.
  */
 @Configuration
 public class PizzaConfig {
     /**
-     * Creates a ResourceBundleMessageSource for handling messages.
+     * Создает ResourceBundleMessageSource для обработки сообщений.
      *
-     * @return Created ResourceBundleMessageSource.
+     * @return Созданный ResourceBundleMessageSource.
      */
     @Bean
     public ResourceBundleMessageSource messageSource() {
@@ -24,9 +24,9 @@ public class PizzaConfig {
     }
 
     /**
-     * Creates a ResourceBundleMessageSource for handling logs.
+     * Создает ResourceBundleMessageSource для обработки логов.
      *
-     * @return Created ResourceBundleMessageSource.
+     * @return Созданный ResourceBundleMessageSource.
      */
     @Bean
     public ResourceBundleMessageSource logSource() {

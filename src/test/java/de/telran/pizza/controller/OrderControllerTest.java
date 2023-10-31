@@ -1,31 +1,23 @@
 package de.telran.pizza.controller;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.entity.Orders;
-import de.telran.pizza.domain.entity.enums.Role;
-import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.security.UserDetailSecurity;
 import de.telran.pizza.service.OrderService;
-import de.telran.pizza.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,16 +25,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class OrderControllerTest {
-
     @Mock
     private OrderService orderService;
-
     @Mock
     private MessageHelper helper;
-
     @InjectMocks
     private OrderController orderController;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -51,8 +39,7 @@ class OrderControllerTest {
     @Test
     void testGetOrders() {
         // Подготовка: Пользователь
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -60,7 +47,7 @@ class OrderControllerTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Мокирование orderService.findAllUserOrders()
-        List<Orders> ordersList = List.of(new Orders(), new Orders());
+        List<Orders> ordersList = MockData.getMockedListOfOrders();
         when(orderService.findAllUserOrders()).thenReturn(ordersList);
 
         // Вызов метода
@@ -75,8 +62,7 @@ class OrderControllerTest {
     @Test
     void testGetAllOrders() {
         // Подготовка: Пользователь
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -84,7 +70,7 @@ class OrderControllerTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Мокирование orderService.findAllOrders()
-        List<Orders> ordersList = List.of(new Orders(), new Orders());
+        List<Orders> ordersList = MockData.getMockedListOfOrders();
         when(orderService.findAllOrders()).thenReturn(ordersList);
 
         // Вызов метода
@@ -98,18 +84,17 @@ class OrderControllerTest {
     @Test
     void create_successfulOrderCreation() {
         // Подготовка: Пользователь
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
         // Устанавливаем аутентификацию в текущий контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Orders orders = new Orders(1, user, new BigDecimal(25.00), Status.NEW, LocalDateTime.now());
+        Orders orders = MockData.getMockedOrder();
 
         // Мокирование метода
-        when(orderService.saveNewOrder()).thenReturn(orders); // Replace someOrder with an actual Orders object
+        when(orderService.saveNewOrder()).thenReturn(orders);
 
         // Вызов метода
         ResponseEntity<Orders> responseEntity = orderController.create();
@@ -122,8 +107,7 @@ class OrderControllerTest {
     @Test
     void create_orderCreationException() {
         // Подготовка: Пользователь
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -140,30 +124,29 @@ class OrderControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatus());
         assertEquals("Some error message", thrown.getReason());
     }
+
     @Test
     void testConfirm() {
         // Подготовка
-        ItemDTO itemDTO = new ItemDTO(1);
+        int id = MockData.getMockedDish().getId();
 
         // Действие и проверка
-        assertDoesNotThrow(() -> orderController.confirm(itemDTO));
+        assertDoesNotThrow(() -> orderController.confirm(id));
     }
 
     @Test
     void testPayment() {
         // Подготовка
-        ItemDTO itemDTO = new ItemDTO(1);
+        int id = MockData.getMockedDish().getId();
 
         // Действие и проверка
-        assertDoesNotThrow(() -> orderController.payment(itemDTO));
+        assertDoesNotThrow(() -> orderController.payment(id));
     }
 
     @Test
     void testGetOrdersCount() {
         // Подготовка
-        when(orderService.findAllOrders()).thenReturn(List.of(
-                new Orders(), new Orders()
-        ));
+        when(orderService.findAllOrders()).thenReturn(MockData.getMockedListOfOrders());
 
         // Действие
         ResponseEntity<Integer> responseEntity = orderController.getOrdersCount();
@@ -201,4 +184,15 @@ class OrderControllerTest {
         assertNotNull(responseEntity.getBody());
         assertEquals(500.0, responseEntity.getBody());
     }
+
+    @Test
+    void payment_shouldNotThrowException() {
+        int id = 1;
+
+        assertDoesNotThrow(() -> orderController.payment(id));
+
+        verify(orderService, times(1)).payment(id);
+    }
+
+
 }

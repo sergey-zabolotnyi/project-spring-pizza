@@ -7,9 +7,7 @@ import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
-import de.telran.pizza.service.mapper.CategoryMapper;
-import de.telran.pizza.service.mapper.DishMapper;
-import lombok.NonNull;
+import de.telran.pizza.service.mapper.Mappers;import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,11 +36,13 @@ public class DishService {
 
     private DishRepository dishRepository;
     private CategoryRepository categoryRepository;
+    private final Mappers mappers;
     private MessageHelper helper;
 
-    public DishService(DishRepository dishRepository, CategoryRepository categoryRepository, MessageHelper helper) {
+    public DishService(DishRepository dishRepository, CategoryRepository categoryRepository, Mappers mappers, MessageHelper helper) {
         this.dishRepository = dishRepository;
         this.categoryRepository = categoryRepository;
+        this.mappers = mappers;
         this.helper = helper;
     }
 
@@ -70,8 +70,8 @@ public class DishService {
         List<Category> categories = categoryRepository.findAll();
 
         return PageDishesDTO.builder()
-                .dishes(DishMapper.dishListToDtoList(page.getContent()))
-                .categories(CategoryMapper.categoryListToDtoList(categories))
+                .dishes(mappers.dishesToDishDTOs(page.getContent()))
+                .categories(mappers.categoriesToCategoryDTOs(categories))
                 .currentPage(pageNum)
                 .totalPages(page.getTotalPages())
                 .sortField(sortField)
@@ -90,8 +90,10 @@ public class DishService {
     public Sort validationSetDefault(String sortField, String sortDirection) {
         sortField = sortField == null || sortField.isEmpty() || sortField.equals("null") ? sortDefault
                 : (sortField.equals("name")) ? helper.getMessage("db.name") : sortField;
+
         sortDirection = (sortDirection != null && !sortDirection.isEmpty() && (sortDirection.equalsIgnoreCase("asc")
                 || sortDirection.equalsIgnoreCase("desc"))) ? sortDirection : sortDirectionDefault;
+
         return sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending();
     }
@@ -103,7 +105,7 @@ public class DishService {
      */
     public List<DishDTO> findAllDishes() {
         Sort sort = Sort.by("id").ascending();
-        return DishMapper.dishListToDtoList(dishRepository.findAll(sort));
+        return mappers.dishesToDishDTOs(dishRepository.findAll(sort));
     }
 
     /**

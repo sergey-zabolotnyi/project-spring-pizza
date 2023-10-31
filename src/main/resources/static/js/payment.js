@@ -19,7 +19,7 @@ angular.module("get_form", [])
                     "Content-Type": "application/json",
                     'X-CSRF-TOKEN': token
                 },
-                data: JSON.stringify(object)
+                data: orderNo
             }).then(function (response) {
                 // if (response.data) {
                     location.replace("/orders")

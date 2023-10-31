@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- * Configuration class for setting up security configurations.
+ * Класс конфигурации для настройки безопасности.
  */
 @Configuration
 @EnableWebSecurity
@@ -28,9 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     /**
-     * Provides a BCryptPasswordEncoder for password encoding.
+     * Предоставляет BCryptPasswordEncoder для кодирования пароля.
      *
-     * @return Configured BCryptPasswordEncoder.
+     * @return Настроенный BCryptPasswordEncoder.
      */
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -38,11 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     /**
-     * Configures security filters and rules for the application.
+     * Настраивает фильтры и правила безопасности для приложения.
      *
-     * @param http The HttpSecurity object to configure security.
-     * @return The configured SecurityFilterChain.
-     * @throws Exception If configuration encounters an error.
+     * @param http Объект HttpSecurity для настройки безопасности.
+     * @return Настроенный SecurityFilterChain.
+     * @throws Exception Если возникает ошибка во время конфигурации.
      */
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -88,6 +88,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .maxSessionsPreventsLogin(false);
 
     }
+
+    /**
+     * Настраивает AuthenticationManagerBuilder для управления аутентификацией.
+     *
+     * @param auth Объект AuthenticationManagerBuilder.
+     * @throws Exception Если возникает ошибка во время конфигурации.
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
@@ -95,7 +102,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .passwordEncoder(encoder());
     }
 
-    // permit list without Manager Role
+    // Список разрешенных URL без роли Manager
     private static final String[] PERMIT_ALL_LIST = {
             "/",
             "/signup",

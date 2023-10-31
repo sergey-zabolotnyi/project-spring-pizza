@@ -1,5 +1,6 @@
 package de.telran.pizza.controller;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.LoginDTO;
 import de.telran.pizza.domain.entity.Login;
@@ -42,7 +43,7 @@ class SignupControllerTest {
     @Test
     void testSignup() throws Exception {
         // Создаем фиктивные данные для запроса
-        LoginDTO loginDTO = new LoginDTO("name", "name@example.com", "123456");
+        LoginDTO loginDTO = MockData.getMockedLoginDTO();
 
         // Вызываем метод контроллера
         signupController.signup(loginDTO, response);
@@ -56,8 +57,8 @@ class SignupControllerTest {
         // Проверяем, что аргументы, переданные в сервис, соответствуют ожидаемым
         LoginDTO capturedLoginDTO = loginDTOCaptor.getValue();
         assertNotNull(capturedLoginDTO);
-        assertEquals("name", capturedLoginDTO.getLogin());
-        assertEquals("name@example.com", capturedLoginDTO.getEmail());
+        assertEquals("newUser", capturedLoginDTO.getLogin());
+        assertEquals("newuser@test.com", capturedLoginDTO.getEmail());
         assertEquals("123456", capturedLoginDTO.getPassword());
     }
     @Test
@@ -76,9 +77,7 @@ class SignupControllerTest {
     @Test
     void testGetAllUsersCount() {
         // Создаем фиктивные данные для возвращения из сервиса
-        List<Login> users = Arrays.asList(
-                new Login(1,"user","qwerty","user@gmail.com", ROLE_CUSTOMER, LocalDateTime.now()),
-                new Login(2,"manager","qwerty","manager@gmail.com", ROLE_MANAGER, LocalDateTime.now()));
+        List<Login> users = MockData.getMockedListOfLogins();
 
         // Устанавливаем поведение сервиса при вызове метода
         when(loginService.getAllUsers()).thenReturn(users);
@@ -100,7 +99,7 @@ class SignupControllerTest {
     @Test
     void signup_ValidLoginDTO_RedirectsToLogin() throws Exception {
         // Arrange
-        LoginDTO loginDTO = new LoginDTO();
+        LoginDTO loginDTO = MockData.getMockedLoginDTO();
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // Mock логирования
@@ -117,7 +116,7 @@ class SignupControllerTest {
     @Test
     void signup_InvalidLoginDTO_ThrowsBadRequestException() {
         // Arrange
-        LoginDTO invalidLoginDTO = new LoginDTO();
+        LoginDTO invalidLoginDTO = MockData.getMockedLoginDTO();
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // Mock логирования

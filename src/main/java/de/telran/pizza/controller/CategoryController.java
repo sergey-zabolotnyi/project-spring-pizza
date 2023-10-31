@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controller for managing various categories in the pizzeria.
+ * Контроллер для управления различными категориями в пиццерии.
  */
 @RestController
 @Slf4j
@@ -33,24 +33,24 @@ public class CategoryController {
     }
 
     /**
-     * Gets all categories.
-     * @return A list of CategoryDTO representing all categories.
+     * Получает все категории.
+     * @return Список объектов CategoryDTO, представляющих все категории.
      */
     @Operation(summary = "Получение всех категорий пиццерии",
             description = "Получение всех категорий Пиццерии, хранящихся в БД")
-    @ApiResponse(responseCode = "200", description = "Successfully gets categories.")
+    @ApiResponse(responseCode = "200", description = "Успешно получены категории.")
     @GetMapping("/get")
     public ResponseEntity<List<CategoryDTO>> getAllCategories(){
         log.info(helper.getLogMessage("all.categories.log"));
         return ResponseEntity.ok(categoryService.findAllCategory());
     }
     /**
-     * Gets categories count.
-     * @return A ResponseEntity containing a categories count.
+     * Получает количество категорий.
+     * @return ResponseEntity, содержащий количество категорий.
      */
     @Operation(summary = "Получение количества всех категорий пиццерии",
             description = "Получение количества всех категорий Пиццерии, хранящихся в БД")
-    @ApiResponse(responseCode = "200", description = "Successfully gets count categories.")
+    @ApiResponse(responseCode = "200", description = "Успешно получено количество категорий.")
     @GetMapping("/count")
     public ResponseEntity<Integer> getCategoriesCount() {
         log.info(helper.getLogMessage("all.categories.count.log"));

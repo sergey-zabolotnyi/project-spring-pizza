@@ -1,7 +1,6 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.service.OrderService;
 import de.telran.pizza.utils.Utils;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Controller class for managing orders.
+ * Контроллер для управления заказами.
  */
 @Slf4j
 @RestController
@@ -26,15 +25,16 @@ import java.util.List;
 public class OrderController {
     private OrderService orderService;
     private MessageHelper helper;
+
     public OrderController(OrderService orderService, MessageHelper helper) {
         this.orderService = orderService;
         this.helper = helper;
     }
 
     /**
-     * Gets a list of orders belonging to the currently authorized user.
+     * Получает список заказов, принадлежащих текущему авторизованному пользователю.
      *
-     * @return A ResponseEntity containing a list of Orders entities.
+     * @return ResponseEntity, содержащий список сущностей Orders.
      */
     @GetMapping("/get")
     @Operation(summary = "Получаем список заказов",
@@ -45,9 +45,9 @@ public class OrderController {
     }
 
     /**
-     * Gets a list of all orders for a manager.
+     * Получает список всех заказов для менеджера.
      *
-     * @return A ResponseEntity containing a list of Orders entities.
+     * @return ResponseEntity, содержащий список сущностей Orders.
      */
     @GetMapping("/getAll")
     @Operation(summary = "Получаем все списки заказов",
@@ -58,9 +58,9 @@ public class OrderController {
     }
 
     /**
-     * Creates a new order for the currently authorized user.
+     * Создает новый заказ для текущего авторизованного пользователя.
      *
-     * @return A ResponseEntity containing the created Orders entity.
+     * @return ResponseEntity, содержащий созданную сущность Orders.
      */
     @PostMapping("/create")
     @Operation(summary = "Создание нового заказа",
@@ -76,17 +76,17 @@ public class OrderController {
     }
 
     /**
-     * Confirms an order with the specified ID.
+     * Подтверждает заказ с указанным идентификатором.
      *
-     * @param itemDTO The ItemDTO containing the ID of the order to be confirmed.
+     * @param id идентификатор заказа для подтверждения.
      */
     @PutMapping("/confirm")
     @Operation(summary = "Подтверждает заказ",
             description = "Подтверждает заказ с указанным идентификатором.")
-    public void confirm(@Valid @RequestBody ItemDTO itemDTO) {
-        log.info(helper.getLogMessage("update.orders.log") + itemDTO.getItemId());
+    public void confirm(@Valid @RequestBody int id) {
+        log.info(helper.getLogMessage("update.orders.log") + id);
         try {
-            orderService.confirm(itemDTO.getItemId());
+            orderService.confirm(id);
         } catch (Exception e) {
             log.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -94,48 +94,59 @@ public class OrderController {
     }
 
     /**
-     * Processes a payment for an order with the specified ID.
+     * Обрабатывает оплату заказа с указанным идентификатором.
      *
-     * @param itemDTO The ItemDTO containing the ID of the order to be paid.
+     * @param id идентификатор заказа для оплаты.
      */
     @PutMapping("/payment")
     @Operation(summary = "Обрабатывает оплату заказа",
             description = "Обрабатывает оплату заказа с указанным идентификатором.")
-    public void payment(@Valid @RequestBody ItemDTO itemDTO) {
-        log.info(helper.getLogMessage("update.orders.log") + itemDTO.getItemId());
+    public void payment(@Valid @RequestBody int id) {
+        log.info(helper.getLogMessage("update.orders.log") + id);
         try {
-            orderService.payment(itemDTO.getItemId());
+            orderService.payment(id);
         } catch (Exception e) {
             log.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
     /**
-     * Gets the total number of orders.
+     * Получение количества всех заказов.
      *
-     * This endpoint allows the pizzeria to retrieve the total count of all orders.
-     * @return A {@code ResponseEntity} containing the total count of orders.
+     * Этот метод позволяет получить общее количество заказов в пиццерии.
+     *
+     * @return ResponseEntity с общим количеством заказов.
      */
     @GetMapping("/count")
     @Operation(summary = "Получаем количество всех заказов",
             description = "Получаем количество всех заказов, пиццерии.")
-    public ResponseEntity<Integer> getOrdersCount(){
+    public ResponseEntity<Integer> getOrdersCount() {
         log.info(helper.getLogMessage("get.orders.count"));
         return ResponseEntity.ok(orderService.findAllOrders().size());
     }
+
+    /**
+     * Получение средней суммы всех заказов.
+     *
+     * Этот метод позволяет получить среднюю сумму всех заказов в пиццерии.
+     *
+     * @return ResponseEntity с средней суммой всех заказов.
+     */
     @GetMapping("/average")
     @Operation(summary = "Получаем среднюю сумму всех заказов",
             description = "Получаем среднюю сумму всех заказов, пиццерии.")
-    public ResponseEntity<Double> getAverageSum(){
+    public ResponseEntity<Double> getAverageSum() {
         log.info(helper.getLogMessage("get.average.order.sum"));
         return ResponseEntity.ok(orderService.getAverageOrdersSum());
     }
 
     /**
-     * Gets the total sum of orders.
+     * Получает общую сумму всех заказов.
      *
-     * This endpoint allows users of the pizzeria to retrieve the total sum of all orders made.
-     * @return A {@code ResponseEntity} containing the total sum of all orders.
+     * Этот метод позволяет пользователям пиццерии получить общую сумму всех сделанных заказов.
+     *
+     * @return ResponseEntity с общей суммой всех заказов.
      */
     @GetMapping("/get_total_sum")
     @Operation(summary = "Получаем сумму всех заказов",

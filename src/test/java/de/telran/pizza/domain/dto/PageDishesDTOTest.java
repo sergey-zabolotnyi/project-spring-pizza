@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PageDishesDTOTest {
@@ -43,7 +44,7 @@ public class PageDishesDTOTest {
     }
     @Test
     void getDishes() {
-        List<DishDTO> dishList = List.of(new DishDTO(), new DishDTO());
+        List<DishDTO> dishList = Arrays.asList(new DishDTO(), new DishDTO());
         PageDishesDTO pageDishesDTO = PageDishesDTO.builder().dishes(dishList).build();
         List<DishDTO> result = pageDishesDTO.getDishes();
         assertEquals(dishList, result);
@@ -51,7 +52,7 @@ public class PageDishesDTOTest {
 
     @Test
     void getCategories() {
-        List<CategoryDTO> categoryList = List.of(new CategoryDTO(), new CategoryDTO());
+        List<CategoryDTO> categoryList = Arrays.asList(new CategoryDTO(), new CategoryDTO());
         PageDishesDTO pageDishesDTO = PageDishesDTO.builder().categories(categoryList).build();
         List<CategoryDTO> result = pageDishesDTO.getCategories();
         assertEquals(categoryList, result);
@@ -99,18 +100,18 @@ public class PageDishesDTOTest {
 
     @Test
     void setDishes() {
-        List<DishDTO> dishList = List.of(new DishDTO(), new DishDTO());
+        List<DishDTO> dishList = Arrays.asList(new DishDTO(), new DishDTO());
         PageDishesDTO pageDishesDTO = PageDishesDTO.builder().dishes(dishList).build();
-        List<DishDTO> newDishList = List.of(new DishDTO());
+        List<DishDTO> newDishList = Arrays.asList(new DishDTO());
         pageDishesDTO.setDishes(newDishList);
         assertEquals(newDishList, pageDishesDTO.getDishes());
     }
 
     @Test
     void setCategories() {
-        List<CategoryDTO> categoryList = List.of(new CategoryDTO(), new CategoryDTO());
+        List<CategoryDTO> categoryList = Arrays.asList(new CategoryDTO(), new CategoryDTO());
         PageDishesDTO pageDishesDTO = PageDishesDTO.builder().categories(categoryList).build();
-        List<CategoryDTO> newCategoryList = List.of(new CategoryDTO());
+        List<CategoryDTO> newCategoryList = Arrays.asList(new CategoryDTO());
         pageDishesDTO.setCategories(newCategoryList);
         assertEquals(newCategoryList, pageDishesDTO.getCategories());
     }

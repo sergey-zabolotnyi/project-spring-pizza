@@ -165,16 +165,20 @@ public class LoginTest {
 
     @Test
     void canEqual() {
-        Login login1 = Login.builder().id(1).build();
-        Login login2 = Login.builder().id(1).build();
+        Login login1 = Login.builder().id(1).login("user1").build();
+        Login login2 = Login.builder().id(1).login("user1").build();
+        Login login3 = Login.builder().id(2).login("user2").build();
+
         assertTrue(login1.canEqual(login2));
+        assertTrue(login1.canEqual(login3));
     }
 
     @Test
     void testHashCode() {
-        Login login1 = Login.builder().id(1).build();
-        Login login2 = Login.builder().id(1).build();
-        assertEquals(login1.hashCode(), login2.hashCode());
+        Login login1 = Login.builder().id(1).login("user1").build();
+        Login login2 = Login.builder().id(1).login("user1").build();
+
+        assertTrue(login1.hashCode() == login2.hashCode());
     }
 
     @Test

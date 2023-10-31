@@ -3,12 +3,10 @@ package de.telran.pizza.controller;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.dto.DishDTO;
-import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.service.DishService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Controller class for managing dishes.
+ * Контроллер для управления блюдами.
  */
 @Slf4j
 @RestController
@@ -35,9 +33,9 @@ public class DishController {
     }
 
     /**
-     * Gets a list of all dishes.
+     * Получает список всех блюд.
      *
-     * @return A ResponseEntity containing a list of DishDTOs.
+     * @return ResponseEntity, содержащий список объектов DishDTO.
      */
     @GetMapping("/get_all")
     @Operation(
@@ -49,10 +47,10 @@ public class DishController {
     }
 
     /**
-     * Creates a new dish based on the provided Dish entity.
+     * Создает новое блюдо на основе предоставленной сущности Dish.
      *
-     * @param dish The Dish entity to be created.
-     * @return A ResponseEntity containing the created Dish entity.
+     * @param dish Сущность Dish, которая будет создана.
+     * @return ResponseEntity, содержащий созданное блюдо.
      */
     @PostMapping("/create")
     @Operation(
@@ -71,10 +69,10 @@ public class DishController {
     }
 
     /**
-     * Gets a dish by its ID.
+     * Получает блюдо по его ID.
      *
-     * @param id The ID of the dish to be retrieved.
-     * @return A ResponseEntity containing the Dish entity with the specified ID.
+     * @param id ID блюда, которое нужно получить.
+     * @return ResponseEntity, содержащий сущность Dish с указанным ID.
      */
     @GetMapping("/update")
     @Operation(
@@ -94,9 +92,9 @@ public class DishController {
     }
 
     /**
-     * Updates an existing dish based on the provided Dish entity.
+     * Обновляет существующее блюдо на основе предоставленной сущности Dish.
      *
-     * @param dish The Dish entity to be updated.
+     * @param dish Сущность Dish, которая будет обновлена.
      */
     @PutMapping("/update")
     @Operation(
@@ -115,19 +113,19 @@ public class DishController {
     }
 
     /**
-     * Deletes a dish based on the provided ItemDTO.
+     * Удаляет блюдо на основе предоставленной сущности ItemDTO.
      *
-     * @param itemDTO The ItemDTO containing the ID of the dish to be deleted.
+     * @param id идентификатор удаляемого блюда.
      */
     @DeleteMapping("/delete")
     @Operation(
             summary = "Удалить блюдо",
             description = "Удаление блюд пиццерии, хранящихся в БД")
     public void delete(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Найменование блюд") ItemDTO itemDTO) {
-        log.info(helper.getLogMessage("delete.dishes.log") + itemDTO.getItemId());
+            description = "Идентификатор блюда") int id) {
+        log.info(helper.getLogMessage("delete.dishes.log") + id);
         try {
-            dishService.delete(itemDTO.getItemId());
+            dishService.delete(id);
         } catch (Exception e) {
             log.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -135,9 +133,8 @@ public class DishController {
         }
     }
     /**
-     * Gets dishes count for Statistics.
-     *
-     * @return A ResponseEntity containing a dishes count in menu.
+     * Получает количество блюд для Статистики.
+     * @return ResponseEntity, содержащий количество категорий.
      */
     @Operation(
             summary = "Получение количества блюд в меню",

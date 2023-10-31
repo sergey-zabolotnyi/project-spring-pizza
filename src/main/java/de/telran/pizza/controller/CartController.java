@@ -3,13 +3,11 @@ package de.telran.pizza.controller;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.dto.CartDTO;
-import de.telran.pizza.domain.dto.ItemDTO;
 import de.telran.pizza.service.CartService;
 import de.telran.pizza.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 
 /**
- * Controller class for managing the customer cart.
+ * Класс контроллера для управления корзиной клиента.
  */
 @Slf4j
 @RestController
@@ -35,9 +33,9 @@ public class   CartController {
     }
 
     /**
-     * Gets all dishes in the cart associated with the logged-in customer.
+     * Получает все блюда в корзине, связанные с текущим вошедшим пользователем.
      *
-     * @return ResponseEntity with the CartDTO containing the list of dishes and their total price.
+     * @return ResponseEntity с объектом CartDTO, содержащим список блюд и их общую стоимость.
      */
     @GetMapping("/get")
     @Operation(
@@ -50,21 +48,21 @@ public class   CartController {
     }
 
     /**
-     * Creates a new item in the cart for the logged-in customer.
+     * Создает новый элемент в корзине для вошедшего в систему пользователя.
      *
-     * @param itemDTO The ItemDTO containing the details of the item to be added.
-     * @return ResponseEntity with the saved Cart entity.
-     * @throws ResponseStatusException if there is an issue with the request.
+     * @param id идентификатор добавляемого элемента.
+     * @return ResponseEntity с сохраненной сущностью Cart.
+     * @throws ResponseStatusException в случае проблем с запросом.
      */
     @PostMapping("/create")
     @Operation(
             summary = "Добавление блюд в корзину пользователей",
             description = "Добавление различных блюд в корзину для вошедшего в систему клиента.")
     public ResponseEntity<Cart> create(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Найменование блюд") ItemDTO itemDTO) {
-        log.info(helper.getLogMessage("create.cart.log") + itemDTO.getItemId());
+            description = "Идентификатор блюда") int id) {
+        log.info(helper.getLogMessage("create.cart.log") + id);
         try {
-            return ResponseEntity.ok(cartService.saveNewItem(itemDTO));
+            return ResponseEntity.ok(cartService.saveNewItem(id));
         } catch (Exception e) {
             log.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -72,20 +70,20 @@ public class   CartController {
     }
 
     /**
-     * Deletes an item from the cart.
+     * Удаляет элемент из корзины.
      *
-     * @param itemDTO The ItemDTO containing the ID of the item to be deleted.
-     * @throws ResponseStatusException if there is an issue with the request.
+     * @param id идентификатор удаляемого элемента.
+     * @throws ResponseStatusException в случае проблем с запросом.
      */
     @DeleteMapping("/delete")
     @Operation(
             summary = "Удаляет блюда из корзины пользователей",
             description = "Удаляет блюда из корзины для залогиненного пользователя")
     public void delete(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Найменование блюд") ItemDTO itemDTO) {
-        log.info(helper.getLogMessage("delete.cart.log") + itemDTO.getItemId());
+            description = "Идентификатор блюда") int id) {
+        log.info(helper.getLogMessage("delete.cart.log") + id);
         try {
-            cartService.delete(itemDTO.getItemId());
+            cartService.delete(id);
         } catch (Exception e) {
             log.warn(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -93,9 +91,9 @@ public class   CartController {
     }
 
     /**
-     * Deletes all items in the cart associated with the logged-in user.
+     * Удаляет все элементы в корзине, связанные с текущим вошедшим пользователем.
      *
-     * @throws ResponseStatusException if there is an issue with the request.
+     * @throws ResponseStatusException в случае проблем с запросом.
      */
     @DeleteMapping("/deleteAll")
     @Operation(

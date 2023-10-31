@@ -1,9 +1,8 @@
 package de.telran.pizza.service;
 
 import de.telran.pizza.domain.dto.CategoryDTO;
-import de.telran.pizza.service.mapper.CategoryMapper;
 import de.telran.pizza.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.telran.pizza.service.mapper.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.List;
 @Service
 public class CategoryService {
     private CategoryRepository categoryRepository;
-    public CategoryService(CategoryRepository categoryRepository) {
+    private final Mappers mappers;
+
+    public CategoryService(CategoryRepository categoryRepository, Mappers mappers) {
         this.categoryRepository = categoryRepository;
+        this.mappers = mappers;
     }
 
     /**
@@ -24,6 +26,6 @@ public class CategoryService {
      * @return A list of CategoryDTO objects representing categories.
      */
     public List<CategoryDTO> findAllCategory() {
-        return CategoryMapper.categoryListToDtoList(categoryRepository.findAll());
+        return mappers.categoriesToCategoryDTOs(categoryRepository.findAll());
     }
 }

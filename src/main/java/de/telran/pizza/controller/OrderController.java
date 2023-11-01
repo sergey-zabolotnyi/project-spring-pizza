@@ -1,6 +1,8 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
+import de.telran.pizza.domain.dto.DishDTO;
+import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.service.OrderService;
 import de.telran.pizza.utils.Utils;
@@ -154,6 +156,21 @@ public class OrderController {
     public ResponseEntity<Double> getAllOrdersAmount() {
         log.info(helper.getLogMessage("get.all.orders.sum"));
         return ResponseEntity.ok(orderService.getTotalOrdersSum());
+    }
+
+    /**
+     * Получает список блюд по номеру заказа.
+     *
+     * Этот метод позволяет пользователям получить список заказанных блюд по номеру заказа.
+     *
+     * @return ResponseEntity со списком блюд данного заказа.
+     */
+    @GetMapping("/get_dishes/{orderId}")
+    @Operation(summary = "Получаем список блюд по номеру заказа",
+            description = "Получаем список всех блюд для заказа с указанным ID.")
+    public ResponseEntity<List<DishDTO>> getDishesByOrderId(@PathVariable int orderId) {
+        List<DishDTO> dishes = orderService.getDishesByOrderId(orderId);
+        return ResponseEntity.ok(dishes);
     }
 }
 

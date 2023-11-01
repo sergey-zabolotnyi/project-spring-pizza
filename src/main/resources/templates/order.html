@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
+<html ng-app="get_form" lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -29,12 +29,12 @@
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
-            <a class="button-1" href="/" th:text="#{main.main}"></a> |
-            <a class="button-1" href="/cart" th:text="#{main.cart}"></a> |
-            <a class="button-1" href="/orders" th:text="#{main.orders}"></a> |
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a> |
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a> |
-            <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}"></a>
+            <a class="button-1" href="/" th:text="#{main.main}"></a>
+            <span sec:authorize="isAuthenticated()"> | <a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="isAuthenticated()"> |<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
@@ -64,61 +64,59 @@
     </section>
 
     <header class="block-2">
-        <h2 th:text="#{main.manage.orders}"></h2>
+        <h2 th:text="#{main.order}"></h2>
     </header>
 
     <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getAllItems()">
+             ng-app="get_form" ng-controller="GetController" data-ng-init="getItemsById()">
+
+        <div id="errorMsg"></div>
 
         <div id="dishes_block">
             <div>
-                <table id="table" ng-model="orders">
+                <table id="table" ng-model="dishes">
                     <tr>
                         <th columns="0" onclick="tableSort(this, 'table')">№</th>
-                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{orders.time}"></th>
-                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{orders.username}"></th>
-                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{orders.totalPrice}"></th>
-                        <th columns="4" onclick="tableSort(this, 'table')" th:text="#{orders.status}"></th>
-                        <th columns="5" th:text="#{cart.action}"></th>
+                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.dish}"></th>
+                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.price}"></th>
+                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.category}"></th>
+                        <th columns="4" th:text="#{cart.action}"></th>
                     </tr>
                     <tbody id="dishes_table">
-                    <tr ng-repeat="i in orders" class="rows" checked=false>
+                    <tr ng-repeat="i in dishes" class="rows" checked=false>
                         <td>{{i.id}}</td>
-                        <td>{{i.time}}</td>
-                        <td>{{i.login.login}}</td>
-                        <td>{{i.totalPrice | number:2}}</td>
-                        <td>{{i.status}}</td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.price}}</td>
+                        <td>{{i.category.category}}</td>
                         <td>
-                            <a id="{{i.id}}" class="hidden" ng-click="confirmAction($event)" th:text="#{orders.confirm}"></a> |
-                            <a orderId="{{i.id}}" class="button" ng-click="showOrder($event)" th:text="#{button.show}"></a>
+                            // пока пустое поле
                         </td>
                     </tr>
+
                     </tbody>
                 </table>
             </div>
-        </div>
 
+            <div class="page_head" ng-model="totalPrice">
+                <p style="align-items: end;">
+                    <span th:text="#{orders.totalPrice} + ' = '"></span>
+                    <span style="font-weight: 700">{{totalPrice}}</span>
+                </p>
+
+            </div>
+
+            <div class="page_head">
+                <div style="margin: 20px 0;">
+                    <a class="button-green" ng-click="postdata()" th:text="#{cart.create}"></a>
+                </div>
+                <div>
+                    <a class="button-red" ng-click="deleteAll()" th:text="#{cart.deleteAll}"></a>
+                </div>
+            </div>
+        </div>
     </section>
 
 </div>
 </body>
-
-<script>
-    function showButtons() {
-        let items = document.querySelectorAll('.rows');
-        items.forEach((elem) => {
-            let tags = elem.getElementsByTagName("td");
-            if (tags[4].innerHTML !== 'NEW' && tags[4].innerHTML !== 'DONE') {
-                let link = elem.getElementsByTagName('a');
-                link[0].className = 'button';
-            }
-        });
-    }
-
-    let init = () => {
-        setTimeout(showButtons, 200);
-    }
-    window.onload = init;
-</script>
 
 </html>

@@ -8,6 +8,8 @@ angular.module("get_form", [])
 
         // Массив для хранения заказов
         $scope.orders = [];
+        $scope.dishes = [];
+        $scope.totalPrice = 0;
 
         // Функция для получения элементов
         $scope.getItems = function () {
@@ -61,6 +63,30 @@ angular.module("get_form", [])
             );
         }
 
+        $scope.getItemsById = function (orderId) {
+            $http({
+                method: "GET",
+                url: "/api/get_dishes/" + orderId,
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(
+                function (response) {
+                    console.log(response.data);
+                    $scope.dishes = response.data;
+                    if ($scope.dishes.length === 0) {
+                        document.querySelector("#errorMsg").innerHTML = 'Order is empty!';
+                        document.querySelector("#dishes_block").className = 'hidden';
+                    }
+                },
+                function (error) {
+                    console.log(error);
+                    console.log("error");
+                }
+            );
+        }
+
         $scope.itemId = null;
 
         // Функция confirmAction принимает событие как аргумент
@@ -74,6 +100,33 @@ angular.module("get_form", [])
             $http({
                 method: "PUT",
                 url: "/api/orders/confirm",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                },
+                data: id
+            }).then(function (response) {
+                // if (response.data) {
+                // Если ответ успешный, перезагружаем страницу
+                location.reload();
+                // }
+            }, function (response) {
+                // Если возникла ошибка, вызываем функцию alertErrors и выводим код статуса в консоль
+                alertErrors(response);
+                console.log(response.status);
+            });
+        };
+        // Функция showAction принимает событие как аргумент
+        $scope.showOrder = function (event) {
+            let id = event.currentTarget.getAttribute('id');
+            console.log(id);
+            // Создаем объект с id
+            let object = { "itemId": id }
+            console.log(object);
+            // Отправляем GET запрос к /api/orders/get_dishes/{orderId} с данными объекта
+            $http({
+                method: "GET",
+                url: "/api/orders/get_dishes/{orderId}",
                 headers: {
                     "Content-Type": "application/json",
                     'X-CSRF-TOKEN': token

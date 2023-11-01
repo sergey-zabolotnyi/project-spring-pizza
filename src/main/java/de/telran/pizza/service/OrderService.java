@@ -2,6 +2,7 @@ package de.telran.pizza.service;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
+import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Login;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.domain.dto.DishDTO;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing orders.
@@ -28,13 +31,13 @@ public class OrderService {
     private OrdersRepository ordersRepository;
     private CartRepository cartRepository;
     private MessageHelper helper;
-    private final Mappers mappers;
+    private Mappers mappers;
 
     public OrderService(OrdersRepository ordersRepository, CartRepository cartRepository, Mappers mappers, MessageHelper helper) {
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;
-        this.helper = helper;
         this.mappers = mappers;
+        this.helper = helper;
     }
 
     /**
@@ -71,6 +74,7 @@ public class OrderService {
         }
         List<DishDTO> dishes = mappers.cartListToDishDTOList(newCart);
         BigDecimal dishTotalPrice = mappers.calculateTotalPrice(dishes);
+        List<Dish> orderDishesList = mappers.orderDishesList(dishes);
 
         cartRepository.deleteByLoginId(user.getId());
         log.info(helper.getLogMessage("delete.all.cart.log"));
@@ -80,6 +84,7 @@ public class OrderService {
                 .totalPrice(dishTotalPrice)
                 .status(Status.NEW)
                 .time(LocalDateTime.now())
+                .dishes(orderDishesList)
                 .build());
     }
 
@@ -141,5 +146,14 @@ public class OrderService {
      */
     public Double getTotalOrdersSum() {
         return ordersRepository.findTotalOrdersSum();
+    }
+
+    public List<DishDTO> getDishesByOrderId(int orderId) {
+        Orders order = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException(helper.getLogMessage("select.orders.not") + orderId));
+
+        return order.getDishes().stream()
+                .map(mappers::dishToDishDTO)
+                .collect(Collectors.toList());
     }
 }

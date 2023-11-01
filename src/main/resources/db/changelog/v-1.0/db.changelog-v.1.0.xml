@@ -10,5 +10,6 @@
     <include file="03-create-login.yml" relativeToChangelogFile="true"/>
     <include file="04-create-orders.yml" relativeToChangelogFile="true"/>
     <include file="05-create-cart.yml" relativeToChangelogFile="true"/>
+    <include file="06-create-order-dish.yml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

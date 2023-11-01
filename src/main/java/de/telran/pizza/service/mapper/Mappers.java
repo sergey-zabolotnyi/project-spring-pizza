@@ -5,11 +5,13 @@ import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
+import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.utils.Utils;
 import org.mapstruct.Mapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -55,4 +57,8 @@ public interface Mappers {
     default String mapDish(Dish dish) {
         return Utils.isLocaleEnglish() ? dish.getNameEn() : dish.getNameRu();
     }
+
+    List<Dish> orderDishesList(List<DishDTO> dishes);
+
 }
+

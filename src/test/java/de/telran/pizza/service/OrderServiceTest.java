@@ -2,6 +2,7 @@ package de.telran.pizza.service;
 
 import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
+import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.*;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
@@ -9,6 +10,7 @@ import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
 import de.telran.pizza.security.UserDetailSecurity;
 import de.telran.pizza.service.mapper.Mappers;
+import liquibase.pro.packaged.M;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -181,8 +183,7 @@ public class OrderServiceTest {
     @Test
     void confirm_invalidOrder() {
         // Подготовка: Создаем пользователя с ролью ROLE_MANAGER
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_MANAGER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
 
         // Подготовка: Подготовим аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -190,7 +191,7 @@ public class OrderServiceTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Подготовка: Создаем заказ с состоянием "DONE"
-        Orders order = new Orders(1, user, new BigDecimal("25.00"), Status.DONE, LocalDateTime.now());
+        Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
         when(ordersRepository.findById(order.getId())).thenReturn(Optional.of(order));
@@ -205,8 +206,7 @@ public class OrderServiceTest {
     @Test
     void confirm_invalidRole() {
         // Подготовка: Создаем пользователя с ролью не ROLE_MANAGER
-        Login user = new Login(1, "user", "123456", "user@user.com",
-                Role.ROLE_CUSTOMER, LocalDateTime.now());
+        Login user = MockData.getMockedUser();
 
         // Подготовка: Подготовим аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -214,7 +214,7 @@ public class OrderServiceTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Подготовка: Создаем заказ с состоянием "NEW"
-        Orders order = new Orders(1, user, new BigDecimal("25.00"), Status.NEW, LocalDateTime.now());
+        Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
         when(ordersRepository.findById(order.getId())).thenReturn(Optional.of(order));
@@ -229,7 +229,7 @@ public class OrderServiceTest {
     @Test
     void saveNewOrder_emptyCart() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        Login user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -260,7 +260,7 @@ public class OrderServiceTest {
         when(cartRepository.findAllByLoginId(user.getId())).thenReturn(cart);
 
         // Мокирование поведения ordersRepository
-        Orders savedOrder = new Orders(1, user, new BigDecimal("50.00"), Status.NEW, LocalDateTime.now());
+        Orders savedOrder = new Orders(1, user, new BigDecimal("50.00"), Status.NEW, LocalDateTime.now(), new ArrayList<>());
         when(ordersRepository.save(any(Orders.class))).thenReturn(savedOrder);
 
         // Действие
@@ -282,4 +282,37 @@ public class OrderServiceTest {
         verify(cartRepository, times(1)).deleteByLoginId(user.getId());
         verify(ordersRepository, times(1)).save(any(Orders.class));
     }
+    @Test
+    void getDishesByOrderId_validOrderId_returnDishDTOList() {
+        // Подготавливаем данные
+        int orderId = 1;
+        Orders mockOrder = MockData.getMockedOrder();
+        List<Dish> mockDishes = MockData.getMockedListOfDishes();
+        mockOrder.setDishes(mockDishes);
+
+        DishDTO mockDishDTO1 = MockData.getMockedDishDTO();
+        DishDTO mockDishDTO2 = MockData.getMockedDishDTO();
+        List<DishDTO> expectedDishDTOList = Arrays.asList(mockDishDTO1, mockDishDTO2);
+
+        when(ordersRepository.findById(orderId)).thenReturn(Optional.of(mockOrder));
+        when(mappers.dishToDishDTO(any())).thenReturn(mockDishDTO1, mockDishDTO2);
+
+        // Действие
+        List<DishDTO> result = orderService.getDishesByOrderId(orderId);
+
+        // Проверяем
+        assertEquals(expectedDishDTOList, result);
+    }
+
+    @Test
+    void getDishesByOrderId_invalidOrderId_throwNoSuchElementException() {
+        // Подготавливаем данные
+        int invalidOrderId = 999;
+
+        when(ordersRepository.findById(invalidOrderId)).thenReturn(Optional.empty());
+
+        // Действие и проверка
+        assertThrows(NoSuchElementException.class, () -> orderService.getDishesByOrderId(invalidOrderId));
+    }
+
 }

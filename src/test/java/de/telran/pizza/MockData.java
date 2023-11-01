@@ -2,10 +2,12 @@ package de.telran.pizza;
 
 import de.telran.pizza.domain.dto.*;
 import de.telran.pizza.domain.entity.*;
+import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,23 +47,25 @@ public class MockData {
     }
 
     public static Login getMockedUser() {
-        return new Login("user", "123456");
+        return new Login(1, "user", "123456", "user@user.com",
+                Role.ROLE_MANAGER, LocalDateTime.now());
     }
     public static LoginDTO getMockedLoginDTO() {
         return new LoginDTO("newUser", "newuser@test.com", "123456");
     }
 
     public static List<Login> getMockedListOfLogins() {
-        return Arrays.asList(getMockedUser(), new Login("user2", "123456"));
+        return Arrays.asList(getMockedUser(), new Login(2, "user1", "123456", "user1@user.com",
+                Role.ROLE_MANAGER, LocalDateTime.now()));
     }
 
     public static Orders getMockedOrder(){
-        return new Orders(1, getMockedUser(), new BigDecimal("25.00"), Status.NEW, LocalDateTime.now());
+        return new Orders(1, getMockedUser(), new BigDecimal("25.00"), Status.NEW, LocalDateTime.now(), new ArrayList<>());
     }
 
     public static List<Orders> getMockedListOfOrders() {
         return Arrays.asList(getMockedOrder(),
-                new Orders(2, getMockedUser(), new BigDecimal("35.00"), Status.NEW, LocalDateTime.now()));
+                new Orders(2, getMockedUser(), new BigDecimal("35.00"), Status.NEW, LocalDateTime.now(), new ArrayList<>()));
     }
 
     public static Cart getMockedCart(){

@@ -27,15 +27,21 @@ Chocolate fondant,Шоколадный фондан,9.00,CURRENT_TIMESTAMP,4
 Apple Pie,Яблочный пирог,6.00,CURRENT_TIMESTAMP,4
 Strawberry Shortcake,Клубничный торт,8.50,CURRENT_TIMESTAMP,4
 Lemon Tart,Лимонный тарт,7.50,CURRENT_TIMESTAMP,4
-Coca-Cola,Кока-Кола,2.00,CURRENT_TIMESTAMP,5
-Pepsi,Пепси,2.00,CURRENT_TIMESTAMP,5
-Sprite,Спрайт,2.00,CURRENT_TIMESTAMP,5
-Fanta,Фанта,2.00,CURRENT_TIMESTAMP,5
-Lemonade,Лимонад,2.00,CURRENT_TIMESTAMP,5
-Iced Tea,Холодный чай,2.50,CURRENT_TIMESTAMP,5
-Red wine,Красное вино,12.50,CURRENT_TIMESTAMP,6
-White wine,Белое вино,11.50,CURRENT_TIMESTAMP,6
-Beer,Пиво,3.50,CURRENT_TIMESTAMP,6
-Whiskey,Виски,10.50,CURRENT_TIMESTAMP,6
-Vodka,Водка,9.50,CURRENT_TIMESTAMP,6
-Tequila,Текила,11.00,CURRENT_TIMESTAMP,6
+Espresso, Эспрессо,1.50,CURRENT_TIMESTAMP,5
+Latte, Латте,2.50,CURRENT_TIMESTAMP,5
+Cappuccino, Капучино,2.50,CURRENT_TIMESTAMP,5
+Americano, Американо,2.50,CURRENT_TIMESTAMP,5
+Mocha, Мокко,3.00,CURRENT_TIMESTAMP,5
+Flat White, Флэт Уайт,2.50,CURRENT_TIMESTAMP,5
+Coca-Cola,Кока-Кола,2.00,CURRENT_TIMESTAMP,6
+Pepsi,Пепси,2.00,CURRENT_TIMESTAMP,6
+Sprite,Спрайт,2.00,CURRENT_TIMESTAMP,6
+Fanta,Фанта,2.00,CURRENT_TIMESTAMP,6
+Lemonade,Лимонад,2.00,CURRENT_TIMESTAMP,6
+Iced Tea,Холодный чай,2.50,CURRENT_TIMESTAMP,6
+Red wine,Красное вино,12.50,CURRENT_TIMESTAMP,7
+White wine,Белое вино,11.50,CURRENT_TIMESTAMP,7
+Beer,Пиво,3.50,CURRENT_TIMESTAMP,7
+Whiskey,Виски,10.50,CURRENT_TIMESTAMP,7
+Vodka,Водка,9.50,CURRENT_TIMESTAMP,7
+Tequila,Текила,11.00,CURRENT_TIMESTAMP,7

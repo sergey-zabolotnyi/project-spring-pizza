@@ -1,6 +1,12 @@
 // Use DBML to define your database structure
 // Docs: https://dbml.dbdiagram.io/docs
 
+Table category {
+  id integer [primary key]
+  category_en varchar(255)
+  category_ru varchar(255)
+}
+
 Table login {
   id integer [primary key]
   email varchar(255)
@@ -18,7 +24,7 @@ Table orders {
   time timestamp
 }
 
-Table dishes {
+Table dish {
   id integer [primary key]
   name_en varchar(255)
   name_ru varchar(255)
@@ -27,19 +33,21 @@ Table dishes {
   time timestamp
 }
 
-Table category {
-  id integer [primary key]
-  category_en varchar(255)
-  category_ru varchar(255)
-}
-
 Table cart {
   id integer [primary key]
   login_id integer
   dish_id integer
 }
 
+Table order_dish {
+  id integer [primary key]
+  order_id integer
+  dish_id integer
+}
+
 Ref: orders.login_id > login.id // many-to-one
 Ref: cart.login_id > login.id // many-to-one
-Ref: cart.dish_id > dishes.id // many-to-one
-Ref: dishes.category_id > category.id // many-to-one
+Ref: cart.dish_id > dish.id // many-to-one
+Ref: dish.category_id > category.id // many-to-one
+Ref: order_dish.order_id > orders.id // many-to-one
+Ref: order_dish.dish_id > dish.id // many-to-one

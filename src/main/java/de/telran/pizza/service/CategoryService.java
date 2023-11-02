@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class for managing categories.
+ * Сервисный класс для управления категориями.
+ * Этот класс используется для управления категориями приложения.
+ * @Author: szabolotnyi
+ * @version: 1.0.0
  */
 @Service
 public class CategoryService {
-    private CategoryRepository categoryRepository;
+
+    private final CategoryRepository categoryRepository;
     private final Mappers mappers;
 
     public CategoryService(CategoryRepository categoryRepository, Mappers mappers) {
@@ -21,9 +25,9 @@ public class CategoryService {
     }
 
     /**
-     * Gets a list of all categories in DTO format.
+     * Получает список всех категорий в формате DTO.
      *
-     * @return A list of CategoryDTO objects representing categories.
+     * @return Список объектов CategoryDTO, представляющих категории.
      */
     public List<CategoryDTO> findAllCategory() {
         return mappers.categoriesToCategoryDTOs(categoryRepository.findAll());

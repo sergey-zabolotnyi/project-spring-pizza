@@ -1,6 +1,6 @@
 package de.telran.pizza.utils;
 
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.security.UserDetailSecurity;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
@@ -9,28 +9,28 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Locale;
 
 /**
- * Helper class for accessing information related to the application context.
+ * Служебный класс для доступа к информации, связанной с контекстом приложения.
  */
 public class Utils {
 
     /**
-     * Checks if the current locale is set to English.
+     * Проверяет, установлен ли текущий язык на английский.
      *
-     * @return True if the current locale is English, otherwise false.
+     * @return true, если текущий язык - английский, в противном случае false.
      */
     public static boolean isLocaleEnglish() {
         return LocaleContextHolder.getLocale().equals(Locale.ENGLISH);
     }
 
     /**
-     * Gets the authorized login associated with the current authenticated user.
+     * Получает авторизованный логин, связанный с текущим аутентифицированным пользователем.
      *
-     * @return The authorized login.
+     * @return Авторизованный логин.
      */
-    public static Login getAuthorizedLogin() {
+    public static User getAuthorizedLogin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetailSecurity userDetails = (UserDetailSecurity) auth.getPrincipal();
 
-        return userDetails.getLogin();
+        return userDetails.getUser();
     }
 }

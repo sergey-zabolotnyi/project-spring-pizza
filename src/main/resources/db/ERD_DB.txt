@@ -7,10 +7,10 @@ Table category {
   category_ru varchar(255)
 }
 
-Table login {
+Table user {
   id integer [primary key]
   email varchar(255)
-  login varchar(255)
+  user varchar(255)
   password varchar(255)
   role varchar(255)
   time timestamp
@@ -18,7 +18,7 @@ Table login {
 
 Table orders {
   id integer [primary key]
-  login_id integer
+  user_id integer
   totalPrice numeric(9,2)
   status varchar(255)
   time timestamp
@@ -35,7 +35,7 @@ Table dish {
 
 Table cart {
   id integer [primary key]
-  login_id integer
+  user_id integer
   dish_id integer
 }
 
@@ -45,8 +45,8 @@ Table order_dish {
   dish_id integer
 }
 
-Ref: orders.login_id > login.id // many-to-one
-Ref: cart.login_id > login.id // many-to-one
+Ref: orders.user_id > user.id // many-to-one
+Ref: cart.user_id > user.id // many-to-one
 Ref: cart.dish_id > dish.id // many-to-one
 Ref: dish.category_id > category.id // many-to-one
 Ref: order_dish.order_id > orders.id // many-to-one

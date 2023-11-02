@@ -2,10 +2,10 @@ package de.telran.pizza.service;
 
 import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.dto.LoginDTO;
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.dto.UserDTO;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.domain.entity.enums.Role;
-import de.telran.pizza.repository.LoginRepository;
+import de.telran.pizza.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,19 +14,18 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class LoginServiceTest {
+class UserServiceTest {
     @Mock
-    private LoginRepository loginRepository;
+    private UserRepository userRepository;
     @Mock
     private MessageHelper messageHelper;
     @InjectMocks
-    private LoginService loginService;
+    private UserService userService;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -34,12 +33,12 @@ class LoginServiceTest {
     @Test
     void testFindByUserLogin() {
         // Подготовка: Устанавливаем входные данные
-        String login = "testuser";
-        Login expectedLogin = new Login(login, "123456");
-        when(loginRepository.findByLogin(login)).thenReturn(Optional.of(expectedLogin));
+        String user = "testuser";
+        User expectedLogin = new User(user, "123456");
+        when(userRepository.findByUser(user)).thenReturn(Optional.of(expectedLogin));
 
         // Действие: Вызываем тестируемый метод
-        Optional<Login> result = loginService.findByUserLogin(login);
+        Optional<User> result = userService.findByUserLogin(user);
 
         // Проверка: Убеждаемся, что результат присутствует и соответствует ожиданиям
         assertTrue(result.isPresent());
@@ -49,11 +48,11 @@ class LoginServiceTest {
     @Test
     void testFindByUserLoginNotFound() {
         // Подготовка: Устанавливаем входные данные
-        String login = "nonexistentuser";
-        when(loginRepository.findByLogin(login)).thenReturn(Optional.empty());
+        String user = "nonexistentuser";
+        when(userRepository.findByUser(user)).thenReturn(Optional.empty());
 
         // Действие: Вызываем тестируемый метод
-        Optional<Login> result = loginService.findByUserLogin(login);
+        Optional<User> result = userService.findByUserLogin(user);
 
         // Проверка: Убеждаемся, что результат отсутствует
         assertFalse(result.isPresent());
@@ -62,13 +61,13 @@ class LoginServiceTest {
     @Test
     void testSaveUser() {
         // Подготовка: Создаем объекты и настраиваем моки
-        LoginDTO loginDTO = MockData.getMockedLoginDTO();
+        UserDTO userDTO = MockData.getMockedUserDTO();
         Role role = Role.ROLE_CUSTOMER;
-        when(loginRepository.save(any(Login.class))).thenReturn(new Login(1, "newUser", "123456",
+        when(userRepository.save(any(User.class))).thenReturn(new User(1, "newUser", "123456",
                 "newuser@test.com", role, LocalDateTime.now()));
 
         // Действие: Вызываем тестируемый метод
-        Login result = loginService.saveUser(loginDTO, role);
+        User result = userService.saveUser(userDTO, role);
 
         // Проверка: Убеждаемся, что результат не является null и соответствует ожиданиям
         assertNotNull(result);
@@ -78,23 +77,23 @@ class LoginServiceTest {
     @Test
     void testSaveUserExistingLogin() {
         // Подготовка: Создаем объекты и настраиваем моки
-        LoginDTO loginDTO = MockData.getMockedLoginDTO();
+        UserDTO userDTO = MockData.getMockedUserDTO();
         Role role = Role.ROLE_CUSTOMER;
-        when(loginRepository.save(any(Login.class))).thenThrow(new IllegalArgumentException("nullexistinguser"));
+        when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException("nullexistinguser"));
 
         // Действие и Проверка: Убеждаемся, что исключение выбрасывается при вызове тестируемого метода
-        assertThrows(IllegalArgumentException.class, () -> loginService.saveUser(loginDTO, role));
+        assertThrows(IllegalArgumentException.class, () -> userService.saveUser(userDTO, role));
     }
 
     @Test
     void testGetAllUsers() {
         // Подготовка: Устанавливаем ожидаемый результат
-        List<Login> expectedUsers = MockData.getMockedListOfLogins();
+        List<User> expectedUsers = MockData.getMockedListOfUsers();
 
-        when(loginRepository.findAll()).thenReturn(expectedUsers);
+        when(userRepository.findAll()).thenReturn(expectedUsers);
 
         // Действие: Вызываем тестируемый метод
-        List<Login> result = loginService.getAllUsers();
+        List<User> result = userService.getAllUsers();
 
         // Проверка: Убеждаемся, что размеры и содержимое списков совпадают
         assertEquals(expectedUsers.size(), result.size());

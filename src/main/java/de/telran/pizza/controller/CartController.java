@@ -43,7 +43,7 @@ public class   CartController {
             description = "Получение всех блюд в корзине залогиненного пользователей, хранящихся в БД")
     public ResponseEntity<CartDTO> getDishes() {
         log.info(helper.getMessage("select.all.cart.log") +
-                Utils.getAuthorizedLogin().getLogin());
+                Utils.getAuthorizedLogin().getUser());
         return ResponseEntity.ok(cartService.findAllDishes());
     }
 

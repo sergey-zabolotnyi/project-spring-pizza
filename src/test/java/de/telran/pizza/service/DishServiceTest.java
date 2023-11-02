@@ -1,19 +1,22 @@
 package de.telran.pizza.service;
 
+import de.telran.pizza.MockData;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.dto.PageDishesDTO;
 import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.repository.DishRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

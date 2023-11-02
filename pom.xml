@@ -168,6 +168,10 @@
 							<goal>prepare-agent</goal>
 						</goals>
 						<configuration>
+							<excludes>
+								<exclude>de/telran/pizza/domain/**</exclude>
+								<exclude>de/telran/pizza/service/mapper/**</exclude>
+							</excludes>
 							<destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
 							<propertyName>surefireArgLine</propertyName>
 						</configuration>
@@ -179,6 +183,10 @@
 							<goal>report</goal>
 						</goals>
 						<configuration>
+							<excludes>
+								<exclude>de/telran/pizza/domain/**</exclude>
+								<exclude>de/telran/pizza/service/mapper/**</exclude>
+							</excludes>
 							<dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
 						</configuration>

@@ -18,14 +18,14 @@
 
     <changeSet id="7" author="szabolotnyi">
         <preConditions onFail="MARK_RAN">
-            <tableIsEmpty tableName="login"/>
+            <tableIsEmpty tableName="user"/>
             <tableIsEmpty tableName="category"/>
             <tableIsEmpty tableName="dish"/>
             <tableIsEmpty tableName="orders"/>
             <tableIsEmpty tableName="order_dish"/>
         </preConditions>
 
-        <loadData tableName="login" file="db/changelog/data/users.csv"/>
+        <loadData tableName="user" file="db/changelog/data/users.csv"/>
         <loadData tableName="category" file="db/changelog/data/categories.csv"/>
         <loadData tableName="dish" file="db/changelog/data/dishes.csv"/>
         <loadData tableName="orders" file="db/changelog/data/orders.csv"/>

@@ -26,10 +26,10 @@ databaseChangeLog:
                     referencedTableName: dish
                     referencedColumnNames: id
               - column:
-                  name: login_id
+                  name: user_id
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_cart_login
-                    referencedTableName: login
+                    foreignKeyName: fk_cart_user
+                    referencedTableName: user
                     referencedColumnNames: id

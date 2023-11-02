@@ -4,13 +4,11 @@ import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.*;
-import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.domain.entity.enums.Status;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.OrdersRepository;
 import de.telran.pizza.security.UserDetailSecurity;
 import de.telran.pizza.service.mapper.Mappers;
-import liquibase.pro.packaged.M;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,7 +46,7 @@ public class OrderServiceTest {
     @Test
     void findAllUserOrders() {
         // Подготовка: Создаем объект пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         user.setId(1);
 
         // Создаем список заказов пользователя
@@ -62,7 +60,7 @@ public class OrderServiceTest {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Настроим поведение мока ordersRepository
-        when(ordersRepository.findOrdersByLoginId(user.getId())).thenReturn(userOrders);
+        when(ordersRepository.findOrdersByUserId(user.getId())).thenReturn(userOrders);
 
         // Действие: вызываем метод, который мы тестируем
         List<Orders> result = orderService.findAllUserOrders();
@@ -77,7 +75,7 @@ public class OrderServiceTest {
     @Test
     void findAllOrders() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -103,7 +101,7 @@ public class OrderServiceTest {
     @Test
     void payment_validOrder() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -112,7 +110,7 @@ public class OrderServiceTest {
         Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
-        when(ordersRepository.findByIdAndLoginIdAndStatus(order.getId(), user.getId(), order.getStatus()))
+        when(ordersRepository.findByIdAndUserIdAndStatus(order.getId(), user.getId(), order.getStatus()))
                 .thenReturn(Optional.of(order));
 
         // Действие
@@ -131,7 +129,7 @@ public class OrderServiceTest {
     @Test
     void payment_invalidOrder() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -146,7 +144,7 @@ public class OrderServiceTest {
         Orders order = MockData.getMockedOrder();
 
         // Настраиваем поведение мока ordersRepository
-        when(ordersRepository.findByIdAndLoginIdAndStatus(order.getId(), user.getId(), Status.NEW))
+        when(ordersRepository.findByIdAndUserIdAndStatus(order.getId(), user.getId(), Status.NEW))
                 .thenReturn(Optional.empty());
 
         // Действие и проверка: Проверяем, что метод выбрасывает исключение NoSuchElementException
@@ -183,7 +181,7 @@ public class OrderServiceTest {
     @Test
     void confirm_invalidOrder() {
         // Подготовка: Создаем пользователя с ролью ROLE_MANAGER
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
 
         // Подготовка: Подготовим аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -206,7 +204,7 @@ public class OrderServiceTest {
     @Test
     void confirm_invalidRole() {
         // Подготовка: Создаем пользователя с ролью не ROLE_MANAGER
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
 
         // Подготовка: Подготовим аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -229,26 +227,26 @@ public class OrderServiceTest {
     @Test
     void saveNewOrder_emptyCart() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
 
         List<Cart> cartItems = new ArrayList<>(); // Создаем пустую корзину
 
-        when(cartRepository.findAllByLoginId(user.getId())).thenReturn(cartItems);
+        when(cartRepository.findAllByUserId(user.getId())).thenReturn(cartItems);
         when(helper.getLogMessage(anyString())).thenReturn("Test Log Message");
 
         // Проверяем
         assertThrows(NoSuchElementException.class, () -> orderService.saveNewOrder());
-        verify(cartRepository, never()).deleteByLoginId(anyInt());
+        verify(cartRepository, never()).deleteByUserId(anyInt());
         verify(ordersRepository, never()).save(any(Orders.class));
     }
 
     @Test
     void saveNewOrder_validCart() {
         // Подготовка: Создаем пользователя
-        Login user = new Login("user", "123456");
+        User user = new User("user", "123456");
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -257,7 +255,7 @@ public class OrderServiceTest {
         List<Cart> cart = MockData.getMockedListOfCarts();
 
         // Мокирование поведения cartRepository
-        when(cartRepository.findAllByLoginId(user.getId())).thenReturn(cart);
+        when(cartRepository.findAllByUserId(user.getId())).thenReturn(cart);
 
         // Мокирование поведения ordersRepository
         Orders savedOrder = new Orders(1, user, new BigDecimal("50.00"), Status.NEW, LocalDateTime.now(), new ArrayList<>());
@@ -273,13 +271,13 @@ public class OrderServiceTest {
 
         // Проверяем
         assertNotNull(result);
-        assertEquals(user, result.getLogin());
+        assertEquals(user, result.getUser());
         assertEquals(new BigDecimal("50.00"), result.getTotalPrice());
         assertEquals(Status.NEW, result.getStatus());
         assertNotNull(result.getTime());
 
         // Проверяем, что методы были вызваны ожидаемое количество раз
-        verify(cartRepository, times(1)).deleteByLoginId(user.getId());
+        verify(cartRepository, times(1)).deleteByUserId(user.getId());
         verify(ordersRepository, times(1)).save(any(Orders.class));
     }
     @Test

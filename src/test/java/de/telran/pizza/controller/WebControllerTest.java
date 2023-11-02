@@ -51,6 +51,14 @@ class WebControllerTest {
 
         assertEquals("orders", result);
     }
+    @Test
+    public void testOrderPage() {
+        WebController controller = new WebController();
+        Model model = new BindingAwareModelMap();
+        String result = controller.orderPage();
+
+        assertEquals("order", result);
+    }
 
     @Test
     public void testPaymentsPage() {

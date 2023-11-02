@@ -1,12 +1,11 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.dto.LoginDTO;
+import de.telran.pizza.domain.dto.UserDTO;
 import de.telran.pizza.domain.entity.enums.Role;
-import de.telran.pizza.service.LoginService;
+import de.telran.pizza.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,34 +22,34 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
-    private LoginService loginService;
+    private UserService userService;
     private MessageHelper helper;
 
     /**
      * Конструктор класса.
      *
-     * @param loginService Сервис для работы с пользователями.
+     * @param userService Сервис для работы с пользователями.
      * @param helper Помощник для обработки сообщений.
      */
-    public SignupController(LoginService loginService, MessageHelper helper) {
-        this.loginService = loginService;
+    public SignupController(UserService userService, MessageHelper helper) {
+        this.userService = userService;
         this.helper = helper;
     }
 
     /**
      * Метод для регистрации нового пользователя.
      *
-     * @param loginDTO ДТО с данными для регистрации.
+     * @param userDTO ДТО с данными для регистрации.
      * @param response Ответ сервера.
      */
     @Operation(
             summary = "Регистрация нового пользователя",
             description = "Регистрация нового пользователя, сохранение в базе данных")
     @PostMapping
-    public void signup(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
+    public void signup(@Valid @RequestBody UserDTO userDTO, HttpServletResponse response) {
         log.info(helper.getLogMessage("create.user.log"));
         try {
-            loginService.saveUser(loginDTO, Role.ROLE_CUSTOMER);
+            userService.saveUser(userDTO, Role.ROLE_CUSTOMER);
             response.sendRedirect("login");
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -69,6 +68,6 @@ public class SignupController {
     @ResponseBody // Добавляем аннотацию, чтобы возвращать тело ответа напрямую
     public ResponseEntity<Integer> getAllUsersCount() {
         log.info(helper.getLogMessage("users.count.log"));
-        return ResponseEntity.ok(loginService.getAllUsers().size());
+        return ResponseEntity.ok(userService.getAllUsers().size());
     }
 }

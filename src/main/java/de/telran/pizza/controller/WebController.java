@@ -58,6 +58,15 @@ public class WebController {
     public String ordersPage() {
         return "orders";
     }
+    /**
+     * Возвращает страницу заказa.
+     *
+     * @return Имя шаблона страницы заказов.
+     */
+    @RequestMapping("/api/orders/get_dishes")
+    public String orderPage() {
+        return "order";
+    }
 
     /**
      * Обрабатывает запросы на отображение страницы оплаты.

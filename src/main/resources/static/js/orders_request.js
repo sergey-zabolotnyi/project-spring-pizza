@@ -126,7 +126,7 @@ angular.module("get_form", [])
             // Отправляем GET запрос к /api/orders/get_dishes/{orderId} с данными объекта
             $http({
                 method: "GET",
-                url: "/api/orders/get_dishes/{orderId}",
+                url: "/api/orders/get_dishes",
                 headers: {
                     "Content-Type": "application/json",
                     'X-CSRF-TOKEN': token

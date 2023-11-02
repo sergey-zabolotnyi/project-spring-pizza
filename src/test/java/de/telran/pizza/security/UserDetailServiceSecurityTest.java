@@ -1,7 +1,7 @@
 package de.telran.pizza.security;
 
-import de.telran.pizza.domain.entity.Login;
-import de.telran.pizza.service.LoginService;
+import de.telran.pizza.domain.entity.User;
+import de.telran.pizza.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +18,8 @@ class UserDetailServiceSecurityTest {
     public void testLoadUserByUsername_UserFound() {
         // Подготовка
         String username = "sidor";
-        LoginService loginService = Mockito.mock(LoginService.class);
-        Login mockLogin = new Login();
+        UserService loginService = Mockito.mock(UserService.class);
+        User mockLogin = new User();
         Mockito.when(loginService.findByUserLogin(anyString())).thenReturn(Optional.of(mockLogin));
 
         UserDetailServiceSecurity userDetailService = new UserDetailServiceSecurity(loginService);
@@ -29,14 +29,14 @@ class UserDetailServiceSecurityTest {
 
         // Проверка
         assertNotNull(userDetails);
-        assertEquals(mockLogin, ((UserDetailSecurity) userDetails).getLogin());
+        assertEquals(mockLogin, ((UserDetailSecurity) userDetails).getUser());
     }
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
         // Подготовка
         String username = "not_found_user";
-        LoginService loginService = Mockito.mock(LoginService.class);
+        UserService loginService = Mockito.mock(UserService.class);
         Mockito.when(loginService.findByUserLogin(anyString())).thenReturn(Optional.empty());
 
         UserDetailServiceSecurity userDetailService = new UserDetailServiceSecurity(loginService);

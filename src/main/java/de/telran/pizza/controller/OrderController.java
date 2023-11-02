@@ -2,7 +2,6 @@ package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.DishDTO;
-import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.service.OrderService;
 import de.telran.pizza.utils.Utils;
@@ -42,7 +41,7 @@ public class OrderController {
     @Operation(summary = "Получаем список заказов",
             description = "Получаем список заказов, авторизованного пользователя пиццерии.")
     public ResponseEntity<List<Orders>> getOrders() {
-        log.info(helper.getLogMessage("select.all.orders.log") + Utils.getAuthorizedLogin().getLogin());
+        log.info(helper.getLogMessage("select.all.orders.log") + Utils.getAuthorizedLogin().getUser());
         return ResponseEntity.ok(orderService.findAllUserOrders());
     }
 
@@ -55,7 +54,7 @@ public class OrderController {
     @Operation(summary = "Получаем все списки заказов",
             description = "Получаем все списки заказов для менеджера.")
     public ResponseEntity<List<Orders>> getAllOrders() {
-        log.info(helper.getLogMessage("select.all.orders.manager.log") + Utils.getAuthorizedLogin().getLogin());
+        log.info(helper.getLogMessage("select.all.orders.manager.log") + Utils.getAuthorizedLogin().getUser());
         return ResponseEntity.ok(orderService.findAllOrders());
     }
 
@@ -68,7 +67,7 @@ public class OrderController {
     @Operation(summary = "Создание нового заказа",
             description = "Создание нового заказа для авторизованного пользователя пиззерии.")
     public ResponseEntity<Orders> create() {
-        log.info(helper.getLogMessage("create.order.log") + Utils.getAuthorizedLogin().getLogin());
+        log.info(helper.getLogMessage("create.order.log") + Utils.getAuthorizedLogin().getUser());
         try {
             return ResponseEntity.ok(orderService.saveNewOrder());
         } catch (Exception e) {

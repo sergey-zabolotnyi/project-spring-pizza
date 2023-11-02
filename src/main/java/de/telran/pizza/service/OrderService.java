@@ -3,7 +3,7 @@ package de.telran.pizza.service;
 import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.entity.Cart;
 import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.enums.Role;
@@ -17,13 +17,15 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
- * Service class for managing orders.
+ * Класс-сервис для управления заказами.
+ * Этот класс используется для управления заказами приложения.
+ * @author szabolotnyi
+ * @version 1.0.0
  */
 @Service
 @Slf4j
@@ -41,34 +43,34 @@ public class OrderService {
     }
 
     /**
-     * Gets a list of orders belonging to the currently authorized user.
+     * Получает список заказов, принадлежащих текущему авторизованному пользователю.
      *
-     * @return A list of Orders entities.
+     * @return Список сущностей заказов.
      */
     public List<Orders> findAllUserOrders() {
-        return ordersRepository.findOrdersByLoginId(Utils.getAuthorizedLogin().getId());
+        return ordersRepository.findOrdersByUserId(Utils.getAuthorizedLogin().getId());
     }
 
     /**
-     * Gets a list of all orders.
+     * Получает список всех заказов.
      *
-     * @return A list of Orders entities.
+     * @return Список всех заказов пользователей.
      */
     public List<Orders> findAllOrders() {
         return ordersRepository.findOrdersByOrderByIdAsc();
     }
 
     /**
-     * Saves a new order to the database based on the current user's cart contents.
+     * Сохраняет новый заказ в базу данных на основе содержимого текущей корзины пользователя.
      *
-     * @return The saved Orders entity.
-     * @throws NoSuchElementException if the user's cart is empty.
+     * @return Сохраненная сущность заказа.
+     * @throws NoSuchElementException если корзина пользователя пуста.
      */
     @Transactional
     public Orders saveNewOrder() throws NoSuchElementException {
-        Login user = Utils.getAuthorizedLogin();
+        User user = Utils.getAuthorizedLogin();
 
-        List<Cart> newCart = cartRepository.findAllByLoginId(user.getId());
+        List<Cart> newCart = cartRepository.findAllByUserId(user.getId());
         if (newCart.isEmpty()) {
             throw new NoSuchElementException(helper.getLogMessage("select.all.carts.empty"));
         }
@@ -76,11 +78,11 @@ public class OrderService {
         BigDecimal dishTotalPrice = mappers.calculateTotalPrice(dishes);
         List<Dish> orderDishesList = mappers.orderDishesList(dishes);
 
-        cartRepository.deleteByLoginId(user.getId());
+        cartRepository.deleteByUserId(user.getId());
         log.info(helper.getLogMessage("delete.all.cart.log"));
 
         return ordersRepository.save(Orders.builder()
-                .login(user)
+                .user(user)
                 .totalPrice(dishTotalPrice)
                 .status(Status.NEW)
                 .time(LocalDateTime.now())
@@ -89,11 +91,11 @@ public class OrderService {
     }
 
     /**
-     * Confirms an order with the specified ID.
+     * Подтверждает заказ с указанным ID.
      *
-     * @param id The ID of the order to be confirmed.
-     * @return True if the confirmation is successful, false otherwise.
-     * @throws NoSuchElementException if the order is not found or the user lacks authorization.
+     * @param id ID заказа для подтверждения.
+     * @return true, если подтверждение успешно, в противном случае - false.
+     * @throws NoSuchElementException если заказ не найден или у пользователя нет разрешения.
      */
     @Transactional
     public boolean confirm(int id) {
@@ -108,17 +110,17 @@ public class OrderService {
     }
 
     /**
-     * Processes a payment for an order with the specified ID.
+     * Обрабатывает оплату заказа с указанным ID.
      *
-     * @param id The ID of the order to be paid.
-     * @return True if the payment is successful, false otherwise.
-     * @throws NoSuchElementException if the order is not found or the user lacks authorization.
+     * @param id ID заказа для оплаты.
+     * @return true, если оплата успешна, в противном случае - false.
+     * @throws NoSuchElementException если заказ не найден или у пользователя нет разрешения.
      */
     @Transactional
     public boolean payment(int id) {
-        int loginId = Utils.getAuthorizedLogin().getId();
+        int userId = Utils.getAuthorizedLogin().getId();
 
-        ordersRepository.findByIdAndLoginIdAndStatus(id, loginId, Status.NEW)
+        ordersRepository.findByIdAndUserIdAndStatus(id, userId, Status.NEW)
                 .orElseThrow(() -> new NoSuchElementException(
                         helper.getLogMessage("select.orders.not") + id));
 
@@ -127,27 +129,33 @@ public class OrderService {
     }
 
     /**
-     * Gets the average sum of orders.
-     * <p>
-     * This method calculates and returns the average sum of all orders in the repository.
+     * Получает среднюю сумму заказов.
      *
-     * @return A {@code Double} representing the average sum of orders.
+     * Этот метод вычисляет и возвращает среднюю сумму всех заказов в репозитории.
+     *
+     * @return Объект типа Double, представляющий среднюю сумму заказов.
      */
     public Double getAverageOrdersSum() {
         return ordersRepository.findAverageOrdersSum();
     }
 
     /**
-     * Gets the total sum of orders.
-     * <p>
-     * This method calculates and returns the total sum of all orders in the repository.
+     * Получает общую сумму заказов.
      *
-     * @return A {@code Double} representing the total sum of orders.
+     * Этот метод вычисляет и возвращает общую сумму всех заказов в репозитории.
+     *
+     * @return Объект типа Double, представляющий общую сумму заказов.
      */
     public Double getTotalOrdersSum() {
         return ordersRepository.findTotalOrdersSum();
     }
 
+    /**
+     * Возвращает список блюд для заказа с указанным ID.
+     *
+     * @param orderId ID заказа.
+     * @return Список DTO объектов блюд.
+     */
     public List<DishDTO> getDishesByOrderId(int orderId) {
         Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new NoSuchElementException(helper.getLogMessage("select.orders.not") + orderId));

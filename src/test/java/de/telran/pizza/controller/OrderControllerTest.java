@@ -2,7 +2,8 @@ package de.telran.pizza.controller;
 
 import de.telran.pizza.MockData;
 import de.telran.pizza.config.MessageHelper;
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.dto.DishDTO;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.domain.entity.Orders;
 import de.telran.pizza.security.UserDetailSecurity;
 import de.telran.pizza.service.OrderService;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,7 +42,7 @@ class OrderControllerTest {
     @Test
     void testGetOrders() {
         // Подготовка: Пользователь
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -62,7 +65,7 @@ class OrderControllerTest {
     @Test
     void testGetAllOrders() {
         // Подготовка: Пользователь
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -84,7 +87,7 @@ class OrderControllerTest {
     @Test
     void create_successfulOrderCreation() {
         // Подготовка: Пользователь
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -107,7 +110,7 @@ class OrderControllerTest {
     @Test
     void create_orderCreationException() {
         // Подготовка: Пользователь
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList());
@@ -129,9 +132,18 @@ class OrderControllerTest {
     void testConfirm() {
         // Подготовка
         int id = MockData.getMockedDish().getId();
-
         // Действие и проверка
         assertDoesNotThrow(() -> orderController.confirm(id));
+        // Определяем, что при вызове orderService.confirm(id) будет брошено исключение
+        Mockito.doThrow(new NoSuchElementException("Order not found")).when(orderService).confirm(id);
+        // Вызываем метод контроллера и ожидаем исключение
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            orderController.confirm(id);
+        });
+
+        // Проверяем статус и сообщение исключения
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Order not found", exception.getReason());
     }
 
     @Test
@@ -141,6 +153,23 @@ class OrderControllerTest {
 
         // Действие и проверка
         assertDoesNotThrow(() -> orderController.payment(id));
+    }
+    @Test
+    void testProcessPaymentException() {
+        // Готовим Mock данные
+        int id = MockData.getMockedUser().getId();
+
+        // Определяем, что при вызове orderService.payment(id) будет брошено исключение
+        Mockito.doThrow(new NoSuchElementException("Order not found")).when(orderService).payment(id);
+
+        // Вызываем метод контроллера и ожидаем исключение
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            orderController.payment(id);
+        });
+
+        // Проверяем статус и сообщение исключения
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Order not found", exception.getReason());
     }
 
     @Test
@@ -187,11 +216,27 @@ class OrderControllerTest {
 
     @Test
     void payment_shouldNotThrowException() {
-        int id = 1;
+        int id = MockData.getMockedDish().getId();
 
         assertDoesNotThrow(() -> orderController.payment(id));
 
         verify(orderService, times(1)).payment(id);
+    }
+    @Test
+    void testGetDishesByOrderId() {
+        // Готовим Mock данные
+        int orderId = 123; // Предположим, что это ID заказа
+        List<DishDTO> expectedDishes = MockData.getMockedListOfDishesDTO();
+
+        // Определяем, что возвращается при вызове orderService.getDishesByOrderId(orderId)
+        Mockito.when(orderService.getDishesByOrderId(orderId)).thenReturn(expectedDishes);
+
+        // Вызываем метод контроллера
+        ResponseEntity<List<DishDTO>> responseEntity = orderController.getDishesByOrderId(orderId);
+
+        // Проверяем результат
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedDishes, responseEntity.getBody());
     }
 
 

@@ -46,16 +46,16 @@ public class MockData {
         return Arrays.asList(getMockedCategoryDTO(), new CategoryDTO(2, "Salad"));
     }
 
-    public static Login getMockedUser() {
-        return new Login(1, "user", "123456", "user@user.com",
+    public static User getMockedUser() {
+        return new User(1, "user", "123456", "user@user.com",
                 Role.ROLE_MANAGER, LocalDateTime.now());
     }
-    public static LoginDTO getMockedLoginDTO() {
-        return new LoginDTO("newUser", "newuser@test.com", "123456");
+    public static UserDTO getMockedUserDTO() {
+        return new UserDTO("newUser", "newuser@test.com", "123456");
     }
 
-    public static List<Login> getMockedListOfLogins() {
-        return Arrays.asList(getMockedUser(), new Login(2, "user1", "123456", "user1@user.com",
+    public static List<User> getMockedListOfUsers() {
+        return Arrays.asList(getMockedUser(), new User(2, "user1", "123456", "user1@user.com",
                 Role.ROLE_MANAGER, LocalDateTime.now()));
     }
 

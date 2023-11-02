@@ -1,6 +1,6 @@
 package de.telran.pizza.security;
 
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.entity.User;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,54 +10,58 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Custom UserDetails implementation for security purposes.
+ * Реализация интерфейса UserDetails для целей безопасности.
  */
 
 @Getter
 @Setter
 public class UserDetailSecurity implements UserDetails {
 
-    private Login login;
+    private User user;
 
-    public UserDetailSecurity(Login login) {
-        this.login = login;
+    /**
+     * Конструктор класса UserDetailSecurity.
+     * @param user Объект User, представляющий пользователя.
+     */
+    public UserDetailSecurity(User user) {
+        this.user = user;
     }
 
     /**
-     * Retrieves the authorities (roles) assigned to the user.
+     * Возвращает набор ролей, назначенных пользователю.
      *
-     * @return A collection of authorities.
+     * @return Коллекция ролей.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(login.getRole().name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().name());
         return Collections.singletonList(authority);
     }
 
     /**
-     * Gets the user's password.
+     * Возвращает пароль пользователя.
      *
-     * @return The user's password.
+     * @return Пароль пользователя.
      */
     @Override
     public String getPassword() {
-        return login.getPassword();
+        return user.getPassword();
     }
 
     /**
-     * Gets the user's username (login).
+     * Возвращает имя пользователя (логин).
      *
-     * @return The user's username.
+     * @return Имя пользователя.
      */
     @Override
     public String getUsername() {
-        return login.getLogin();
+        return user.getUser();
     }
 
     /**
-     * Checks if the user's account is not expired.
+     * Проверяет, не истек ли срок действия учетной записи пользователя.
      *
-     * @return True if the account is not expired, otherwise false.
+     * @return True, если срок действия учетной записи не истек, в противном случае false.
      */
     @Override
     public boolean isAccountNonExpired() {
@@ -65,9 +69,9 @@ public class UserDetailSecurity implements UserDetails {
     }
 
     /**
-     * Checks if the user's account is not locked.
+     * Проверяет, не заблокирована ли учетная запись пользователя.
      *
-     * @return True if the account is not locked, otherwise false.
+     * @return True, если учетная запись не заблокирована, в противном случае false.
      */
     @Override
     public boolean isAccountNonLocked() {
@@ -75,9 +79,9 @@ public class UserDetailSecurity implements UserDetails {
     }
 
     /**
-     * Checks if the user's credentials are not expired.
+     * Проверяет, не истек ли срок действия учетных данных пользователя.
      *
-     * @return True if the credentials are not expired, otherwise false.
+     * @return True, если срок действия учетных данных не истек, в противном случае false.
      */
     @Override
     public boolean isCredentialsNonExpired() {
@@ -85,9 +89,9 @@ public class UserDetailSecurity implements UserDetails {
     }
 
     /**
-     * Checks if the user is enabled.
+     * Проверяет, включен ли пользователь.
      *
-     * @return True if the user is enabled, otherwise false.
+     * @return True, если пользователь включен, в противном случае false.
      */
     @Override
     public boolean isEnabled() {

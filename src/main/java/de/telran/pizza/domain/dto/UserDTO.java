@@ -10,23 +10,42 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * Data Transfer Object (DTO) representing user login information.
+ * Класс представляет объект DTO для входа пользователя в систему.
+ * Этот объект используется для передачи данных о пользователях в системе.
+ * @author szabolotnyi
+ * @version 1.0.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Schema(description = "ДТО объект для входа пользователя в систему.")
-public class LoginDTO {
+public class UserDTO {
+
+    /**
+     * Логин пользователя.
+     *
+     * @example "user"
+     */
     @NotBlank(message = "error.signup.login")
     @Schema(description = "Логин пользователя", example = "user")
-    private String login;
+    private String user;
 
+    /**
+     * Электронная почта пользователя.
+     *
+     * @example "user@gmail.com"
+     */
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$",
             message = "error.signup.email")
     @Schema(description = "Электронная почта пользователя", example = "user@gmail.com")
     private String email;
 
+    /**
+     * Пароль пользователя.
+     *
+     * @example "qwerty"
+     */
     @NotBlank
     @Pattern(regexp = "^[a-z0-9._%+-]{3,10}$",
             message = "error.signup.password")

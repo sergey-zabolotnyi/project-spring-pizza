@@ -5,12 +5,31 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * Интерфейс репозитория для работы с корзиной.
+ */
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    List<Cart> findAllByLoginId(int id);
+    /**
+     * Находит все элементы корзины по ID пользователя.
+     *
+     * @param id идентификатор пользователя
+     * @return список элементов корзины
+     */
+    List<Cart> findAllByUserId(int id);
 
+    /**
+     * Находит все элементы корзины по ID блюда.
+     *
+     * @param id идентификатор блюда
+     * @return список элементов корзины
+     */
     List<Cart> findCartByDish_Id(int id);
 
-    void deleteByLoginId(int id);
-
+    /**
+     * Удаляет все элементы корзины по ID пользователя.
+     *
+     * @param id идентификатор пользователя
+     */
+    void deleteByUserId(int id);
 }

@@ -18,12 +18,12 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: login_id
+                  name: user_id
                   type: int
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_order_login
-                    referencedTableName: login
+                    foreignKeyName: fk_order_user
+                    referencedTableName: user
                     referencedColumnNames: id
               - column:
                   name: total_price

@@ -1,48 +1,49 @@
 package de.telran.pizza.domain.entity.enums;
 
 /**
- * Enum representing the status of an order.
+ * Перечисление представляет статусы заказа в системе.
  */
 public enum Status {
+
     /**
-     * The order is new and has not been processed yet.
+     * Новый заказ.
      */
     NEW,
 
     /**
-     * The order has been paid for.
+     * Оплачен.
      */
     PAYED,
 
     /**
-     * Payment for the order has been confirmed.
+     * Подтверждение оплаты.
      */
     PAYMENT_CONFIRM,
 
     /**
-     * The order is currently being prepared or cooked.
+     * Готовится.
      */
     COOKING,
 
     /**
-     * The order is out for delivery.
+     * В доставке.
      */
     DELIVERY,
 
     /**
-     * The order has been successfully completed.
+     * Завершен.
      */
     DONE;
 
     /**
-     * An array containing all possible order statuses.
+     * Массив всех статусов.
      */
     private static final Status[] statuses = values();
 
     /**
-     * Get the next status in the order lifecycle.
+     * Получает следующий статус.
      *
-     * @return The next status.
+     * @return Следующий статус после текущего.
      */
     public Status next() {
         return statuses[(this.ordinal() + 1) % statuses.length];

@@ -5,8 +5,7 @@ import de.telran.pizza.config.MessageHelper;
 import de.telran.pizza.domain.dto.CartDTO;
 import de.telran.pizza.domain.dto.DishDTO;
 import de.telran.pizza.domain.entity.Cart;
-import de.telran.pizza.domain.entity.Dish;
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.repository.CartRepository;
 import de.telran.pizza.repository.DishRepository;
 import de.telran.pizza.security.UserDetailSecurity;
@@ -48,7 +47,7 @@ class CartServiceTest {
     @Test
     void testFindAllDishes() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
@@ -57,7 +56,7 @@ class CartServiceTest {
         BigDecimal totalPrice = new BigDecimal("25.00");
 
         // Настроим mock-репозитории, чтобы возвращать тестовые данные при вызове findAllByLoginId
-        when(cartRepository.findAllByLoginId(anyInt())).thenReturn(cartList);
+        when(cartRepository.findAllByUserId(anyInt())).thenReturn(cartList);
 
         // Настроим mock-mappers, чтобы возвращать ожидаемый результат при вызове cartListToDishDTOList и calculateTotalPrice
         when(mappers.cartListToDishDTOList(cartList)).thenReturn(dishDTOList);
@@ -72,25 +71,26 @@ class CartServiceTest {
     }
 
     @Test
-    void saveNewItem_invalidItem() {
+    void saveNewItem() {
         // Подготовка: Создаем пользователя
-        Login user = MockData.getMockedUser();
+        User user = MockData.getMockedUser();
         // Устанавливаем пользователя в контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                 new UserDetailSecurity(user), null, Collections.emptyList()));
+        int id = MockData.getMockedDish().getId();
 
-        // Подготовка: Создаем идентификатор блюда
-        int id = 1;
-
-        // Настраиваем мок dishRepository для возврата Optional.empty() при вызове метода findById
+        // Настраиваем
         when(dishRepository.findById(anyInt())).thenReturn(Optional.empty());
-
-        // Настраиваем мок helper для возврата "Test Log Message" при вызове метода getLogMessage
         when(helper.getLogMessage(anyString())).thenReturn("Test Log Message");
 
         // Действие и проверка
-        // Проверяем, что при вызове метода saveNewItem с некорректным ItemDTO выбрасывается исключение NoSuchElementException
         assertThrows(NoSuchElementException.class, () -> cartService.saveNewItem(id));
+
+        // Проверяем, что dishRepository.findById был вызван ровно один раз с правильным ID
+        verify(dishRepository, times(1)).findById(id);
+
+        // Проверяем, что helper.getLogMessage был вызван ровно один раз с правильным сообщением
+        verify(helper, times(1)).getLogMessage(anyString());
     }
 
     @Test
@@ -138,6 +138,6 @@ class CartServiceTest {
         cartService.deleteByLogin(userId);
 
         // Проверка: Проверяем, что метод репозитория был вызван с правильным аргументом
-        verify(cartRepository, times(1)).deleteByLoginId(userId);
+        verify(cartRepository, times(1)).deleteByUserId(userId);
     }
 }

@@ -7,7 +7,8 @@ import de.telran.pizza.domain.entity.Category;
 import de.telran.pizza.domain.entity.Dish;
 import de.telran.pizza.repository.CategoryRepository;
 import de.telran.pizza.repository.DishRepository;
-import de.telran.pizza.service.mapper.Mappers;import lombok.NonNull;
+import de.telran.pizza.service.mapper.Mappers;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,16 +22,23 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Service class for managing dishes.
+ * Сервисный класс для управления блюдами.
+ * Этот класс используется для управления блюдами приложения.
+ * @author szabolotnyi
+ * @version 1.0.0
  */
 @Service
 public class DishService {
+
     @Value("${page.size}")
     private int pageSize;
+
     @Value("${page.sortDefault}")
     private String sortDefault;
+
     @Value("${page.sortDirectionDefault}")
     private String sortDirectionDefault;
+
     @Value("${page.category}")
     private int categoryIdDefault;
 
@@ -47,18 +55,18 @@ public class DishService {
     }
 
     /**
-     * Gets a paginated list of dishes along with category information.
+     * Получает пагинированный список блюд вместе с информацией о категории.
      *
-     * @param pageNum       The page number to retrieve.
-     * @param sortField     The field to sort by.
-     * @param sortDirection The direction of sorting (ASC or DESC).
-     * @param categoryId    The ID of the category to filter by (default if null or negative).
-     * @return A PageDishesDTO containing the paginated list of dishes, category information,
-     * current page, total pages, sort field, sort direction, and category ID.
+     * @param pageNum       Номер страницы для получения.
+     * @param sortField     Поле для сортировки.
+     * @param sortDirection Направление сортировки (ASC или DESC).
+     * @param categoryId    ID категории для фильтрации (по умолчанию, если null или отрицательный).
+     * @return Объект PageDishesDTO, содержащий пагинированный список блюд, информацию о категориях,
+     * текущую страницу, общее количество страниц, поле сортировки, направление сортировки и ID категории.
      */
     @Transactional
     public PageDishesDTO findAllDishesPage(Integer pageNum, String sortField,
-                                           String sortDirection, int categoryId){
+                                           String sortDirection, int categoryId) {
         categoryId = categoryId == 0 || categoryId < 0 ? categoryIdDefault : categoryId;
         Sort sort = validationSetDefault(sortField, sortDirection);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
@@ -81,11 +89,11 @@ public class DishService {
     }
 
     /**
-     * Validates and sets default values for sorting parameters.
+     * Проверяет и устанавливает значения по умолчанию для параметров сортировки.
      *
-     * @param sortField     The field to sort by.
-     * @param sortDirection The direction of sorting (ASC or DESC).
-     * @return A Sort object with validated and default values for sorting.
+     * @param sortField     Поле для сортировки.
+     * @param sortDirection Направление сортировки (ASC или DESC).
+     * @return Объект Sort с проверенными и значениями по умолчанию для сортировки.
      */
     public Sort validationSetDefault(String sortField, String sortDirection) {
         sortField = sortField == null || sortField.isEmpty() || sortField.equals("null") ? sortDefault
@@ -99,9 +107,9 @@ public class DishService {
     }
 
     /**
-     * Gets a list of all dishes, sorted by ID in ascending order.
+     * Получает список всех блюд, отсортированных по ID в порядке возрастания.
      *
-     * @return A list of DishDTOs representing the dishes.
+     * @return Список объектов DishDTO, представляющих блюда.
      */
     public List<DishDTO> findAllDishes() {
         Sort sort = Sort.by("id").ascending();
@@ -109,11 +117,11 @@ public class DishService {
     }
 
     /**
-     * Finds a dish by its ID.
+     * Находит блюдо по его ID.
      *
-     * @param id The ID of the dish to be retrieved.
-     * @return The Dish entity with the specified ID.
-     * @throws NoSuchElementException if a dish with the specified ID does not exist.
+     * @param id ID блюда, которое нужно получить.
+     * @return Объект Dish с указанным ID.
+     * @throws NoSuchElementException если блюдо с указанным ID не существует.
      */
     public Dish findById(int id) {
         return dishRepository.findById(id).orElseThrow(() ->
@@ -121,11 +129,11 @@ public class DishService {
     }
 
     /**
-     * Saves a new dish to the database.
+     * Сохраняет новое блюдо в базу данных.
      *
-     * @param dish The Dish entity to be saved.
-     * @return The saved Dish entity.
-     * @throws NoSuchElementException if the specified category ID does not exist.
+     * @param dish Объект Dish, который нужно сохранить.
+     * @return Сохраненный объект Dish.
+     * @throws NoSuchElementException если указанный ID категории не существует.
      */
     @Transactional
     public Dish saveNewDish(@NonNull Dish dish) throws NoSuchElementException {
@@ -137,10 +145,10 @@ public class DishService {
     }
 
     /**
-     * Updates an existing dish in the database.
+     * Обновляет существующее блюдо в базе данных.
      *
-     * @param dish The Dish entity to be updated.
-     * @throws NoSuchElementException if the specified dish does not exist.
+     * @param dish Объект Dish, который нужно обновить.
+     * @throws NoSuchElementException если указанное блюдо не существует.
      */
     public void update(@NonNull Dish dish) {
         dish.setTime(LocalDateTime.now());
@@ -148,9 +156,9 @@ public class DishService {
     }
 
     /**
-     * Deletes a dish by its ID.
+     * Удаляет блюдо по его ID.
      *
-     * @param id The ID of the dish to be deleted.
+     * @param id ID блюда, которое нужно удалить.
      */
     public void delete(@NonNull int id) {
         dishRepository.deleteById(id);

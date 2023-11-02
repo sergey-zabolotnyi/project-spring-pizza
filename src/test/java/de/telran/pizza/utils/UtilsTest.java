@@ -1,6 +1,7 @@
 package de.telran.pizza.utils;
 
-import de.telran.pizza.domain.entity.Login;
+import de.telran.pizza.MockData;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.security.UserDetailSecurity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -43,10 +44,10 @@ class UtilsTest {
     @Test
     void getAuthorizedLogin_shouldReturnsAuthorizedLogin() {
         // Подготовка (Arrange)
-        // Создаем ожидаемый объект Login с определенными данными
-        Login login = new Login("sidor", "qwerty");
-        // Создаем объект UserDetailSecurity с ожидаемым Login
-        UserDetailSecurity userDetails = new UserDetailSecurity(login);
+        // Создаем ожидаемый объект User с определенными данными
+        User user = MockData.getMockedUser();
+        // Создаем объект UserDetailSecurity с ожидаемым User
+        UserDetailSecurity userDetails = new UserDetailSecurity(user);
 
         // Мокируем объект Authentication
         Authentication authentication = Mockito.mock(Authentication.class);
@@ -61,12 +62,12 @@ class UtilsTest {
         SecurityContextHolder.setContext(securityContext);
 
         // Действие (Act)
-        Login actualLogin = Utils.getAuthorizedLogin();
+        User actualUser = Utils.getAuthorizedLogin();
 
         // Проверка (Assert)
         // Проверяем, что ожидаемый объект не null
-        assertNotNull(actualLogin);
-        // Проверяем, что ожидаемый объект Login возвращается
-        assertEquals(login, actualLogin);
+        assertNotNull(actualUser);
+        // Проверяем, что ожидаемый объект User возвращается
+        assertEquals(user, actualUser);
     }
 }

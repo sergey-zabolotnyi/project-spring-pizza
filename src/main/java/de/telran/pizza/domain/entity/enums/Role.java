@@ -1,21 +1,22 @@
 package de.telran.pizza.domain.entity.enums;
 
 /**
- * Enum representing user roles in the application.
+ * Перечисление представляет роли пользователей в системе.
  */
 public enum Role {
+
     /**
-     * Administrator role.
+     * Роль администратора.
      */
     ROLE_ADMIN,
 
     /**
-     * Manager role.
+     * Роль менеджера.
      */
     ROLE_MANAGER,
 
     /**
-     * Customer role.
+     * Роль клиента.
      */
     ROLE_CUSTOMER
 }

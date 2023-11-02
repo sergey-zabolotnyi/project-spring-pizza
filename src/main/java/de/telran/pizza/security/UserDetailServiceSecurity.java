@@ -1,41 +1,45 @@
 package de.telran.pizza.security;
 
-import de.telran.pizza.domain.entity.Login;
-import de.telran.pizza.service.LoginService;
+import de.telran.pizza.domain.entity.User;
+import de.telran.pizza.service.UserService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * Custom UserDetailsService implementation for security purposes.
+ * Реализация интерфейса UserDetailsService для целей безопасности.
  */
 @Slf4j
 @Service
 public class UserDetailServiceSecurity implements UserDetailsService {
 
-    private LoginService loginService;
-    public UserDetailServiceSecurity(LoginService loginService) {
-        this.loginService = loginService;
+    private UserService userService;
+
+    /**
+     * Конструктор класса UserDetailServiceSecurity.
+     * @param userService Сервис для работы с пользователями.
+     */
+    public UserDetailServiceSecurity(UserService userService) {
+        this.userService = userService;
     }
 
     /**
-     * Loads a user based on the provided username.
+     * Загружает пользователя на основе предоставленного имени пользователя.
      *
-     * @param username The username for which to retrieve user details.
-     * @return A UserDetails object representing the user.
-     * @throws UsernameNotFoundException If no user with the given username is found.
+     * @param username Имя пользователя, для которого нужно получить данные пользователя.
+     * @return Объект UserDetails, представляющий пользователя.
+     * @throws UsernameNotFoundException Если пользователь с указанным именем не найден.
      */
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        Login login = loginService.findByUserLogin(username).orElseThrow(
+        User user = userService.findByUserLogin(username).orElseThrow(
                 () -> new UsernameNotFoundException("Could not find the user: " + username)
         );
-        log.info(login.getLogin());
+        log.info(user.getUser());
 
-        return new UserDetailSecurity(login);
+        return new UserDetailSecurity(user);
     }
 }

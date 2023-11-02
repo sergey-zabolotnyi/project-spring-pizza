@@ -1,16 +1,14 @@
 package de.telran.pizza.domain.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 /**
  * Представляет сущность "Корзина" в приложении.
- *
+ * Этот объект используется для хранения данных о корзине пользователя.
  * @Author: szabolotnyi
  * @version: 1.0.0
  */
@@ -38,9 +36,9 @@ public class Cart {
      * @since 1.0.0
      */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "login_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Schema(description = "ID пользователя", example = "2")
-    private Login login;
+    private User user;
 
     /**
      * Блюдо, добавленное в корзину.
@@ -62,12 +60,12 @@ public class Cart {
      * Создает новый экземпляр корзины с заданными параметрами.
      *
      * @param id    Идентификатор корзины.
-     * @param login Пользователь, владеющий корзиной.
+     * @param user Пользователь, владеющий корзиной.
      * @param dish  Блюдо, добавленное в корзину.
      */
-    public Cart(int id, Login login, Dish dish) {
+    public Cart(int id, User user, Dish dish) {
         this.id = id;
-        this.login = login;
+        this.user = user;
         this.dish = dish;
     }
 }

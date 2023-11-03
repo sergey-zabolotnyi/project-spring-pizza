@@ -164,11 +164,11 @@ public class OrderController {
      *
      * @return ResponseEntity со списком блюд данного заказа.
      */
-    @GetMapping("/get_dishes/{orderId}")
+    @GetMapping("/get_dishes")
     @Operation(summary = "Получаем список блюд по номеру заказа",
             description = "Получаем список всех блюд для заказа с указанным ID.")
-    public ResponseEntity<List<DishDTO>> getDishesByOrderId(@PathVariable int orderId) {
-        List<DishDTO> dishes = orderService.getDishesByOrderId(orderId);
+    public ResponseEntity<List<DishDTO>> getDishesByOrderId(@Valid @RequestParam(value = "id") int id) {
+        List<DishDTO> dishes = orderService.getDishesByOrderId(id);
         return ResponseEntity.ok(dishes);
     }
 }

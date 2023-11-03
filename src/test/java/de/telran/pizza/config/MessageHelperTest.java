@@ -13,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Тестирование класса MessageHelper.
+ */
 @SpringBootTest
 @Import(MessageHelper.class)
 @TestPropertySource(properties = {
@@ -24,6 +27,9 @@ class MessageHelperTest {
     @Autowired
     private MessageHelper messageHelper;
 
+    /**
+     * Проверяет корректность получения сообщения.
+     */
     @Test
     void getMessage() {
         MessageSource messageSource = mock(MessageSource.class);
@@ -35,6 +41,9 @@ class MessageHelperTest {
         assertEquals("test.message", message);
     }
 
+    /**
+     * Проверяет корректность получения лог-сообщения.
+     */
     @Test
     void getLogMessage() {
         MessageSource logSource = mock(MessageSource.class);

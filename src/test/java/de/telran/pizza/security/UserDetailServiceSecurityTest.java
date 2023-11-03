@@ -12,8 +12,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 
+/**
+ * Юнит-тест для класса UserDetailServiceSecurity.
+ */
 class UserDetailServiceSecurityTest {
 
+    /**
+     * Тест для проверки загрузки данных пользователя по имени пользователя (пользователь найден).
+     */
     @Test
     public void testLoadUserByUsername_UserFound() {
         // Подготовка
@@ -32,6 +38,9 @@ class UserDetailServiceSecurityTest {
         assertEquals(mockLogin, ((UserDetailSecurity) userDetails).getUser());
     }
 
+    /**
+     * Тест для проверки загрузки данных пользователя по имени пользователя (пользователь не найден).
+     */
     @Test
     public void testLoadUserByUsername_UserNotFound() {
         // Подготовка

@@ -11,8 +11,14 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Юнит-тест для класса UserDetailSecurity.
+ */
 public class UserDetailSecurityTest {
 
+    /**
+     * Тест метода getAuthorities.
+     */
     @Test
     public void testGetAuthorities() {
         User user = MockData.getMockedUser();
@@ -26,6 +32,9 @@ public class UserDetailSecurityTest {
         assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_MANAGER")));
     }
 
+    /**
+     * Тест для проверки корректности возврата пароля пользователя.
+     */
     @Test
     public void testGetPassword() {
         User user = MockData.getMockedUser();
@@ -37,6 +46,9 @@ public class UserDetailSecurityTest {
         assertEquals("password123", password);
     }
 
+    /**
+     * Тест для проверки корректности возврата имени пользователя.
+     */
     @Test
     public void testGetUsername() {
         User user = MockData.getMockedUser();
@@ -48,30 +60,45 @@ public class UserDetailSecurityTest {
         assertEquals("ivan", username);
     }
 
+    /**
+     * Тест для проверки корректности состояния аккаунта (не истек ли срок).
+     */
     @Test
     public void testAccountNonExpired() {
         UserDetailSecurity userDetailSecurity = new UserDetailSecurity(new User());
         assertTrue(userDetailSecurity.isAccountNonExpired());
     }
 
+    /**
+     * Тест для проверки корректности состояния аккаунта (не заблокирован ли).
+     */
     @Test
     public void testAccountNonLocked() {
         UserDetailSecurity userDetailSecurity = new UserDetailSecurity(new User());
         assertTrue(userDetailSecurity.isAccountNonLocked());
     }
 
+    /**
+     * Тест для проверки корректности состояния учетных данных (не истек ли срок действия пароля).
+     */
     @Test
     public void testCredentialsNonExpired() {
         UserDetailSecurity userDetailSecurity = new UserDetailSecurity(new User());
         assertTrue(userDetailSecurity.isCredentialsNonExpired());
     }
 
+    /**
+     * Тест для проверки корректности активации аккаунта.
+     */
     @Test
     public void testIsEnabled() {
         UserDetailSecurity userDetailSecurity = new UserDetailSecurity(new User());
         assertTrue(userDetailSecurity.isEnabled());
     }
 
+    /**
+     * Тест для проверки получения пользователя.
+     */
     @Test
     void getUser() {
         User user = User.builder().user("user1").build();
@@ -80,6 +107,9 @@ public class UserDetailSecurityTest {
         assertEquals(user, userDetailSecurity.getUser());
     }
 
+    /**
+     * Тест для проверки установки нового пользователя.
+     */
     @Test
     void setUser() {
         User initialUser = User.builder().user("user1").build();

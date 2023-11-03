@@ -89,8 +89,8 @@
                         <td>{{i.totalPrice | number:2}}</td>
                         <td>{{i.status}}</td>
                         <td>
-                            <a id="{{i.id}}" class="hidden" ng-click="confirmAction($event)" th:text="#{orders.confirm}"></a> |
-                            <a orderId="{{i.id}}" class="button" ng-click="showOrder($event)" th:text="#{button.show}"></a>
+                            <a id="{{i.id}}" class="hidden" ng-click="confirmAction($event)" th:text="#{orders.confirm}"></a>
+                            <a class="button" href="/api/orders/get_dishes?id={{i.id}}" ng-click="showOrder($event)" th:text="#{button.show}"></a>
                         </td>
                     </tr>
                     </tbody>

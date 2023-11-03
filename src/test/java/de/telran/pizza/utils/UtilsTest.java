@@ -15,36 +15,50 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Класс с набором тестов для утилитного класса {@link Utils}.
+ */
 class UtilsTest {
 
+    /**
+     * Проверяет, что метод {@link Utils#isLocaleEnglish()} возвращает true при установленной локали английского языка.
+     * После этого проверяет, что метод возвращает false при установленной другой локали (например, русской).
+     */
     @Test
-    void isLocaleEnglish_shouldReturnTrueForEnglishLocale() {
-        // Подготовка (Arrange)
+    void testIsLocaleEnglish() {
+        // Устанавливаем локаль на английский
         LocaleContextHolder.setLocale(Locale.ENGLISH);
+        // Проверяем, что метод isLocaleEnglish() возвращает true
+        assertEquals(true, Utils.isLocaleEnglish());
 
-        // Действие (Act)
-        boolean result = Utils.isLocaleEnglish();
-
-        // Проверка (Assert)
-        assertTrue(result);
+        // Устанавливаем локаль на другой язык (например, русский)
+        LocaleContextHolder.setLocale(new Locale("ru", "RU"));
+        // Проверяем, что метод isLocaleEnglish() возвращает false
+        assertEquals(false, Utils.isLocaleEnglish());
     }
 
+    /**
+     * Проверяет, что метод {@link Utils#isLocaleEnglish()} возвращает false для неанглийской локали.
+     */
     @Test
     void isLocaleEnglish_shouldReturnFalseForNonEnglishLocale() {
-        // Подготовка (Arrange)
+        // Устанавливаем локаль на другом языке
         LocaleContextHolder.setLocale(Locale.JAPAN);
 
         // Действие (Act)
         boolean result = Utils.isLocaleEnglish();
 
-        // Проверка (Assert)
+        // Проверяем
         assertFalse(result);
     }
 
+    /**
+     * Проверяет, что метод {@link Utils#getAuthorizedLogin()} возвращает ожидаемого пользователя,
+     * когда пользователь авторизован.
+     */
     @Test
     void getAuthorizedLogin_shouldReturnsAuthorizedLogin() {
-        // Подготовка (Arrange)
-        // Создаем ожидаемый объект User с определенными данными
+        // Подготовка. Создаем ожидаемый объект User с определенными данными
         User user = MockData.getMockedUser();
         // Создаем объект UserDetailSecurity с ожидаемым User
         UserDetailSecurity userDetails = new UserDetailSecurity(user);
@@ -64,7 +78,6 @@ class UtilsTest {
         // Действие (Act)
         User actualUser = Utils.getAuthorizedLogin();
 
-        // Проверка (Assert)
         // Проверяем, что ожидаемый объект не null
         assertNotNull(actualUser);
         // Проверяем, что ожидаемый объект User возвращается

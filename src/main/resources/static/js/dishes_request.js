@@ -169,6 +169,7 @@ angular.module("get_form", [])
                 alertErrors(response);
             });
         };
+
         $scope.totalDishesCount = 0; // Initialize to 0
         $scope.getAllDishesCount = function() {
             $http({

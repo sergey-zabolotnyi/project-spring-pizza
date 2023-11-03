@@ -16,6 +16,10 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+
+/**
+ * Тесты для класса CategoryService.
+ */
 @SpringBootTest
 class CategoryServiceTest {
 
@@ -28,6 +32,10 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService categoryService;
 
+    /**
+     * Тест для метода findAllCategory().
+     * Проверяет правильность возврата списка категорий.
+     */
     @Test
     void testFindAllCategory() {
         // Создаем тестовые данные

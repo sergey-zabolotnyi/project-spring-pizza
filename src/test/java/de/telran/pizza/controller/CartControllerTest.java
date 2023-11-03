@@ -21,12 +21,18 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тестирование класса CartController.
+ */
 class CartControllerTest {
+
     private CartController cartController;
     private CartService cartService;
     private MessageHelper helper;
 
-    // Общая настройка для всех тестов
+    /**
+     * Общая настройка для всех тестов.
+     */
     @BeforeEach
     void setUp() {
         cartService = mock(CartService.class);
@@ -34,7 +40,9 @@ class CartControllerTest {
         cartController = new CartController(cartService, helper);
     }
 
-    // Тест получения блюд в корзине
+    /**
+     * Тест получения блюд в корзине.
+     */
     @Test
     void testGetDishes() {
         // Подготовка: Создаем пользователя
@@ -55,7 +63,9 @@ class CartControllerTest {
         assertNotNull(responseEntity.getBody());
     }
 
-    // Тест создания нового элемента в корзине
+    /**
+     * Тест создания нового элемента в корзине.
+     */
     @Test
     void testCreate() {
         // Мокирование идентификатора блюда
@@ -72,6 +82,10 @@ class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
     }
+
+    /**
+     * Тест исключения при создании элемента в корзине.
+     */
     @Test
     void testCreateCartItemException() {
         // Готовим Mock данные
@@ -81,13 +95,16 @@ class CartControllerTest {
 
         // Вызов метода
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            cartController.create(id); });
+            cartController.create(id);
+        });
 
         // Проверка результата
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
-    // Тест удаления элемента из корзины
+    /**
+     * Тест удаления элемента из корзины.
+     */
     @Test
     void testDelete() {
         // Мокирование ItemDTO
@@ -97,6 +114,9 @@ class CartControllerTest {
         assertDoesNotThrow(() -> cartController.delete(id));
     }
 
+    /**
+     * Тест исключения при удалении элемента из корзины.
+     */
     @Test
     void testDeleteCartItemException() {
         // Готовим Mock данные
@@ -113,6 +133,10 @@ class CartControllerTest {
         // Проверка результата
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
+
+    /**
+     * Тест удаления всех элементов из корзины.
+     */
     @Test
     void testDeleteAll() {
         // Подготовка: Создаем пользователя

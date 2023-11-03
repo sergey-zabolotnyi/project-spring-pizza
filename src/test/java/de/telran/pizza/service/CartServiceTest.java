@@ -24,6 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тесты для класса CartService.
+ */
 @SpringBootTest
 class CartServiceTest {
     @Mock
@@ -37,6 +40,9 @@ class CartServiceTest {
 
     private CartService cartService;
 
+    /**
+     * Подготовка перед каждым тестом.
+     */
     @BeforeEach
     void setUp() {
         cartRepository = mock(CartRepository.class);
@@ -44,6 +50,10 @@ class CartServiceTest {
         cartService = new CartService(cartRepository, dishRepository, mappers, helper);
     }
 
+    /**
+     * Тест для метода findAllDishes().
+     * Проверяет правильность возврата списка блюд и общей цены корзины.
+     */
     @Test
     void testFindAllDishes() {
         // Подготовка: Создаем пользователя
@@ -70,6 +80,10 @@ class CartServiceTest {
         assertEquals(totalPrice, result.getTotalPrice());
     }
 
+    /**
+     * Тест для метода saveNewItem().
+     * Проверяет выбрасывание исключения при попытке сохранить несуществующее блюдо.
+     */
     @Test
     void saveNewItem() {
         // Подготовка: Создаем пользователя
@@ -93,6 +107,10 @@ class CartServiceTest {
         verify(helper, times(1)).getLogMessage(anyString());
     }
 
+    /**
+     * Тест для метода delete().
+     * Проверяет корректное удаление блюда из корзины по его ID.
+     */
     @Test
     void delete_validId_cartDeleted() {
         // Подготовка: Устанавливаем условия для теста
@@ -111,6 +129,10 @@ class CartServiceTest {
         verify(cartRepository, times(1)).delete(cart);
     }
 
+    /**
+     * Тест для метода delete().
+     * Проверяет выбрасывание исключения при попытке удалить несуществующее блюдо из корзины.
+     */
     @Test
     void delete_invalidId_exceptionThrown() {
         // Подготовка: Устанавливаем условия для теста
@@ -129,6 +151,10 @@ class CartServiceTest {
         assertEquals("Test Log Message", exception.getMessage());
     }
 
+    /**
+     * Тест для метода deleteByLogin().
+     * Проверяет корректное удаление всех блюд из корзины по ID пользователя.
+     */
     @Test
     void deleteByLogin_validId_cartDeleted() {
         // Подготовка: Устанавливаем условия для теста

@@ -18,11 +18,18 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class DishControllerTest {
+/**
+ * Тестирование класса DishController.
+ */
+class DishControllerTest {
+
     private DishService dishService;
     private MessageHelper messageHelper;
     private DishController dishController;
 
+    /**
+     * Общая настройка для всех тестов.
+     */
     @BeforeEach
     void setUp() {
         dishService = mock(DishService.class);
@@ -30,6 +37,9 @@ public class DishControllerTest {
         dishController = new DishController(dishService, messageHelper);
     }
 
+    /**
+     * Тест получения всех блюд.
+     */
     @Test
     void getAllDishes_shouldReturnListOfDishDTO() {
         // Готовим Mock данные
@@ -45,6 +55,9 @@ public class DishControllerTest {
         assertEquals(dishList, response.getBody());
     }
 
+    /**
+     * Тест создания нового блюда.
+     */
     @Test
     void create_shouldReturnCreatedDish() {
         // Готовим Mock данные
@@ -59,6 +72,10 @@ public class DishControllerTest {
         // Проверяем ожидаемый результат
         assertEquals(dish, response.getBody());
     }
+
+    /**
+     * Тест исключения при создании блюда.
+     */
     @Test
     public void testCreateDishException() {
         // Готовим Mock данные
@@ -76,6 +93,9 @@ public class DishControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
+    /**
+     * Тест получения блюда по ID.
+     */
     @Test
     void getDishById_shouldReturnDish() {
         // Готовим Mock данные
@@ -91,6 +111,9 @@ public class DishControllerTest {
         assertEquals(dish, response.getBody());
     }
 
+    /**
+     * Тест исключения при получении блюда по недопустимому ID.
+     */
     @Test
     void testGetDishByIdException() {
         // Готовим Mock данные
@@ -108,6 +131,9 @@ public class DishControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
+    /**
+     * Тест обновления блюда.
+     */
     @Test
     void update_shouldNotThrowException() {
         // Готовим Mock данные
@@ -120,10 +146,13 @@ public class DishControllerTest {
         verify(dishService, times(1)).update(dish);
     }
 
+    /**
+     * Тест исключения при обновлении блюда.
+     */
     @Test
     void testUpdateDishException() {
         // Готовим Mock данные
-        Dish dish = MockData.getMockedDish(); // Подготовьте подходящий Dish
+        Dish dish = MockData.getMockedDish();
 
         // Определите, какое исключение может быть брошено при выполнении dishService.update(dish)
         Mockito.doThrow(new RuntimeException("Текст ошибки")).when(dishService).update(dish);
@@ -137,6 +166,9 @@ public class DishControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
+    /**
+     * Тест удаления блюда.
+     */
     @Test
     void delete_shouldNotThrowException() {
         // Готовим Mock данные
@@ -148,6 +180,10 @@ public class DishControllerTest {
         // Проверяем, что метод dishService.delete(id) вызывается ровно один раз с этим ID
         verify(dishService, times(1)).delete(id);
     }
+
+    /**
+     * Тест исключения при удалении блюда.
+     */
     @Test
     void testDeleteDishException() {
         // Готовим Mock данные
@@ -165,6 +201,9 @@ public class DishControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
+    /**
+     * Тест получения общего количества блюд.
+     */
     @Test
     void getAllDishesCount_shouldReturnCount() {
         // Готовим Mock данные

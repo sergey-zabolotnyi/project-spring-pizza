@@ -19,8 +19,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тестирование класса SignupController.
+ */
 class SignupControllerTest {
-
     @Mock
     private UserService userService;
     @Mock
@@ -36,6 +38,11 @@ class SignupControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Тестирование метода SignupController.signup().
+     * Проверяет корректность обработки успешной регистрации пользователя.
+     * @throws Exception если произошла ошибка во время выполнения теста.
+     */
     @Test
     void testSignup() throws Exception {
         // Создаем фиктивные данные для запроса
@@ -57,6 +64,12 @@ class SignupControllerTest {
         assertEquals("newuser@test.com", capturedLoginDTO.getEmail());
         assertEquals("123456", capturedLoginDTO.getPassword());
     }
+
+    /**
+     * Тестирование метода SignupController.signup().
+     * Проверяет корректность обработки исключения при регистрации пользователя.
+     * @throws Exception если произошла ошибка во время выполнения теста.
+     */
     @Test
     void testSignupException() throws Exception {
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -70,6 +83,10 @@ class SignupControllerTest {
         });
     }
 
+    /**
+     * Тестирование метода SignupController.getAllUsersCount().
+     * Проверяет корректность возвращаемого количества пользователей.
+     */
     @Test
     void testGetAllUsersCount() {
         // Создаем фиктивные данные для возвращения из сервиса
@@ -92,26 +109,36 @@ class SignupControllerTest {
         assertNotNull(usersCount);
         assertEquals(users.size(), usersCount);
     }
+
+    /**
+     * Тестирование метода SignupController.signup() с валидным UserDTO.
+     * Проверяет, что после успешной регистрации происходит перенаправление на страницу "login".
+     * @throws Exception если произошла ошибка во время выполнения теста.
+     */
     @Test
     void signup_ValidLoginDTO_RedirectsToLogin() throws Exception {
-        // Arrange
+        // Создаем фиктивные данные для возвращения из сервиса
         UserDTO userDTO = MockData.getMockedUserDTO();
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // Mock логирования
         when(helper.getLogMessage(anyString())).thenReturn("Some log message");
 
-        // Act
+        // Вызываем метод
         signupController.signup(userDTO, response);
 
-        // Assert
+        // Проверяем
         verify(userService).saveUser(userDTO, Role.ROLE_CUSTOMER);
         verify(response).sendRedirect("login");
     }
 
+    /**
+     * Тестирование метода SignupController.signup() с невалидным UserDTO.
+     * Проверяет, что при возникновении исключения выбрасывается ResponseStatusException.
+     */
     @Test
     void signup_InvalidLoginDTO_ThrowsBadRequestException() {
-        // Arrange
+        // Создаем фиктивные данные для возвращения из сервиса
         UserDTO invalidUserDTO = MockData.getMockedUserDTO();
         HttpServletResponse response = mock(HttpServletResponse.class);
 
@@ -121,7 +148,7 @@ class SignupControllerTest {
         // Mock UserService, чтобы выбросить исключение
         doThrow(new RuntimeException("Some error message")).when(userService).saveUser(any(), any());
 
-        // Act & Assert
+        // Вызываем метод и проверяем
         assertThrows(ResponseStatusException.class, () -> signupController.signup(invalidUserDTO, response));
     }
 }

@@ -22,6 +22,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тесты для класса OrderService.
+ */
 public class OrderServiceTest {
     private OrdersRepository ordersRepository;
     private OrderService orderService;
@@ -43,6 +46,10 @@ public class OrderServiceTest {
         orderService = new OrderService(ordersRepository, cartRepository, mappers, helper);
     }
 
+    /**
+     * Тест для метода findAllUserOrders().
+     * Проверяет правильность возвращенного списка заказов пользователя.
+     */
     @Test
     void findAllUserOrders() {
         // Подготовка: Создаем объект пользователя
@@ -72,6 +79,10 @@ public class OrderServiceTest {
         assertEquals(2, result.size());
     }
 
+    /**
+     * Тест для метода findAllOrders().
+     * Проверяет правильность возвращенного списка всех заказов.
+     */
     @Test
     void findAllOrders() {
         // Подготовка: Создаем пользователя
@@ -98,6 +109,10 @@ public class OrderServiceTest {
         }
     }
 
+    /**
+     * Тест для метода payment() с валидным заказом.
+     * Проверяет успешность оплаты заказа и изменение его статуса.
+     */
     @Test
     void payment_validOrder() {
         // Подготовка: Создаем пользователя
@@ -126,6 +141,10 @@ public class OrderServiceTest {
         verify(ordersRepository, times(1)).updateStatus(order.getId(), Status.PAYED);
     }
 
+    /**
+     * Тест для метода payment() с невалидным заказом.
+     * Проверяет, что метод выбрасывает NoSuchElementException при невалидном заказе.
+     */
     @Test
     void payment_invalidOrder() {
         // Подготовка: Создаем пользователя
@@ -154,6 +173,10 @@ public class OrderServiceTest {
         verify(ordersRepository, never()).updateStatus(anyInt(), any(Status.class));
     }
 
+     /**
+     * Тест для метода getAverageOrdersSum().
+     * Проверяет правильность возвращенного среднего значения суммы заказов.
+     */
     @Test
     void testGetAverageOrdersSum() {
         // Устанавливаем поведение мока ordersRepository для метода findAverageOrdersSum()
@@ -166,6 +189,10 @@ public class OrderServiceTest {
         assertEquals(50.0, result);
     }
 
+    /**
+     * Тест для метода getTotalOrdersSum().
+     * Проверяет правильность возвращенной общей суммы заказов.
+     */
     @Test
     void testGetTotalOrdersSum() {
         // Устанавливаем поведение мока ordersRepository для метода findTotalOrdersSum()
@@ -178,6 +205,10 @@ public class OrderServiceTest {
         assertEquals(100.0, result);
     }
 
+    /**
+     * Тест для метода confirm() с невалидным заказом.
+     * Проверяет, что метод выбрасывает NoSuchElementException при невалидном заказе.
+     */
     @Test
     void confirm_invalidOrder() {
         // Подготовка: Создаем пользователя с ролью ROLE_MANAGER
@@ -201,6 +232,10 @@ public class OrderServiceTest {
         verify(ordersRepository, never()).updateStatus(anyInt(), any(Status.class));
     }
 
+    /**
+     * Тест для метода confirm() с невалидной ролью пользователя.
+     * Проверяет, что метод выбрасывает NoSuchElementException при невалидной роли пользователя.
+     */
     @Test
     void confirm_invalidRole() {
         // Подготовка: Создаем пользователя с ролью не ROLE_MANAGER
@@ -224,6 +259,10 @@ public class OrderServiceTest {
         verify(ordersRepository, never()).updateStatus(anyInt(), any(Status.class));
     }
 
+    /**
+     * Тест для метода saveNewOrder() с пустой корзиной.
+     * Проверяет, что метод выбрасывает NoSuchElementException при пустой корзине.
+     */
     @Test
     void saveNewOrder_emptyCart() {
         // Подготовка: Создаем пользователя
@@ -243,6 +282,10 @@ public class OrderServiceTest {
         verify(ordersRepository, never()).save(any(Orders.class));
     }
 
+    /**
+     * Тест для метода saveNewOrder() с валидной корзиной.
+     * Проверяет успешное создание нового заказа.
+     */
     @Test
     void saveNewOrder_validCart() {
         // Подготовка: Создаем пользователя
@@ -280,6 +323,11 @@ public class OrderServiceTest {
         verify(cartRepository, times(1)).deleteByUserId(user.getId());
         verify(ordersRepository, times(1)).save(any(Orders.class));
     }
+
+    /**
+     * Тест для метода getDishesByOrderId() с валидным ID заказа.
+     * Проверяет правильность возвращенного списка блюд.
+     */
     @Test
     void getDishesByOrderId_validOrderId_returnDishDTOList() {
         // Подготавливаем данные
@@ -302,6 +350,10 @@ public class OrderServiceTest {
         assertEquals(expectedDishDTOList, result);
     }
 
+    /**
+     * Тест для метода getDishesByOrderId() с невалидным ID заказа.
+     * Проверяет, что метод выбрасывает NoSuchElementException при невалидном ID заказа.
+     */
     @Test
     void getDishesByOrderId_invalidOrderId_throwNoSuchElementException() {
         // Подготавливаем данные

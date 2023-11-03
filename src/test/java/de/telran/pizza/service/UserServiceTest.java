@@ -19,6 +19,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тесты для класса UserService.
+ */
 class UserServiceTest {
     @Mock
     private UserRepository userRepository;
@@ -30,6 +33,11 @@ class UserServiceTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
     }
+
+    /**
+     * Тест для метода findByUserLogin().
+     * Проверяет правильность возвращенного пользователя по логину.
+     */
     @Test
     void testFindByUserLogin() {
         // Подготовка: Устанавливаем входные данные
@@ -45,6 +53,10 @@ class UserServiceTest {
         assertEquals(expectedLogin, result.get());
     }
 
+    /**
+     * Тест для метода findByUserLogin() при отсутствии пользователя.
+     * Проверяет, что метод возвращает Optional.empty().
+     */
     @Test
     void testFindByUserLoginNotFound() {
         // Подготовка: Устанавливаем входные данные
@@ -58,6 +70,10 @@ class UserServiceTest {
         assertFalse(result.isPresent());
     }
 
+    /**
+     * Тест для метода saveUser().
+     * Проверяет успешное сохранение пользователя.
+     */
     @Test
     void testSaveUser() {
         // Подготовка: Создаем объекты и настраиваем моки
@@ -74,6 +90,11 @@ class UserServiceTest {
         assertEquals(role, result.getRole());
     }
 
+    /**
+     * Тест для метода saveUser() с существующим логином пользователя.
+     * Проверяет, что метод выбрасывает IllegalArgumentException.
+     */
+
     @Test
     void testSaveUserExistingLogin() {
         // Подготовка: Создаем объекты и настраиваем моки
@@ -85,6 +106,10 @@ class UserServiceTest {
         assertThrows(IllegalArgumentException.class, () -> userService.saveUser(userDTO, role));
     }
 
+    /**
+     * Тест для метода getAllUsers().
+     * Проверяет правильность возвращенного списка всех пользователей.
+     */
     @Test
     void testGetAllUsers() {
         // Подготовка: Устанавливаем ожидаемый результат

@@ -27,21 +27,34 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тестирование класса OrderController.
+ */
 class OrderControllerTest {
+
     @Mock
     private OrderService orderService;
+
     @Mock
     private MessageHelper helper;
+
     @InjectMocks
     private OrderController orderController;
+
+    /**
+     * Общая настройка для всех тестов.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Тестирование метода getOrders в классе OrderController.
+     */
     @Test
     void testGetOrders() {
-        // Подготовка: Пользователь
+        // Подготовка: Создаем объект пользователя
         User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -62,9 +75,12 @@ class OrderControllerTest {
         assertEquals(2, responseEntity.getBody().size());
     }
 
+    /**
+     * Тестирование метода getAllOrders в классе OrderController.
+     */
     @Test
     void testGetAllOrders() {
-        // Подготовка: Пользователь
+        // Подготовка: Создаем объект пользователя
         User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -84,9 +100,13 @@ class OrderControllerTest {
         assertNotNull(responseEntity.getBody());
         assertEquals(2, responseEntity.getBody().size());
     }
+
+    /**
+     * Тестирование успешного создания заказа в методе create класса OrderController.
+     */
     @Test
     void create_successfulOrderCreation() {
-        // Подготовка: Пользователь
+        // Подготовка: Создаем объект пользователя
         User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -107,9 +127,12 @@ class OrderControllerTest {
         assertNotNull(responseEntity.getBody());
     }
 
+    /**
+     * Тестирование создания заказа с исключением в методе create класса OrderController.
+     */
     @Test
     void create_orderCreationException() {
-        // Подготовка: Пользователь
+        // Подготовка: Создаем объект пользователя
         User user = MockData.getMockedUser();
         // Подготавливаем аутентификацию пользователя
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -117,10 +140,10 @@ class OrderControllerTest {
         // Устанавливаем аутентификацию в текущий контекст безопасности
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Мокирование метода
+        // Мокирование метода, который бросает исключение
         when(orderService.saveNewOrder()).thenThrow(new RuntimeException("Some error message"));
 
-        // Вызов метода
+        // Вызов метода и ожидаем исключение
         ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> orderController.create());
 
         // Проверка результата
@@ -128,6 +151,9 @@ class OrderControllerTest {
         assertEquals("Some error message", thrown.getReason());
     }
 
+    /**
+     * Тестирование метода confirm в классе OrderController.
+     */
     @Test
     void testConfirm() {
         // Подготовка
@@ -138,25 +164,31 @@ class OrderControllerTest {
         Mockito.doThrow(new NoSuchElementException("Order not found")).when(orderService).confirm(id);
         // Вызываем метод контроллера и ожидаем исключение
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            orderController.confirm(id);
-        });
+            orderController.confirm(id); });
 
         // Проверяем статус и сообщение исключения
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Order not found", exception.getReason());
     }
 
+    /**
+     * Тестирование метода payment в классе OrderController.
+     */
     @Test
     void testPayment() {
-        // Подготовка
+        // Подготовка: Получаем ID блюда из Mock данных
         int id = MockData.getMockedDish().getId();
 
         // Действие и проверка
         assertDoesNotThrow(() -> orderController.payment(id));
     }
+
+    /**
+     * Тестирование метода payment с возникновением исключения в классе OrderController.
+     */
     @Test
     void testProcessPaymentException() {
-        // Готовим Mock данные
+        // Подготовка: Готовим Mock данные
         int id = MockData.getMockedUser().getId();
 
         // Определяем, что при вызове orderService.payment(id) будет брошено исключение
@@ -172,60 +204,80 @@ class OrderControllerTest {
         assertEquals("Order not found", exception.getReason());
     }
 
+    /**
+     * Тестирование метода getOrdersCount в классе OrderController.
+     */
     @Test
     void testGetOrdersCount() {
-        // Подготовка
+        // Подготовка: Мокируем метод findAllOrders
         when(orderService.findAllOrders()).thenReturn(MockData.getMockedListOfOrders());
 
-        // Действие
+        // Действие: Вызываем метод контроллера
         ResponseEntity<Integer> responseEntity = orderController.getOrdersCount();
 
-        // Проверка
+        // Проверка результата
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(2, responseEntity.getBody());
     }
 
+    /**
+     * Тестирование метода getAverageSum в классе OrderController.
+     */
     @Test
     void testGetAverageSum() {
-        // Подготовка
+        // Подготовка: Мокируем метод getAverageOrdersSum
         when(orderService.getAverageOrdersSum()).thenReturn(50.0);
 
-        // Действие
+        // Действие: Вызываем метод контроллера
         ResponseEntity<Double> responseEntity = orderController.getAverageSum();
 
-        // Проверка
+        // Проверка результата
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(50.0, responseEntity.getBody());
     }
 
+    /**
+     * Тестирование метода getAllOrdersAmount в классе OrderController.
+     */
     @Test
     void testGetAllOrdersAmount() {
-        // Подготовка
+        // Подготовка: Мокируем метод getTotalOrdersSum
         when(orderService.getTotalOrdersSum()).thenReturn(500.0);
 
-        // Действие
+        // Действие: Вызываем метод контроллера
         ResponseEntity<Double> responseEntity = orderController.getAllOrdersAmount();
 
-        // Проверка
+        // Проверка результата
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(500.0, responseEntity.getBody());
     }
 
+    /**
+     * Тестирование метода payment в классе OrderController.
+     * Убеждаемся, что при вызове метода не возникает исключений.
+     */
     @Test
     void payment_shouldNotThrowException() {
+        // Подготовка: Получаем ID блюда из Mock данных
         int id = MockData.getMockedDish().getId();
 
+        // Действие и проверка
         assertDoesNotThrow(() -> orderController.payment(id));
 
+        // Проверяем, что метод payment вызван один раз
         verify(orderService, times(1)).payment(id);
     }
+
+    /**
+     * Тестирование метода getDishesByOrderId в классе OrderController.
+     */
     @Test
     void testGetDishesByOrderId() {
-        // Готовим Mock данные
-        int orderId = 123; // Предположим, что это ID заказа
+        // Подготовка: Готовим Mock данные
+        int orderId = MockData.getMockedOrder().getId();
         List<DishDTO> expectedDishes = MockData.getMockedListOfDishesDTO();
 
         // Определяем, что возвращается при вызове orderService.getDishesByOrderId(orderId)
@@ -238,6 +290,4 @@ class OrderControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedDishes, responseEntity.getBody());
     }
-
-
 }

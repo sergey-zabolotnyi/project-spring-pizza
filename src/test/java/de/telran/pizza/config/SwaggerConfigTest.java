@@ -9,6 +9,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+/**
+ * Тестирование класса SwaggerConfig.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class SwaggerConfigTest {
@@ -16,17 +19,21 @@ class SwaggerConfigTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /**
+     * Проверяет доступность страницы Swagger UI.
+     */
     @Test
     void testSwaggerUIPage() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/swagger-ui/index.html"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/swagger-ui/index.html"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    /**
+     * Проверяет доступность JSON-документации Swagger.
+     */
     @Test
     void testSwaggerDocumentationJSON() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/v3/api-docs"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

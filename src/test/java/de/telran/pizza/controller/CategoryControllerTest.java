@@ -18,18 +18,31 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Тестирование класса CategoryController.
+ */
 class CategoryControllerTest {
+
     @Mock
     private CategoryService categoryService;
+
     @Mock
     private MessageHelper messageHelper;
+
     @InjectMocks
     private CategoryController categoryController;
+
+    /**
+     * Общая настройка для всех тестов.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Тест получения всех категорий.
+     */
     @Test
     void testGetAllCategories() {
         // Создаем фиктивные данные для возвращения из сервиса
@@ -53,6 +66,9 @@ class CategoryControllerTest {
         assertEquals(mockCategories, categories);
     }
 
+    /**
+     * Тест получения количества категорий.
+     */
     @Test
     void testGetCategoriesCount() {
         // Создаем фиктивные данные для возвращения из сервиса

@@ -10,8 +10,6 @@ import java.util.List;
 /**
  * Сервисный класс для управления категориями.
  * Этот класс используется для управления категориями приложения.
- * @Author: szabolotnyi
- * @version: 1.0.0
  */
 @Service
 public class CategoryService {
@@ -19,6 +17,12 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final Mappers mappers;
 
+    /**
+     * Сервис управления категориями (конструктор).
+     *
+     * @param categoryRepository Репозиторий категорий.
+     * @param mappers            Мапперы для преобразования данных.
+     */
     public CategoryService(CategoryRepository categoryRepository, Mappers mappers) {
         this.categoryRepository = categoryRepository;
         this.mappers = mappers;

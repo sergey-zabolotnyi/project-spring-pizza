@@ -25,6 +25,13 @@ import javax.validation.Valid;
 public class MainController {
     private DishService dishService;
     private MessageHelper helper;
+
+    /**
+     * Основной контроллер (конструктор).
+     *
+     * @param dishService Сервис управления блюдами.
+     * @param helper      Вспомогательный класс для работы с сообщениями.
+     */
     public MainController(DishService dishService, MessageHelper helper) {
         this.dishService = dishService;
         this.helper = helper;

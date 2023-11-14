@@ -27,6 +27,12 @@ public class   CartController {
     private CartService cartService;
     private MessageHelper helper;
 
+    /**
+     * Конструктор контроллера корзины.
+     *
+     * @param cartService Сервис управления корзиной.
+     * @param helper      Вспомогательный класс для работы с сообщениями.
+     */
     public CartController(CartService cartService, MessageHelper helper) {
         this.cartService = cartService;
         this.helper = helper;

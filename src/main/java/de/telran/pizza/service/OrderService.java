@@ -35,6 +35,14 @@ public class OrderService {
     private MessageHelper helper;
     private Mappers mappers;
 
+    /**
+     * Сервис управления заказами (конструктор).
+     *
+     * @param ordersRepository Репозиторий заказов.
+     * @param cartRepository   Репозиторий корзины.
+     * @param mappers          Мапперы для преобразования данных.
+     * @param helper           Вспомогательный класс для работы с сообщениями.
+     */
     public OrderService(OrdersRepository ordersRepository, CartRepository cartRepository, Mappers mappers, MessageHelper helper) {
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;

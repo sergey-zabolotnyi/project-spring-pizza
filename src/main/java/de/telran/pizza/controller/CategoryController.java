@@ -27,6 +27,12 @@ public class CategoryController {
     private CategoryService categoryService;
     private MessageHelper helper;
 
+    /**
+     * Контроллер категорий (конструктор).
+     *
+     * @param categoryService Сервис управления категориями.
+     * @param helper          Вспомогательный класс для работы с сообщениями.
+     */
     public CategoryController(CategoryService categoryService, MessageHelper helper) {
         this.categoryService = categoryService;
         this.helper = helper;

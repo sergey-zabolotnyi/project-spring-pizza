@@ -11,8 +11,6 @@ import javax.persistence.*;
 /**
  * Класс представляет объект категории пиццерии.
  * Этот объект используется для хранения данных о категориях приложения.
- * @Author: szabolotnyi
- * @version: 1.0.0
  */
 @Data
 @AllArgsConstructor

@@ -47,6 +47,14 @@ public class DishService {
     private final Mappers mappers;
     private MessageHelper helper;
 
+    /**
+     * Сервис управления блюдами (конструктор).
+     *
+     * @param dishRepository     Репозиторий блюд.
+     * @param categoryRepository Репозиторий категорий.
+     * @param mappers            Мапперы для преобразования данных.
+     * @param helper             Вспомогательный класс для работы с сообщениями.
+     */
     public DishService(DishRepository dishRepository, CategoryRepository categoryRepository, Mappers mappers, MessageHelper helper) {
         this.dishRepository = dishRepository;
         this.categoryRepository = categoryRepository;

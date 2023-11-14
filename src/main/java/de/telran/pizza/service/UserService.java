@@ -28,6 +28,12 @@ public class UserService {
     private UserRepository userRepository;
     private MessageHelper helper;
 
+    /**
+     * Сервис управления пользователями (конструктор).
+     *
+     * @param userRepository Репозиторий пользователей.
+     * @param helper         Вспомогательный класс для работы с сообщениями.
+     */
     public UserService(UserRepository userRepository, MessageHelper helper) {
         this.userRepository = userRepository;
         this.helper = helper;

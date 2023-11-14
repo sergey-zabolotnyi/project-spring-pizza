@@ -27,6 +27,12 @@ public class DishController {
     private DishService dishService;
     private MessageHelper helper;
 
+    /**
+     * Контроллер блюд (конструктор).
+     *
+     * @param dishService Сервис управления блюдами.
+     * @param helper      Вспомогательный класс для работы с сообщениями.
+     */
     public DishController(DishService dishService, MessageHelper helper) {
         this.dishService = dishService;
         this.helper = helper;

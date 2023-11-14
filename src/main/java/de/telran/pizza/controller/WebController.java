@@ -63,7 +63,7 @@ public class WebController {
      *
      * @return Имя шаблона страницы заказов.
      */
-    @RequestMapping("/api/orders/get_dishes")
+    @RequestMapping("/order")
     public String orderPage() {
         return "order";
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="get_form" lang="en"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -29,18 +30,16 @@
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
-            <a class="button-1" href="/" th:text="#{main.main}"></a>
-            <span sec:authorize="isAuthenticated()"> | <a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
-            <span sec:authorize="isAuthenticated()"> |<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <a class="button-1" href="/" th:text="#{main.main}"></a> |
+            <a class="button-1" href="/cart" th:text="#{main.cart}"></a> |
+            <a class="button-1" href="/orders" th:text="#{main.orders}"></a> |
+            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a> |
+            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a> |
+            <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}"></a>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
-
-            <label for="locales"></label>
             <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
@@ -68,11 +67,17 @@
     </header>
 
     <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getItemsById()">
+             ng-app="get_form" ng-controller="GetController" data-ng-init="getOrderDetails()">
 
         <div id="errorMsg"></div>
 
         <div id="dishes_block">
+            <div class="page_head" ng-model="orderId">
+                <p style="align-items: end;">
+                    <span th:text="#{order.number} + ' # '"></span>
+                    <span style="font-weight: 700">{{orderId}}</span>
+                </p>
+            </div>
             <div>
                 <table id="table" ng-model="dishes">
                     <tr>
@@ -80,7 +85,6 @@
                         <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.dish}"></th>
                         <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.price}"></th>
                         <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.category}"></th>
-                        <th columns="4" th:text="#{cart.action}"></th>
                     </tr>
                     <tbody id="dishes_table">
                     <tr ng-repeat="i in dishes" class="rows" checked=false>
@@ -88,29 +92,24 @@
                         <td>{{i.name}}</td>
                         <td>{{i.price}}</td>
                         <td>{{i.category.category}}</td>
-                        <td>
-                            // пока пустое поле
-                        </td>
                     </tr>
 
                     </tbody>
                 </table>
             </div>
 
-            <div class="page_head" ng-model="totalPrice">
+            <div class="page_head" ng-model="totalAmount">
                 <p style="align-items: end;">
                     <span th:text="#{orders.totalPrice} + ' = '"></span>
-                    <span style="font-weight: 700">{{totalPrice}}</span>
+                    <span style="font-weight: 700">{{totalAmount | number:2}}</span>
                 </p>
-
             </div>
 
             <div class="page_head">
                 <div style="margin: 20px 0;">
-                    <a class="button-green" ng-click="postdata()" th:text="#{cart.create}"></a>
                 </div>
                 <div>
-                    <a class="button-red" ng-click="deleteAll()" th:text="#{cart.deleteAll}"></a>
+                    <a class="button" href="/orders" th:text="#{order.back}"></a>
                 </div>
             </div>
         </div>

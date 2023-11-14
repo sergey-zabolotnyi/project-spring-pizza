@@ -1,0 +1,12 @@
+de.telran.pizza
+de.telran.pizza.config
+de.telran.pizza.controller
+de.telran.pizza.domain.dto
+de.telran.pizza.domain.entity
+de.telran.pizza.domain.entity.enums
+de.telran.pizza.filters
+de.telran.pizza.repository
+de.telran.pizza.security
+de.telran.pizza.service
+de.telran.pizza.service.mapper
+de.telran.pizza.utils

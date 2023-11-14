@@ -30,7 +30,7 @@ angular.module("get_form", [])
         $scope.signup = function () {
             if (!checkPasswordMatch()) {return;}
             let object = {
-                'login': document.querySelector('#login').value,
+                'user': document.querySelector('#login').value,
                 'email': document.querySelector('#email').value,
                 'password': document.querySelector('#password').value
             }

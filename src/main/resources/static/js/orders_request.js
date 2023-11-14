@@ -62,47 +62,49 @@ angular.module("get_form", [])
         }
 
         $scope.dishes = [];
+        $scope.orderId = "";
+        $scope.totalAmount = 0; // Переменная для хранения общей суммы заказа
 
-        $scope.getItemsById = function() {
+        $scope.getOrderDetails = function(orderId) {
             let id;
             let urlParam = new URLSearchParams(window.location.search);
             if (urlParam.has('id')) {
-             id = urlParam.get('id');
+                id = urlParam.get('id');
             }
-            $http.get('/api/orders/get_dishes?id=' + id) // Замените 1 на нужный вам ID заказа
-                .then(function(response) {
-                    $scope.dishes = response.data;
-                })
-                .catch(function(error) {
-                    console.error('Ошибка при получении данных', error);
+            $http({
+                method: "GET",
+                url: "/api/orders/get_dishes?id=" + id,
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(
+                function(data) {
+                    // Обновляем переменные в $scope с полученными данными
+                    $scope.dishes = data.data;
+                    $scope.orderId = id;
+                    $scope.totalAmount = calculateTotalAmount(data.data);
+
+                    // Можете использовать console.log для отладки
+                    console.log($scope.dishes);
+                    console.log($scope.orderId);
+                    console.log($scope.totalAmount);
+                },
+                function (response) {
+                    // Если возникла ошибка, вызываем функцию alertErrors и выводим код статуса в консоль
+                    alertErrors(response);
+                    console.log(response.status);
                 });
         };
 
-
-        // $scope.getItemsById = function (event) {
-        //     let id;
-        //     let urlParam = new URLSearchParams(window.location.search);
-        //     if (urlParam.has('id')) {
-        //         id = urlParam.get('id');
-        //     }
-        //     $http({
-        //         method: "GET",
-        //         url: "/api/orders/get_dishes/?id=" + id,
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             'X-CSRF-TOKEN': token
-        //         }
-        //     }).then(
-        //         function (data) {
-        //             console.log(data.data);
-        //             $scope.dishes = data.data;
-        //         },
-        //         function (error) {
-        //             console.log(error);
-        //             console.log("error");
-        //         }
-        //     );
-        // };
+        // Функция для подсчета общей суммы заказа
+        function calculateTotalAmount(dishes) {
+            let total = 0;
+            for (let i = 0; i < dishes.length; i++) {
+                total += dishes[i].price;
+            }
+            return total;
+        }
 
         $scope.itemId = null;
 
@@ -132,19 +134,6 @@ angular.module("get_form", [])
                 alertErrors(response);
                 console.log(response.status);
             });
-        };
-
-        // Функция showAction принимает событие как аргумент
-        $scope.showOrder = function($event) {
-            var orderId = $event.target.id; // Получаем id заказа из атрибута id кнопки
-            $http.get('/api/orders/get_dishes?id=' + orderId)
-                .then(function(response) {
-                    // Обработка ответа - вызов функции для отображения списка блюд
-                    displayDishes(response.data);
-                })
-                .catch(function(error) {
-                    console.error('Ошибка при получении данных', error);
-                });
         };
 
     }]);

@@ -23,6 +23,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private final UserDetailServiceSecurity userDetailServiceSecurity;
 
+    /**
+     * Конфигурация безопасности (конструктор).
+     *
+     * @param userDetailServiceSecurity Сервис пользовательских данных для безопасности.
+     */
     public SecurityConfig(UserDetailServiceSecurity userDetailServiceSecurity) {
         this.userDetailServiceSecurity = userDetailServiceSecurity;
     }

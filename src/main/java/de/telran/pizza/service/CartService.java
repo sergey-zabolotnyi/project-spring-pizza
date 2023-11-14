@@ -20,8 +20,6 @@ import java.util.NoSuchElementException;
 /**
  * Сервисный класс для управления корзиной покупок.
  * Этот класс используется для управления корзины пользователя.
- * @Author: szabolotnyi
- * @version: 1.0.0
  */
 @Service
 public class CartService {
@@ -31,6 +29,14 @@ public class CartService {
     private final Mappers mappers;
     private MessageHelper helper;
 
+    /**
+     * Сервис управления корзиной (конструктор).
+     *
+     * @param cartRepository Репозиторий корзины.
+     * @param dishRepository Репозиторий блюд.
+     * @param mappers        Мапперы для преобразования данных.
+     * @param helper         Вспомогательный класс для работы с сообщениями.
+     */
     public CartService(CartRepository cartRepository, DishRepository dishRepository, Mappers mappers,
                        MessageHelper helper) {
         this.cartRepository = cartRepository;

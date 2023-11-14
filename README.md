@@ -1,4 +1,4 @@
-### **Pizzeria, final project on Spring Boot**
+### **Pizza, проэкт на Spring Boot, школа TelRan**
 ![Project view](https://github.com/sergey-zabolotnyi/project-spring-pizza/blob/main/src/main/resources/static/pics/pizza_screenshot.png)
 
 **Цели проекта "Pizza":**

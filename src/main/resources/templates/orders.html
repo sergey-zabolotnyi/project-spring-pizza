@@ -91,6 +91,7 @@
                         <td>
                             <a class="hidden" th:text="#{orders.pay}"
                                href="/payment?orderNo={{i.id}}&totalPrice={{i.totalPrice}}"></a>
+                            <a class="button" href="/order?id={{i.id}}" th:text="#{button.show}"></a>
                         </td>
 
                     </tr>

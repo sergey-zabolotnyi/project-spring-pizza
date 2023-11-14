@@ -90,7 +90,7 @@
                         <td>{{i.status}}</td>
                         <td>
                             <a id="{{i.id}}" class="hidden" ng-click="confirmAction($event)" th:text="#{orders.confirm}"></a>
-                            <a class="button" href="/api/orders/get_dishes?id={{i.id}}" ng-click="showOrder($event)" th:text="#{button.show}"></a>
+                            <a class="button" href="/order?id={{i.id}}" th:text="#{button.show}"></a>
                         </td>
                     </tr>
                     </tbody>

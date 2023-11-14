@@ -75,6 +75,9 @@ public class User {
 
     /**
      * Конструктор с параметрами user и password.
+     *
+     * @param user     Имя пользователя.
+     * @param password Пароль пользователя.
      */
     public User(String user, String password) {
         this.user = user;

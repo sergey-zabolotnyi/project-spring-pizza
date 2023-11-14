@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -27,6 +28,12 @@ public class OrderController {
     private OrderService orderService;
     private MessageHelper helper;
 
+    /**
+     * Контроллер заказов (конструктор).
+     *
+     * @param orderService Сервис управления заказами.
+     * @param helper       Вспомогательный класс для работы с сообщениями.
+     */
     public OrderController(OrderService orderService, MessageHelper helper) {
         this.orderService = orderService;
         this.helper = helper;
@@ -158,16 +165,16 @@ public class OrderController {
     }
 
     /**
-     * Получает список блюд по номеру заказа.
+     * Получаем список блюд по номеру заказа.
      *
-     * Этот метод позволяет пользователям получить список заказанных блюд по номеру заказа.
-     *
-     * @return ResponseEntity со списком блюд данного заказа.
+     * @param id Номер заказа.
+     * @return ResponseEntity - Список блюд для заказа с указанным ID.
      */
     @GetMapping("/get_dishes")
     @Operation(summary = "Получаем список блюд по номеру заказа",
             description = "Получаем список всех блюд для заказа с указанным ID.")
-    public ResponseEntity<List<DishDTO>> getDishesByOrderId(@Valid @RequestParam(value = "id") int id) {
+    public ResponseEntity<List<DishDTO>> getDishesByOrderId(
+            @Valid @RequestParam(value = "id") @Positive(message = "ID должен быть положительным числом") int id) {
         List<DishDTO> dishes = orderService.getDishesByOrderId(id);
         return ResponseEntity.ok(dishes);
     }

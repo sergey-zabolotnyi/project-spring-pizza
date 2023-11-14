@@ -17,6 +17,9 @@ import java.util.Collections;
 @Setter
 public class UserDetailSecurity implements UserDetails {
 
+    /**
+     * Пользователь.
+     */
     private User user;
 
     /**

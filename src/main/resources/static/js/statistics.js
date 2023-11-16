@@ -138,4 +138,49 @@ angular.module("get_form", [])
         }
         getTotalOrdersCount(); // Вызываем функцию сразу после инициализации контроллера
 
+        $scope.totalReviewsCount = 0;
+
+        function getAllReviewsCount() {
+            $http({
+                method: "GET",
+                url: "/api/reviews/count",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(
+                function (response) {
+                    console.log(response.data);
+                    $scope.totalReviewsCount = response.data;
+                },
+                function (error) {
+                    console.log(error);
+                    console.log("error");
+                }
+            );
+        }
+        getAllReviewsCount(); // Вызываем функцию сразу после инициализации контроллера
+
+        $scope.reviewsAverageRating = 0; // Инициализируем нулевым значением
+        function getAverageReviewRating() {
+            $http({
+                method: "GET",
+                url: "/api/reviews/average",
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(
+                function (response) {
+                    console.log(response.data);
+                    $scope.reviewsAverageRating = response.data;
+                },
+                function (error) {
+                    console.log(error);
+                    console.log("error");
+                }
+            );
+        }
+        getAverageReviewRating(); // Вызываем функцию сразу после инициализации контроллера
+
     }]);

@@ -127,5 +127,33 @@ public class WebController {
     public String statistics() {
         return "statistics";
     }
+    /**
+     * Метод обработки запросов на отображение страницы отзывов.
+     *
+     * @return Имя представления "отзывы".
+     */
+    @RequestMapping("/reviews")
+    public String reviews() {
+        return "reviews";
+    }
+
+    /**
+     * Метод обработки запросов на отображение страницы создания отзыва.
+     *
+     * @return Имя представления "создание отзыва".
+     */
+    @RequestMapping("/review-create")
+    public String createReview() {
+        return "review_create";
+    }
+    /**
+     * Метод обработки запросов на отображение страницы изменения отзыва.
+     *
+     * @return Имя представления "изменение отзыва".
+     */
+    @RequestMapping("/review-update")
+    public String updateReview() {
+        return "review_update";
+    }
 
 }

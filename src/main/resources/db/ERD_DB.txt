@@ -39,6 +39,13 @@ Table cart {
   dish_id integer
 }
 
+Table review {
+  id integer [primary key]
+  user_id integer
+  text varchar(1000)
+  rating integer
+}
+
 Table order_dish {
   id integer [primary key]
   order_id integer
@@ -51,3 +58,4 @@ Ref: cart.dish_id > dish.id // many-to-one
 Ref: dish.category_id > category.id // many-to-one
 Ref: order_dish.order_id > orders.id // many-to-one
 Ref: order_dish.dish_id > dish.id // many-to-one
+Ref: review.user_id > user.id // many-to-one

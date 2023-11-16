@@ -59,7 +59,7 @@ VALUES
     ('Vodka', 'Водка', 9.50, CURRENT_TIMESTAMP, 6),
     ('Tequila', 'Текила', 11.00, CURRENT_TIMESTAMP, 6)
 
-INSERT INTO orders (login_id,total_price,status,time)
+INSERT INTO orders (user_id,total_price,status,time)
 VALUES
     (1,35.00,'DELIVERY', CURRENT_TIMESTAMP),
     (2,34.50,'PAYMENT_CONFIRM', CURRENT_TIMESTAMP),

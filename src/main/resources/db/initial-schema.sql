@@ -17,7 +17,7 @@ create table dish (
                       constraint fk_dish_category foreign key (category_id) references category (id)
 );
 
-create table login (
+create table user (
                        id int not null auto_increment,
                        email varchar(255) not null,
                        login varchar(255) not null,
@@ -30,13 +30,13 @@ create table login (
 
 create table orders (
                         id int not null auto_increment,
-                        login_id int not null ,
+                        user_id int not null ,
                         total_price decimal(9,2) not null,
                         status varchar(45) not null,
                         time timestamp not null,
                         primary key (id),
-                        key fk_order_login_idx (login_id),
-                        constraint fk_order_login foreign key (login_id) references login (id)
+                        key fk_order_login_idx (user_id),
+                        constraint fk_order_login foreign key (user_id) references user (id)
 );
 
 create table cart (

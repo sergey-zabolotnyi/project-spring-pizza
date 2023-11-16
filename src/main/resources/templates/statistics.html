@@ -29,11 +29,12 @@
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
-            <a class="button-1" href="/" th:text="#{main.main}"></a> |
-            <a class="button-1" href="/cart" th:text="#{main.cart}"></a> |
-            <a class="button-1" href="/orders" th:text="#{main.orders}"></a> |
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a> |
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a> |
+            <a class="button-1" href="/" th:text="#{main.main}"></a>|
+            <a class="button-1" href="/cart" th:text="#{main.cart}"></a>|
+            <a class="button-1" href="/orders" th:text="#{main.orders}"></a>|
+            <a class="button-1" href="/reviews" th:text="#{main.review}"></a>|
+            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a>|
+            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a>|
             <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}"></a>
         </div>
         <div>
@@ -70,33 +71,50 @@
     <section class="block-5">
     <table id="table">
         <tr>
+            <th th:text=" № "></th>
             <th th:text="#{menu.description}"></th>
             <th th:text="#{menu.value}"></th>
         </tr>
         <tbody id="dishes_table" ng-controller="GetController">
         <tr class="rows" checked=false>
+            <td th:text="1"></td>
             <td th:text="#{menu.categories.count}"></td>
             <td class="green-text"><span>{{totalCategoriesCount}}</span></td>
         </tr>
         <tr class="rows" checked=false>
+            <td th:text="2"></td>
             <td th:text="#{menu.dishes.count}"></td>
             <td class="green-text"><span>{{totalDishesCount}}</span></td>
         </tr>
         <tr class="rows" checked=false>
+            <td th:text="3"></td>
             <td th:text="#{menu.users.count}"></td>
             <td class="green-text"><span>{{totalUsersCount}}</span></td>
         </tr>
         <tr class="rows" checked=false>
+            <td th:text="4"></td>
             <td th:text="#{menu.orders.count}"></td>
             <td class="green-text"><span>{{totalOrdersCount}}</span></td>
         </tr>
         <tr class="rows" checked=false>
-            <td th:text="#{menu.orders.average}"></td>
-            <td class="green-text"><span>{{ordersAverageAmount | number:2}}</span></td>
+            <td th:text="5"></td>
+            <td th:text="#{menu.reviews.count}"></td>
+            <td class="green-text"><span>{{totalReviewsCount}}</span></td>
         </tr>
         <tr class="rows" checked=false>
+            <td th:text="6"></td>
+            <td th:text="#{menu.reviews.average}"></td>
+            <td class="green-text"><span>{{reviewsAverageRating | number:1}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="7"></td>
             <td th:text="#{menu.orders.total.amount}"></td>
             <td class="green-text"><span>{{totalOrdersAmount | number:2}}</span></td>
+        </tr>
+        <tr class="rows" checked=false>
+            <td th:text="8"></td>
+            <td th:text="#{menu.orders.average}"></td>
+            <td class="green-text"><span>{{ordersAverageAmount | number:2}}</span></td>
         </tr>
         </tbody>
     </table>

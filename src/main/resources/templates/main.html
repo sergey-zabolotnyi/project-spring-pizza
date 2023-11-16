@@ -30,11 +30,12 @@
     <section class="block-1">
         <div style="display:flex; align-items: center">
             <a class="button-1" href="/" th:text="#{main.main}"></a>
-            <span sec:authorize="isAuthenticated()"> | <a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
-            <span sec:authorize="isAuthenticated()"> |<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
-            <span sec:authorize="hasRole('ROLE_MANAGER')"> | <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="isAuthenticated()">|<a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="isAuthenticated()">|<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
+            <span>|<a class="button-1" href="/reviews" th:text="#{main.review}"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
         </div>
         <div>
             <span sec:authorize="isAuthenticated()">
@@ -117,7 +118,7 @@
                         <td>{{i.price | number:2}}</td>
                         <td>{{i.category.category}}</td>
                         <td sec:authorize="isAuthenticated()">
-                            <a class="button-green" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
+                            <a class="button" dishId="{{i.id}}" ng-click="postdata($event)" th:text="#{button.add}"></a>
                         </td>
                     </tr>
                     </tbody>

@@ -138,6 +138,7 @@ public class DishController {
                     helper.getLogMessage("delete.dishes.not"));
         }
     }
+
     /**
      * Получает количество блюд для Статистики.
      * @return ResponseEntity, содержащий количество категорий.

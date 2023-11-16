@@ -111,6 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String[] PERMIT_ALL_LIST = {
             "/",
             "/signup",
+            "/signup/get",
             "/api/get/**",
             "/css/*",
             "/js/*",

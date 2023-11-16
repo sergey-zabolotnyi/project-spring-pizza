@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: szabolotnyi
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: review
+      changes:
+        - createTable:
+            tableName: review
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_review_user
+                    referencedTableName: user
+                    referencedColumnNames: id
+              - column:
+                  name: text
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: int
+                  constraints:
+                    nullable: false
+                    checkConstraint: 'rating >= 1 AND rating <= 10'
+              - column:
+                  name: time
+                  type: timestamp
+                  constraints:
+                    nullable: false

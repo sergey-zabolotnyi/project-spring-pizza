@@ -1,6 +1,11 @@
 .form-styling {
     margin-bottom: 20px;
 }
+.form-styling#text {
+    width: 100%; /* Set the width as needed */
+    height: 10em; /* Set the height as needed */
+    resize: none; /* Prevent users from resizing the textarea */
+}
 
 .frame {
     width: 350px;

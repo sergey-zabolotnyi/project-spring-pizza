@@ -1,10 +1,13 @@
 package de.telran.pizza.controller;
 
 import de.telran.pizza.config.MessageHelper;
+import de.telran.pizza.domain.dto.CategoryDTO;
 import de.telran.pizza.domain.dto.UserDTO;
+import de.telran.pizza.domain.entity.User;
 import de.telran.pizza.domain.entity.enums.Role;
 import de.telran.pizza.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Контроллер для регистрации новых пользователей.
@@ -54,6 +58,19 @@ public class SignupController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    /**
+     * Получает всеx пользователей.
+     * @return Список объектов User.
+     */
+    @Operation(summary = "Получение всех пользователей",
+            description = "Получение всех пользователей Пиццерии, хранящихся в БД")
+    @ApiResponse(responseCode = "200", description = "Успешно получены категории.")
+    @GetMapping("/get")
+    public ResponseEntity<List<User>> getAllUsers(){
+        log.info(helper.getLogMessage("all.user.log"));
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     /**

@@ -154,4 +154,40 @@ class WebControllerTest {
 
         assertEquals("statistics", result);
     }
+
+    /**
+     * Тест запроса страницы отзывы.
+     */
+    @Test
+    void reviews() {
+        WebController controller = new WebController();
+        Model model = new BindingAwareModelMap();
+        String result = controller.reviews();
+
+        assertEquals("reviews", result);
+    }
+
+    /**
+     * Тест запроса страницы создания отзыва.
+     */
+    @Test
+    void createReview() {
+        WebController controller = new WebController();
+        Model model = new BindingAwareModelMap();
+        String result = controller.createReview();
+
+        assertEquals("review_create", result);
+    }
+
+    /**
+     * Тест запроса страницы обновления отзыва.
+     */
+    @Test
+    void updateReview() {
+        WebController controller = new WebController();
+        Model model = new BindingAwareModelMap();
+        String result = controller.updateReview();
+
+        assertEquals("review_update", result);
+    }
 }

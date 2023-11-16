@@ -156,7 +156,6 @@ public class DishService {
      * Обновляет существующее блюдо в базе данных.
      *
      * @param dish Объект Dish, который нужно обновить.
-     * @throws NoSuchElementException если указанное блюдо не существует.
      */
     public void update(@NonNull Dish dish) {
         dish.setTime(LocalDateTime.now());

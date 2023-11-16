@@ -21,7 +21,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/orders_request.js}"></script>
+    <script th:src="@{/js/review_request.js}"></script>
 
 </head>
 
@@ -62,64 +62,36 @@
     <section class="pics">
         <img src="/pics/pizza.png" alt="Pizza Image">
     </section>
-
     <header class="block-2">
-        <h2 th:text="#{main.order}"></h2>
+        <h2 th:text="#{review.create}"></h2>
     </header>
 
-    <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getOrderDetails()">
-
-        <div id="errorMsg"></div>
+    <section class="block-3" ng-app="get_form" ng-controller="GetController" data-ng-init="getUsers()">
 
         <div id="dishes_block">
-            <div class="page_head" ng-model="orderId">
-                <p style="align-items: end;">
-                    <span th:text="#{order.number} + ' # '"></span>
-                    <span style="font-weight: 700">{{orderId}}</span>
-                </p>
-            </div>
             <div>
-                <table id="table" ng-model="dishes">
-                    <tr>
-                        <th columns="0" onclick="tableSort(this, 'table')">№</th>
-                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.dish}"></th>
-                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.price}"></th>
-                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.category}"></th>
-                    </tr>
-                    <tbody id="dishes_table">
-                    <tr ng-repeat="i in dishes" class="rows" checked=false>
-                        <td>{{i.id}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.price}}</td>
-                        <td>{{i.category.category}}</td>
-                    </tr>
+                <div class="frame">
+                    <form class="form-signin" ng-model="users">
+                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
 
-                    </tbody>
-                </table>
-            </div>
+                        <label for="user" th:text="#{review.user}"></label>
+                        <select id="user" name="user" class="form-styling">
+                            <option ng-repeat="u in users" value="{{u.id}}">{{u.user}}</option>
+                        </select>
 
-            <div class="page_head" ng-model="totalAmount">
-                <p style="align-items: end;">
-                    <span th:text="#{orders.totalPrice} + ' = '"></span>
-                    <span style="font-weight: 700">{{totalAmount | number:2}}</span>
-                </p>
-            </div>
+                        <label for="text" th:text="#{review.text}"></label>
+                        <textarea name="text" id="text" class="form-styling" rows="4" required></textarea>
 
-            <div class="page_head">
-                <div style="margin: 20px 0;">
+                        <label for="rating" th:text="#{review.rating}"></label>
+                        <input name="rating" id="rating" class="form-styling" type="number" required
+                               min="1" max="10" step="1" value=""/>
+
+                        <input class="btn-signup" type="button" ng-click="create()" th:value="#{review.create}"/>
+                    </form>
                 </div>
-                <div>
-                    <button class="button" onclick="goBack()" th:text="#{order.back}"></button>
-                </div>
-
-                <script>
-                    function goBack() {
-                        window.history.back();
-                    }
-                </script>
             </div>
         </div>
+
     </section>
 
 </div>

@@ -10,7 +10,7 @@
     <meta name="keywords" content="Pizza, final project, 2023">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizzeria</title>
-    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/pics/favicon.ico}" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}"/>
@@ -20,7 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
     <script th:src="@{/js/main.js}"></script>
-    <script th:src="@{/js/cart_request.js}"></script>
+    <script th:src="@{/js/review_request.js}"></script>
 
 </head>
 
@@ -38,8 +38,15 @@
             <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
         </div>
         <div>
-            <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
-            <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
+            <span sec:authorize="isAuthenticated()">
+                <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
+            </span>
+            <a class="button-2" href="/login" th:text="#{sign.in}"
+               sec:authorize="!isAuthenticated()"></a>
+            <a class="button-2" href="/signup" th:text="#{sign.up}"
+               sec:authorize="!isAuthenticated()"></a>
+            <a class="button-2" href="/logout" th:text="#{sign.out}"
+               sec:authorize="isAuthenticated()"></a>
 
             <label for="locales"></label>
             <select class="button" id="locales">
@@ -63,59 +70,57 @@
     <section class="pics">
         <img src="/pics/pizza.png" alt="Pizza Image">
     </section>
-
     <header class="block-2">
-        <h2 th:text="#{main.cart}"></h2>
+        <h2 th:text="#{main.review}"></h2>
     </header>
 
     <section class="block-3"
-             ng-app="get_form" ng-controller="GetController" data-ng-init="getItems()">
+             ng-app="get_form" ng-controller="GetController" data-ng-init="getAllItems()">
 
         <div id="errorMsg"></div>
 
-        <div id="dishes_block">
+        <div id="no_error_block">
+            <div class="page_head">
+                <div>
+                    <h2 th:text="#{main.reviews}"></h2>
+                </div>
+                <div>
+                    <a class="button-green" href="/review-create" th:text="#{review.create}"></a>
+                </div>
+            </div>
+
             <div>
                 <table id="table" ng-model="dishes">
                     <tr>
                         <th columns="0" onclick="tableSort(this, 'table')">№</th>
-                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.dish}"></th>
-                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.price}"></th>
-                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.category}"></th>
-                        <th columns="4" th:text="#{cart.action}"></th>
+                        <th columns="1" onclick="tableSort(this, 'table')" th:text="#{menu.review}"></th>
+                        <th columns="2" onclick="tableSort(this, 'table')" th:text="#{menu.review.user}"></th>
+                        <th columns="3" onclick="tableSort(this, 'table')" th:text="#{menu.review.time}"></th>
+                        <th columns="4" onclick="tableSort(this, 'table')" th:text="#{menu.review.rating}"></th>
+                        <span sec:authorize="hasRole('ROLE_MANAGER')"><th columns="5" th:text="#{cart.action}"></th></span>
+
                     </tr>
                     <tbody id="dishes_table">
-                    <tr ng-repeat="i in dishes" class="rows" checked=false>
+                    <tr ng-repeat="i in reviews" class="rows" checked=false>
                         <td>{{i.id}}</td>
-                        <td>{{i.name}}</td>
-                        <td>{{i.price}}</td>
-                        <td>{{i.category.category}}</td>
-                        <td>
-                            <a id="{{i.id}}" class="button" ng-click="delete($event)" th:text="#{button.delete}"></a>
+                        <td style="text-align: left;">{{i.text}}</td>
+                        <td>{{i.user.user}}</td>
+                        <td>{{i.time}}</td>
+                        <td>{{i.rating}}</td>
+                        <span sec:authorize="hasRole('ROLE_MANAGER')">
+                        <td th:style="'white-space: nowrap; text-overflow: ellipsis;'">
+                            <a class="button-orange" href="/review-update?id={{i.id}}" th:text="#{button.update}"></a>
+                            <a reviewId="{{i.id}}" class="button-red" ng-click="delete($event)" th:text="#{button.delete}"></a>
                         </td>
+                            </span>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
-
-            <div class="page_head" ng-model="totalPrice">
-                <p style="align-items: end;">
-                    <span th:text="#{orders.totalPrice} + ' = '"></span>
-                    <span style="font-weight: 700">{{totalPrice}}</span>
-                </p>
-
-            </div>
-
-            <div class="page_head">
-                <div style="margin: 20px 0;">
-                    <a class="button-green" ng-click="postdata()" th:text="#{cart.create}"></a>
-                </div>
-                <div>
-                    <a class="button-red" ng-click="deleteAll()" th:text="#{cart.deleteAll}"></a>
-                </div>
-            </div>
         </div>
+
     </section>
+
 
 </div>
 </body>

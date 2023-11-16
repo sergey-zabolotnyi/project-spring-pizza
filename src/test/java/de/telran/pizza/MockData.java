@@ -150,5 +150,22 @@ public class MockData {
     public static List<Cart> getMockedListOfCarts() {
         return Arrays.asList(getMockedCart(), new Cart(2, getMockedUser(), getMockedDish()));
     }
+
+    /**
+     * Возвращает мок объекта отзыва.
+     * @return Мок объекта отзыва
+     */
+    public static Review getMockedReview() {
+        return new Review(1, getMockedUser(),"pizza super!!!", 10, LocalDateTime.now());
+    }
+
+    /**
+     * Возвращает список моков блюд.
+     * @return Список моков блюд
+     */
+    public static List<Review> getMockedListOfReviews() {
+        return Arrays.asList(getMockedReview(),
+                new Review(2, getMockedUser(), "I like this pizzeria!", 9, LocalDateTime.now()));
+    }
 }
 

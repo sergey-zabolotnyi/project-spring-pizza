@@ -30,17 +30,19 @@
 <div class="body-block shadow-large page_width">
     <section class="block-1">
         <div style="display:flex; align-items: center">
-            <a class="button-1" href="/" th:text="#{main.main}"></a>|
-            <a class="button-1" href="/cart" th:text="#{main.cart}"></a>|
-            <a class="button-1" href="/orders" th:text="#{main.orders}"></a>|
-            <a class="button-1" href="/reviews" th:text="#{main.review}"></a>|
-            <a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}"></a>|
-            <a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}"></a>|
-            <a class="button-3" href="/manager/statistics" th:text="#{main.statistics}"></a>
+            <a class="button-1" href="/" th:text="#{main.main}"></a>
+            <span sec:authorize="isAuthenticated()">|<a class="button-1" href="/cart" th:text="#{main.cart}" sec:authorize="isAuthenticated()"></a></span>
+            <span sec:authorize="isAuthenticated()">|<a class="button-1" href="/orders" th:text="#{main.orders}" sec:authorize="isAuthenticated()"></a></span>
+            <span>|<a class="button-1" href="/reviews" th:text="#{main.review}"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/manage_orders" th:text="#{main.manage.orders}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/manage_dishes" th:text="#{main.manage.dishes}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
+            <span sec:authorize="hasRole('ROLE_MANAGER')">|<a class="button-3" href="/manager/statistics" th:text="#{main.statistics}" sec:authorize="hasRole('ROLE_MANAGER')"></a></span>
         </div>
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
+
+            <label for="locales"></label>
             <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>

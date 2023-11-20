@@ -41,8 +41,6 @@
         <div>
             <a id="authorizedLogin" th:text="${#request.getUserPrincipal().getName()}"></a>
             <a class="button-2" href="/logout" th:text="#{sign.out}"></a>
-
-            <label for="locales"></label>
             <select class="button" id="locales">
                 <option value="" th:text="#{lang.change}"></option>
                 <option value="en" th:text="#{lang.en}"></option>
